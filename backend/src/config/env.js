@@ -68,6 +68,10 @@ export const config = {
   nerDefaults: {
     region: process.env.NER_DEFAULT_REGION || 'NER',
     language: process.env.DEFAULT_LANGUAGE || 'as',
+  },
+  gemini: {
+    apiKey: process.env.GEMINI_API_KEY || null,
+    model: process.env.GEMINI_MODEL || 'gemini-3.8-flash',
   }
 };
 

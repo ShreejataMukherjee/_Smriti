@@ -21,6 +21,7 @@
   "author": "Smriti Team",
   "license": "MIT",
   "dependencies": {
+    "@google/genai": "^2.22.0",
     "@supabase/supabase-js": "^2.112.4",
     "busboy": "^1.6.0",
     "cors": "^2.8.5",
