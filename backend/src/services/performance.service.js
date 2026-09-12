@@ -100,9 +100,16 @@ export const performanceService = {
    * Retrieves all sessions for an elderly user
    */
   async getSessionsForElderly(elderlyUserId, callerId) {
-    if (callerId !== elderlyUserId) {
+    if (callerId && callerId !== elderlyUserId) {
       const isAuthorized = await relationshipService.hasActiveRelationship(callerId, elderlyUserId);
+      let isSpecialistAuthorized = false;
       if (!isAuthorized) {
+        try {
+          const { specialistService } = await import('./specialist-service.js');
+          isSpecialistAuthorized = await specialistService.hasActiveSpecialistRelationship(callerId, elderlyUserId);
+        } catch (e) {}
+      }
+      if (!isAuthorized && !isSpecialistAuthorized) {
         throw new Error('Access Forbidden: You are not authorized to view performance data for this elderly user.');
       }
     }

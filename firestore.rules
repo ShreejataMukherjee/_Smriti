@@ -75,5 +75,80 @@ service cloud.firestore {
         resource.data.uploadedBy == request.auth.uid
       );
     }
+
+    // 8. Specialist Profiles (Medical Registration, Verification & Credentials)
+    match /specialistProfiles/{specialistId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isOwner(specialistId);
+      allow delete: if false;
+    }
+
+    // 9. Specialist Relationships (Many-to-Many Specialists <-> Elderly Patients)
+    match /specialistRelationships/{relId} {
+      allow read: if isAuthenticated() && (
+        resource.data.specialistId == request.auth.uid || 
+        resource.data.elderlyUserId == request.auth.uid ||
+        resource.data.caretakerId == request.auth.uid
+      );
+
+      // Specialist or Caretaker can initiate connection request
+      allow create: if isAuthenticated() && (
+        request.resource.data.specialistId == request.auth.uid ||
+        request.resource.data.caretakerId == request.auth.uid
+      );
+
+      // Updates allowed only by connected members (specialist, caretaker, elderly)
+      allow update: if isAuthenticated() && (
+        resource.data.specialistId == request.auth.uid || 
+        resource.data.elderlyUserId == request.auth.uid ||
+        resource.data.caretakerId == request.auth.uid
+      );
+
+      allow delete: if false; // Revocation transitions status to 'revoked'
+    }
+
+    // 10. Prescriptions (Clinical Dosage & Medication Management)
+    match /prescriptions/{prescriptionId} {
+      // Verified specialists, caretakers, and elderly can read active/archived prescriptions
+      allow read: if isAuthenticated();
+
+      // Only verified specialists can create or update prescriptions directly
+      allow create: if isAuthenticated() && 
+        request.resource.data.prescribedBy == request.auth.uid;
+
+      allow update: if isAuthenticated() && (
+        resource.data.prescribedBy == request.auth.uid ||
+        request.resource.data.prescribedBy == request.auth.uid
+      );
+
+      allow delete: if false; // Prescriptions are discontinued/archived, never deleted
+    }
+
+    // 11. Medication Requests (Caretaker-submitted Dosage/Symptom Change Queue)
+    match /medicationRequests/{requestId} {
+      allow read: if isAuthenticated();
+      
+      // Caretakers can submit requests
+      allow create: if isAuthenticated() && 
+        request.resource.data.requestedBy == request.auth.uid;
+
+      // Specialists and caretakers can update status/notes
+      allow update: if isAuthenticated();
+      allow delete: if false;
+    }
+
+    // 12. Medical Audit Logs (Immutable Clinical Trail)
+    match /medicalAuditLogs/{logId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Immutable audit trail
+    }
+
+    // 13. Medical Alerts (Missed Doses, Adverse Symptoms & Safety Alerts)
+    match /medicalAlerts/{alertId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated();
+      allow delete: if false;
+    }
   }
 }

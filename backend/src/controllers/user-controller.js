@@ -4,6 +4,7 @@
  */
 
 import { userService } from '../services/user-service.js';
+import { specialistService } from '../services/specialist-service.js';
 
 export const userController = {
   /**
@@ -60,5 +61,32 @@ export const userController = {
       plan: req.user.plan,
       status: 'active'
     });
+  },
+
+  /**
+   * GET /api/users/specialist-dashboard/summary
+   * Protected: Medical Specialist only
+   */
+  async getSpecialistDashboardSummary(req, res) {
+    try {
+      const specialistProfile = await specialistService.getSpecialistProfile(req.user.id);
+      return res.status(200).json({
+        success: true,
+        message: 'Your clinical specialist dashboard is ready.',
+        role: req.user.role,
+        plan: req.user.plan,
+        status: 'active',
+        specialistProfile: specialistProfile || null
+      });
+    } catch (err) {
+      return res.status(200).json({
+        success: true,
+        message: 'Your clinical specialist dashboard is ready.',
+        role: req.user.role,
+        plan: req.user.plan,
+        status: 'active',
+        specialistProfile: null
+      });
+    }
   }
 };

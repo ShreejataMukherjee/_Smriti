@@ -535,27 +535,94 @@
       </section>
 
       <!-- ================================================================= -->
-      <!-- TAB 9: HEALTH & REMINDERS                                         -->
+      <!-- TAB 9: HEALTH & REMINDERS (CLINICAL WORKFLOW & SPECIALIST LOCK)   -->
       <!-- ================================================================= -->
       <section id="tab-health" class="tab-pane hidden space-y-6">
-        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
-          
-          <!-- Disclaimer Banner -->
-          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs text-slate-600 flex items-start gap-3">
-            <span class="text-lg">ℹ️</span>
+        
+        <!-- Disclaimer Banner -->
+        <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200 text-xs text-slate-600 flex items-start gap-3 shadow-xs">
+          <span class="text-lg">ℹ️</span>
+          <div>
+            <strong>Care & Support Management Tool:</strong> Smriti provides reminders and routine organization to assist caregivers. Prescription dosages are managed by verified Medical Specialists. Caretakers can submit dosage change and symptom observation requests to the clinical queue.
+          </div>
+        </div>
+
+        <!-- 1. Specialist Prescribed Medications (Locked for Caretaker Safety) -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
             <div>
-              <strong>Care & Support Management Tool:</strong> Smriti provides reminders and routine organization to assist caregivers. It does not provide medical diagnosis or replace consultation with a qualified doctor.
+              <div class="flex items-center gap-2">
+                <h2 class="text-lg font-extrabold text-[#0F172A]">Specialist Prescribed Medications</h2>
+                <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 uppercase tracking-wider">
+                  Clinical Safety Locked
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">Medications prescribed by linked Geriatric Doctors and Neurologists. Dosages cannot be edited directly.</p>
             </div>
+            <button id="open-change-request-modal-btn" class="px-4 py-2 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#0F172A] font-extrabold text-xs shadow-sm transition-all flex items-center gap-1.5">
+              <span>📩</span>
+              <span>Request Dosage Change / Report Symptom</span>
+            </button>
           </div>
 
+          <div id="specialist-prescriptions-grid" class="space-y-3">
+            <div class="p-6 text-center text-xs text-slate-400 bg-slate-50 rounded-2xl border border-slate-200">
+              Loading active specialist prescriptions...
+            </div>
+          </div>
+        <!-- PENDING CLINICAL CONNECTION REQUESTS NOTIFICATION BOX -->
+        <div id="pending-specialist-requests-box" class="hidden p-5 sm:p-6 rounded-3xl bg-amber-50 border-2 border-amber-300 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-amber-200 text-amber-900 flex items-center justify-center text-xl font-bold">
+                🩺
+              </div>
+              <div>
+                <h3 class="font-extrabold text-sm text-[#0F172A] flex items-center gap-2">
+                  <span>Pending Clinical Connection Requests</span>
+                  <span id="pending-specialist-count-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-200 text-amber-900">0</span>
+                </h3>
+                <p class="text-xs text-amber-950 font-medium">Medical Specialists awaiting authorization to link with your elderly family member.</p>
+              </div>
+            </div>
+          </div>
+          <div id="pending-specialist-requests-list" class="space-y-3 pt-1">
+            <!-- Rendered dynamically with Approve / Accept button -->
+          </div>
+        </div>
+
+        <!-- 2. Linked Medical Specialists Management -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-lg font-extrabold text-[#0F172A] flex items-center gap-2">
+                <span>👨‍⚕️</span> Linked Medical Specialists
+              </h2>
+              <p class="text-xs text-slate-500 mt-0.5">Authorised clinicians who can manage prescriptions and monitor cognitive game trajectories.</p>
+            </div>
+            <button id="open-specialist-invite-modal-btn" class="px-4 py-2 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs shadow-sm transition-all flex items-center gap-1.5">
+              <span>+</span>
+              <span>Invite Medical Specialist</span>
+            </button>
+          </div>
+
+          <div id="linked-specialists-list" class="space-y-3">
+            <div class="p-6 text-center text-xs text-slate-400 bg-slate-50 rounded-2xl border border-slate-200">
+              Loading linked clinicians...
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. General Care & Routine Reminders Grid -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-5">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
             <div>
-              <h2 class="text-xl font-extrabold text-[#0F172A]">Health & Care Reminders</h2>
-              <p class="text-xs text-slate-500">Medication schedules, hydration milestones, activity prompts, and doctor visits.</p>
+              <h2 class="text-lg font-extrabold text-[#0F172A]">Hydration, Activity & Routine Reminders</h2>
+              <p class="text-xs text-slate-500">Caregiver-managed hydration goals, walks, and general daily reminders.</p>
             </div>
-            <button id="add-reminder-btn" class="px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2">
+            <button id="add-reminder-btn" class="px-4 py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition-all flex items-center gap-2">
               <span>+</span>
-              <span>Add Reminder</span>
+              <span>Add Routine Reminder</span>
             </button>
           </div>
 
@@ -1205,6 +1272,112 @@
         </button>
       </div>
     </div>
+  <!-- ===================================================================== -->
+  <!-- MODAL: CARETAKER REQUEST DOSAGE CHANGE / REPORT SYMPTOM                -->
+  <!-- ===================================================================== -->
+  <div id="caretaker-change-request-modal" class="fixed inset-0 z-50 bg-[#0F172A]/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto" role="dialog">
+    <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="font-extrabold text-base text-[#0F172A] flex items-center gap-2">
+          <span>📩</span> Request Dosage Change / Report Symptom
+        </h3>
+        <button id="close-change-request-modal-btn" class="p-1 text-slate-400 hover:text-slate-700 text-lg font-bold">✕</button>
+      </div>
+
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Submit a dosage adjustment request, report mild side effects, or flag behavioral observations to the linked Medical Specialist.
+      </p>
+
+      <form id="caretaker-change-request-form" class="space-y-3.5 text-xs font-medium">
+        <div class="space-y-1">
+          <label class="font-bold text-slate-700">Target Medication *</label>
+          <select id="cr-prescription-select" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            <option value="">-- Select Prescribed Drug --</option>
+          </select>
+        </div>
+
+        <div class="space-y-1">
+          <label class="font-bold text-slate-700">Request Type *</label>
+          <select id="cr-request-type" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            <option value="dosage_change" selected>Dosage Adjustment Request</option>
+            <option value="side_effect">Side Effect / Adverse Symptom Observation</option>
+            <option value="symptom_report">Routine Behavioral / Sleep Observation</option>
+            <option value="discontinue">Discontinuation Request</option>
+          </select>
+        </div>
+
+        <div class="space-y-1">
+          <label class="font-bold text-slate-700">Requested New Dosage (Optional)</label>
+          <input type="text" id="cr-requested-dosage" placeholder="e.g. 5mg daily morning instead of 10mg" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="font-bold text-slate-700">Detailed Symptom Observation / Reason *</label>
+          <textarea id="cr-symptom-notes" required rows="3" placeholder="Describe symptoms (e.g., increased morning dizziness after breakfast, evening sundowning agitation)..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+        </div>
+
+        <div class="space-y-1">
+          <label class="font-bold text-slate-700">Urgency Level</label>
+          <select id="cr-urgency" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            <option value="medium" selected>Medium (Review during next clinical check)</option>
+            <option value="high">High (Prompt clinical attention required)</option>
+            <option value="low">Low (General suggestion)</option>
+          </select>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-3 border-t border-slate-100">
+          <button type="button" id="cancel-change-request-btn" class="px-4 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#0F172A] font-extrabold shadow-md flex items-center gap-1.5">
+            <span>🚀</span>
+            <span>Submit to Specialist Queue</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: INVITE MEDICAL SPECIALIST                                      -->
+  <!-- ===================================================================== -->
+  <div id="caretaker-invite-specialist-modal" class="fixed inset-0 z-50 bg-[#0F172A]/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto" role="dialog">
+    <div class="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="font-extrabold text-base text-[#0F172A] flex items-center gap-2">
+          <span>👨‍⚕️</span> Invite Medical Specialist
+        </h3>
+        <button id="close-specialist-invite-modal-btn" class="p-1 text-slate-400 hover:text-slate-700 text-lg font-bold">✕</button>
+      </div>
+
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Connect with your elderly loved one's doctor or geriatric neurologist. Generate a direct invite code or send an invite to their email.
+      </p>
+
+      <form id="caretaker-invite-specialist-form" class="space-y-4 text-xs font-medium">
+        <div class="space-y-1">
+          <label class="font-bold text-slate-700">Specialist Email (Optional)</label>
+          <input type="email" id="invite-specialist-email" placeholder="e.g. doctor@hospital.org" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+        </div>
+
+        <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-1 text-emerald-950">
+          <div class="font-bold text-xs">Generated Specialist Passcode:</div>
+          <div id="generated-invite-code-display" class="font-mono text-sm font-extrabold text-emerald-800 tracking-wider">
+            Click Generate Code Below
+          </div>
+          <p class="text-[10px] text-emerald-700">Share this code with the clinician to redeem in their Specialist Portal.</p>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-3">
+          <button type="button" id="cancel-invite-specialist-btn" class="px-4 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold">
+            Close
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold shadow-md">
+            Generate & Send Invite
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- Toast Notification Container -->
@@ -1214,6 +1387,7 @@
   <script src="/src/services/api-client.js"></script>
   <script src="/src/services/firebase-client.js"></script>
   <script src="/src/services/relationship-client.js"></script>
+  <script src="/src/services/specialist-client.js"></script>
   <script src="/src/services/media-client.js"></script>
   <script src="/src/services/profile-client.js"></script>
   <script src="/src/auth/auth-state.js"></script>
@@ -1465,6 +1639,10 @@
           // Load Reminders
           const reminders = await window.ProfileClient.getReminders(elderlyUserId);
           renderRemindersGrid(reminders);
+
+          // Load Specialist Prescriptions & Linked Specialists
+          await loadSpecialistPrescriptions(elderlyUserId);
+          await loadLinkedSpecialists(elderlyUserId);
 
           // Load Cognitive Insights & Support Alerts
           await loadCognitiveInsights(elderlyUserId);
@@ -2105,6 +2283,295 @@
         });
       }
 
+      // Render Specialist Prescriptions (Locked View)
+      async function loadSpecialistPrescriptions(elderlyUserId) {
+        if (!elderlyUserId) return;
+        const grid = document.getElementById('specialist-prescriptions-grid');
+        const select = document.getElementById('cr-prescription-select');
+        try {
+          const prescriptions = await window.SpecialistClient.getPrescriptions(elderlyUserId);
+          renderSpecialistPrescriptions(prescriptions);
+        } catch (err) {
+          console.warn('Could not load specialist prescriptions:', err);
+          if (grid) {
+            grid.innerHTML = `<div class="p-6 text-center text-xs text-rose-500 bg-rose-50 rounded-2xl border border-rose-200">Unable to load prescriptions: ${err.message}</div>`;
+          }
+        }
+      }
+
+      function renderSpecialistPrescriptions(prescriptions = []) {
+        const grid = document.getElementById('specialist-prescriptions-grid');
+        const select = document.getElementById('cr-prescription-select');
+        if (!grid) return;
+
+        // Populate Change Request Dropdown
+        if (select) {
+          select.innerHTML = '<option value="">-- Select Prescribed Drug --</option>';
+          prescriptions.filter(p => p.status === 'active').forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p.id;
+            opt.textContent = `${p.medicationName} (${p.dosage} - ${p.frequency})`;
+            select.appendChild(opt);
+          });
+        }
+
+        if (prescriptions.length === 0) {
+          grid.innerHTML = `
+            <div class="p-6 text-center text-xs text-slate-400 bg-slate-50 rounded-2xl border border-slate-200">
+              No specialist prescriptions on record. Your linked Geriatric Specialist / Neurologist will manage clinical medications here.
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = prescriptions.map(rx => `
+          <div class="p-5 rounded-2xl border ${rx.status === 'active' ? 'border-emerald-200 bg-emerald-50/30' : 'border-slate-200 bg-slate-50 opacity-75'} space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-sm">💊</span>
+                <div>
+                  <h4 class="font-extrabold text-sm text-[#0F172A]">${rx.medicationName}</h4>
+                  <div class="text-[11px] text-slate-500 font-medium">Prescribed by Dr. ${rx.specialistName || 'Specialist'} (${rx.specialistSpecialization || 'Geriatrician'})</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${rx.status === 'active' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'}">
+                  ${rx.status === 'active' ? '● Active Clinical Rx' : rx.status}
+                </span>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 flex items-center gap-1">
+                  <span>🔒</span> Locked
+                </span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-xl bg-white border border-slate-200 text-xs">
+              <div>
+                <span class="text-[10px] text-slate-400 uppercase font-bold block">Dosage</span>
+                <span class="font-bold text-slate-800">${rx.dosage || '--'}</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-slate-400 uppercase font-bold block">Frequency</span>
+                <span class="font-bold text-slate-800">${rx.frequency || '--'}</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-slate-400 uppercase font-bold block">Route</span>
+                <span class="font-bold text-slate-800">${rx.route || 'Oral'}</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-slate-400 uppercase font-bold block">Schedule Timing</span>
+                <span class="font-bold text-slate-800">${rx.timing || 'With Meals'}</span>
+              </div>
+            </div>
+
+            ${rx.instructions ? `
+              <div class="text-xs text-slate-600 bg-white/70 p-2.5 rounded-xl border border-slate-200">
+                <span class="font-bold text-slate-700">Clinician Notes:</span> ${rx.instructions}
+              </div>
+            ` : ''}
+
+            ${rx.status === 'active' ? `
+              <div class="flex items-center justify-between pt-1 border-t border-slate-200/60">
+                <span class="text-[11px] text-slate-500 italic">Caregiver Safety Guard: Direct edits disabled.</span>
+                <button class="request-rx-change-btn text-xs font-bold text-amber-800 hover:text-amber-950 bg-amber-100 hover:bg-amber-200 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1" data-id="${rx.id}">
+                  <span>📩</span> Request Adjustment
+                </button>
+              </div>
+            ` : ''}
+          </div>
+        `).join('');
+
+        grid.querySelectorAll('.request-rx-change-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (select) select.value = btn.dataset.id;
+            document.getElementById('caretaker-change-request-modal')?.classList.remove('hidden');
+          });
+        });
+      }
+
+      // Load & Render Linked Medical Specialists & Pending Requests
+      async function loadLinkedSpecialists(elderlyUserId) {
+        if (!elderlyUserId) return;
+        const list = document.getElementById('linked-specialists-list');
+        try {
+          const specialists = await window.SpecialistClient.getPatientSpecialists(elderlyUserId);
+          renderLinkedSpecialists(specialists, elderlyUserId);
+        } catch (err) {
+          console.warn('Could not load linked specialists:', err);
+          if (list) {
+            list.innerHTML = `<div class="p-6 text-center text-xs text-rose-500 bg-rose-50 rounded-2xl border border-rose-200">Unable to load linked specialists: ${err.message}</div>`;
+          }
+        }
+      }
+
+      function renderLinkedSpecialists(specialists = [], elderlyUserId = null) {
+        const list = document.getElementById('linked-specialists-list');
+        const pendingBox = document.getElementById('pending-specialist-requests-box');
+        const pendingList = document.getElementById('pending-specialist-requests-list');
+        const pendingCountBadge = document.getElementById('pending-specialist-count-badge');
+
+        const pendingRequests = specialists.filter(sp => sp.status === 'pending');
+        const activeSpecialists = specialists.filter(sp => sp.status === 'accepted');
+
+        // 1. Render Dedicated Pending Clinical Connection Requests Notification Box
+        if (pendingBox && pendingList) {
+          if (pendingRequests.length > 0) {
+            pendingBox.classList.remove('hidden');
+            if (pendingCountBadge) pendingCountBadge.textContent = `${pendingRequests.length} pending`;
+            pendingList.innerHTML = pendingRequests.map(req => {
+              const relId = req.id || req.relationshipId;
+              return `
+                <div class="p-4 rounded-2xl bg-white border border-amber-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+                  <div class="flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center text-xl font-bold">
+                      🩺
+                    </div>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <h4 class="font-extrabold text-sm text-[#0F172A]">${req.specialistName || 'Medical Specialist'}</h4>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
+                          Incoming Clinical Request
+                        </span>
+                      </div>
+                      <div class="text-xs text-slate-500 font-medium">
+                        ${req.specialistSpecialization || 'Geriatric Neurology'} • ${req.specialistEmail || 'Clinical Specialist'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <button class="approve-specialist-link-btn px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-extrabold shadow-sm transition-all flex items-center gap-1.5" data-relid="${relId}">
+                      <span>✓</span> <span>Approve / Accept</span>
+                    </button>
+                    <button class="reject-specialist-link-btn px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all" data-relid="${relId}">
+                      Decline
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          } else {
+            pendingBox.classList.add('hidden');
+          }
+        }
+
+        // 2. Render Linked Specialists List
+        if (!list) return;
+
+        if (specialists.length === 0) {
+          list.innerHTML = `
+            <div class="p-6 text-center text-xs text-slate-500 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+              <p>No Medical Specialists currently linked to this patient workspace.</p>
+              <button id="empty-state-invite-specialist-btn" class="px-4 py-2 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs shadow-sm transition-all inline-flex items-center gap-1.5">
+                <span>+</span> <span>Invite Medical Specialist Now</span>
+              </button>
+            </div>
+          `;
+          list.querySelector('#empty-state-invite-specialist-btn')?.addEventListener('click', () => {
+            document.getElementById('open-specialist-invite-modal-btn')?.click();
+          });
+          return;
+        }
+
+        list.innerHTML = specialists.map(sp => {
+          const relId = sp.id || sp.relationshipId;
+          const isPending = sp.status === 'pending';
+          return `
+            <div class="p-4 rounded-2xl border ${isPending ? 'border-amber-300 bg-amber-50/50' : 'border-slate-200 bg-white'} flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+              <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-2xl ${isPending ? 'bg-amber-100 text-amber-900' : 'bg-emerald-100 text-emerald-800'} flex items-center justify-center text-xl font-bold">
+                  🩺
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h4 class="font-extrabold text-sm text-[#0F172A]">${sp.specialistName || 'Medical Specialist'}</h4>
+                    ${isPending ? `
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
+                        Pending Approval
+                      </span>
+                    ` : `
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 flex items-center gap-1">
+                        <span>✓</span> Active Care Link
+                      </span>
+                    `}
+                  </div>
+                  <div class="text-xs text-slate-500 font-medium">
+                    ${sp.specialistSpecialization || 'Geriatric Medicine'} • ${sp.specialistEmail || sp.hospitalClinic || 'Specialist Clinician'}
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2">
+                ${isPending ? `
+                  <button class="approve-specialist-link-btn px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-extrabold shadow-sm transition-all flex items-center gap-1.5" data-relid="${relId}">
+                    <span>✓</span> <span>Approve / Accept</span>
+                  </button>
+                  <button class="reject-specialist-link-btn px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all" data-relid="${relId}">
+                    Decline
+                  </button>
+                ` : `
+                  <span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800">
+                    Active Link
+                  </span>
+                  <button class="revoke-specialist-link-btn px-3 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-bold transition-all" data-relid="${relId}">
+                    Revoke Access
+                  </button>
+                `}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Bind Approve / Accept buttons
+        document.querySelectorAll('.approve-specialist-link-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const relId = btn.dataset.relid;
+            try {
+              btn.disabled = true;
+              btn.innerHTML = '<span>⏳</span> <span>Accepting...</span>';
+              await window.SpecialistClient.respondToLink(relId, 'accepted');
+              showToast('Clinical connection approved! Specialist is now linked to patient.');
+              const targetId = elderlyUserId || activePatientId;
+              if (targetId) await loadLinkedSpecialists(targetId);
+            } catch (err) {
+              showToast(err.message, true);
+              btn.disabled = false;
+              btn.innerHTML = '<span>✓</span> <span>Approve / Accept</span>';
+            }
+          });
+        });
+
+        // Bind Reject buttons
+        document.querySelectorAll('.reject-specialist-link-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const relId = btn.dataset.relid;
+            try {
+              btn.disabled = true;
+              await window.SpecialistClient.respondToLink(relId, 'rejected');
+              showToast('Specialist connection request declined');
+              const targetId = elderlyUserId || activePatientId;
+              if (targetId) await loadLinkedSpecialists(targetId);
+            } catch (err) {
+              showToast(err.message, true);
+            }
+          });
+        });
+
+        // Bind Revoke buttons
+        list.querySelectorAll('.revoke-specialist-link-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('Are you sure you want to revoke clinical access for this Medical Specialist?')) return;
+            try {
+              await window.SpecialistClient.revokeLink(btn.dataset.relid);
+              showToast('Specialist clinical access revoked');
+              const targetId = elderlyUserId || activePatientId;
+              if (targetId) await loadLinkedSpecialists(targetId);
+            } catch (err) {
+              showToast(err.message, true);
+            }
+          });
+        });
+      }
+
       // 6. Form Handlers & Button Actions
 
       // Save Profile Form
@@ -2533,6 +3000,115 @@
           loadConnectedPatients();
         } catch (err) {
           showToast(err.message, true);
+        }
+      });
+
+      // Change Request Modal Handlers
+      document.getElementById('open-change-request-modal-btn')?.addEventListener('click', () => {
+        if (!activePatientId) {
+          showToast('Please select a connected senior patient first', true);
+          return;
+        }
+        document.getElementById('caretaker-change-request-modal')?.classList.remove('hidden');
+      });
+
+      document.getElementById('close-change-request-modal-btn')?.addEventListener('click', () => {
+        document.getElementById('caretaker-change-request-modal')?.classList.add('hidden');
+      });
+
+      document.getElementById('cancel-change-request-btn')?.addEventListener('click', () => {
+        document.getElementById('caretaker-change-request-modal')?.classList.add('hidden');
+      });
+
+      document.getElementById('caretaker-change-request-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!activePatientId) return;
+
+        const prescriptionId = document.getElementById('cr-prescription-select').value;
+        const requestType = document.getElementById('cr-request-type').value;
+        const requestedDosage = document.getElementById('cr-requested-dosage').value;
+        const symptomNotes = document.getElementById('cr-symptom-notes').value;
+        const urgency = document.getElementById('cr-urgency').value;
+
+        try {
+          await window.SpecialistClient.submitMedicationRequest({
+            elderlyUserId: activePatientId,
+            prescriptionId,
+            requestType,
+            requestedDosage,
+            symptomNotes,
+            urgency
+          });
+
+          showToast('Medication adjustment request submitted to specialist queue!');
+          document.getElementById('caretaker-change-request-modal')?.classList.add('hidden');
+          document.getElementById('caretaker-change-request-form')?.reset();
+        } catch (err) {
+          showToast(err.message, true);
+        }
+      });
+
+      // Specialist Invite Modal Handlers
+      document.getElementById('open-specialist-invite-modal-btn')?.addEventListener('click', () => {
+        console.log('Open Invite Specialist Modal clicked');
+        const elderlyTarget = activePatientId || connectedPatients[0]?.elderlyUserId || localStorage.getItem('smriti_active_elderly') || window.AuthState?.currentUser?.elderlyUserId;
+        if (!elderlyTarget) {
+          showToast('Please select a connected senior patient first', true);
+          return;
+        }
+        activePatientId = elderlyTarget;
+        const display = document.getElementById('generated-invite-code-display');
+        if (display) display.textContent = 'Click Generate Code Below';
+        const emailInput = document.getElementById('invite-specialist-email');
+        if (emailInput) emailInput.value = '';
+        document.getElementById('caretaker-invite-specialist-modal')?.classList.remove('hidden');
+      });
+
+      document.getElementById('close-specialist-invite-modal-btn')?.addEventListener('click', () => {
+        document.getElementById('caretaker-invite-specialist-modal')?.classList.add('hidden');
+      });
+
+      document.getElementById('cancel-invite-specialist-btn')?.addEventListener('click', () => {
+        document.getElementById('caretaker-invite-specialist-modal')?.classList.add('hidden');
+      });
+
+      document.getElementById('caretaker-invite-specialist-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const elderlyTarget = activePatientId || connectedPatients[0]?.elderlyUserId || localStorage.getItem('smriti_active_elderly') || window.AuthState?.currentUser?.elderlyUserId;
+        if (!elderlyTarget) {
+          showToast('Please select a connected senior patient first', true);
+          return;
+        }
+
+        const email = document.getElementById('invite-specialist-email')?.value?.trim();
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const origBtnHtml = submitBtn ? submitBtn.innerHTML : 'Generate & Send Invite';
+
+        try {
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>⏳</span> <span>Establishing Link...</span>';
+          }
+
+          const rel = await window.SpecialistClient.createCaretakerInvite(elderlyTarget, email);
+          if (rel && rel.inviteCode) {
+            const display = document.getElementById('generated-invite-code-display');
+            if (display) display.textContent = rel.inviteCode;
+            showToast(`Specialist Link Created! Passcode: ${rel.inviteCode}`);
+          } else {
+            showToast('Specialist clinical link established successfully!');
+          }
+
+          // Immediately update linked specialist list in Caretaker Studio
+          await loadLinkedSpecialists(elderlyTarget);
+          console.log('Linked specialists refreshed after invite');
+        } catch (err) {
+          showToast(err.message || 'Failed to establish specialist link', true);
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origBtnHtml;
+          }
         }
       });
 

@@ -23,12 +23,13 @@ const SmritiRouter = {
 
       const isSeniorSpace = path.includes('senior-space') || path.endsWith('/senior-space.html');
       const isCaretakerStudio = path.includes('caretaker-studio') || path.endsWith('/caretaker-studio.html');
+      const isSpecialistDashboard = path.includes('specialist-dashboard') || path.endsWith('/specialist-dashboard.html');
       const isAuthPage = path.includes('auth') || path.endsWith('/auth.html');
 
       // 1. Unauthenticated user trying to access protected shell
-      if (!user && (isSeniorSpace || isCaretakerStudio)) {
+      if (!user && (isSeniorSpace || isCaretakerStudio || isSpecialistDashboard)) {
         console.warn('[Router] Unauthenticated access blocked. Redirecting to auth...');
-        const fallbackRole = isSeniorSpace ? 'elderly_user' : 'caretaker';
+        const fallbackRole = isSeniorSpace ? 'elderly_user' : isSpecialistDashboard ? 'medical_specialist' : 'caretaker';
         window.location.href = `/auth?role=${fallbackRole}`;
         return;
       }
@@ -38,23 +39,32 @@ const SmritiRouter = {
         console.log('[Router] Already authenticated. Routing to authorized space:', user.role);
         if (user.role === 'elderly_user') {
           window.location.href = '/senior-space';
+        } else if (user.role === 'medical_specialist' || user.role === 'healthcare_worker') {
+          window.location.href = '/specialist-dashboard';
         } else if (user.role === 'caretaker') {
           window.location.href = '/caretaker-studio';
         }
         return;
       }
 
-      // 3. Role-Based Route Mismatch (Elderly accessing Caretaker Studio)
-      if (user && isCaretakerStudio && user.role !== 'caretaker') {
-        console.warn(`[Router] RBAC Mismatch: Role '${user.role}' cannot access Caretaker Studio. Redirecting...`);
+      // 3. Role-Based Route Mismatch (Elderly accessing Caretaker Studio or Specialist Dashboard)
+      if (user && (isCaretakerStudio || isSpecialistDashboard) && user.role === 'elderly_user') {
+        console.warn(`[Router] RBAC Mismatch: Role '${user.role}' redirected to Senior Space.`);
         window.location.replace('/senior-space');
         return;
       }
 
-      // 4. Role-Based Route Mismatch (Caretaker accessing Senior Space)
-      if (user && isSeniorSpace && user.role !== 'elderly_user') {
-        console.warn(`[Router] RBAC Mismatch: Role '${user.role}' cannot access Senior Space. Redirecting...`);
+      // 4. Role-Based Route Mismatch (Caretaker accessing Senior Space or Specialist Dashboard)
+      if (user && (isSeniorSpace || isSpecialistDashboard) && user.role === 'caretaker') {
+        console.warn(`[Router] RBAC Mismatch: Role '${user.role}' redirected to Caretaker Studio.`);
         window.location.replace('/caretaker-studio');
+        return;
+      }
+
+      // 5. Role-Based Route Mismatch (Specialist accessing Senior Space or Caretaker Studio)
+      if (user && (isSeniorSpace || isCaretakerStudio) && (user.role === 'medical_specialist' || user.role === 'healthcare_worker')) {
+        console.warn(`[Router] RBAC Mismatch: Role '${user.role}' redirected to Specialist Dashboard.`);
+        window.location.replace('/specialist-dashboard');
         return;
       }
     });
@@ -63,6 +73,8 @@ const SmritiRouter = {
   navigateToRole(role) {
     if (role === 'elderly_user') {
       window.location.href = '/senior-space';
+    } else if (role === 'medical_specialist' || role === 'healthcare_worker') {
+      window.location.href = '/specialist-dashboard';
     } else if (role === 'caretaker') {
       window.location.href = '/caretaker-studio';
     } else {

@@ -4,9 +4,30 @@
  * Aligned with the SIH Problem Statement for NER dementia care.
  */
 
-export const VALID_ROLES = ['elderly_user', 'caretaker', 'healthcare_worker'];
+export const VALID_ROLES = ['elderly_user', 'caretaker', 'healthcare_worker', 'medical_specialist'];
 export const VALID_PLANS = ['basic', 'premium'];
 export const VALID_LANGUAGES = ['as', 'bn', 'hi', 'en', 'mni', 'kha']; // Assamese, Bengali, Hindi, English, Manipuri, Khasi
+
+/**
+ * Normalizes input role string to one of standard VALID_ROLES
+ */
+export function normalizeRole(rawRole) {
+  if (!rawRole) return 'elderly_user';
+  const r = String(rawRole).trim().toLowerCase();
+  if (['medical_specialist', 'specialist', 'doctor', 'physician', 'nurse', 'clinician'].includes(r)) {
+    return 'medical_specialist';
+  }
+  if (['caretaker', 'caregiver', 'family'].includes(r)) {
+    return 'caretaker';
+  }
+  if (['healthcare_worker', 'asha_worker'].includes(r)) {
+    return 'healthcare_worker';
+  }
+  if (['elderly_user', 'elderly', 'senior', 'patient'].includes(r)) {
+    return 'elderly_user';
+  }
+  return VALID_ROLES.includes(r) ? r : 'elderly_user';
+}
 
 /**
  * Creates and validates a normalized User Profile entity
@@ -14,7 +35,7 @@ export const VALID_LANGUAGES = ['as', 'bn', 'hi', 'en', 'mni', 'kha']; // Assame
  * @returns {Object} Validated user profile
  */
 export function createUserModel(data = {}) {
-  const role = VALID_ROLES.includes(data.role) ? data.role : 'elderly_user';
+  const role = normalizeRole(data.role);
   const plan = VALID_PLANS.includes(data.plan) ? data.plan : 'basic';
   const language = VALID_LANGUAGES.includes(data.language) ? data.language : 'as';
 
