@@ -24,6 +24,7 @@ import previewRoutes from './routes/preview-routes.js';
 import cognitiveRoutes from './routes/cognitive-routes.js';
 import syncRoutes from './routes/sync-routes.js';
 import visionRoutes from './routes/vision-routes.js';
+import specialistRoutes from './routes/specialist-routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -71,6 +72,7 @@ const mountApiRoutes = (prefix = '/api') => {
   app.use(`${prefix}/cognitive`, cognitiveRoutes);
   app.use(`${prefix}/sync`, syncRoutes);
   app.use(`${prefix}/vision`, visionRoutes);
+  app.use(`${prefix}/specialist`, specialistRoutes);
 };
 
 mountApiRoutes('/api');
@@ -95,6 +97,10 @@ if (fs.existsSync(FRONTEND_DIR)) {
 
   app.get('/caretaker-studio', (req, res) => {
     res.sendFile(path.join(FRONTEND_DIR, 'src/pages/caretaker-studio.html'));
+  });
+
+  app.get('/specialist-dashboard', (req, res) => {
+    res.sendFile(path.join(FRONTEND_DIR, 'src/pages/specialist-dashboard.html'));
   });
 
   app.get('/auth', (req, res) => {

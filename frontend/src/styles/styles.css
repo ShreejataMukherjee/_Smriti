@@ -445,3 +445,40 @@ html.twilight-mode .theme-icon-moon {
     scroll-behavior: auto !important;
   }
 }
+
+/* --------------------------------------------------------------------------
+   12. SPECIALIST CLINICAL DASHBOARD RESPONSIVE SPLIT-PANEL (768px - 1024px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .specialist-main-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.25rem !important;
+  }
+  .specialist-roster-column {
+    width: 100% !important;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+  }
+  .specialist-roster-column.collapsed {
+    display: none !important;
+  }
+  .specialist-detail-column {
+    width: 100% !important;
+  }
+  #patient-roster-list {
+    max-height: 380px !important;
+  }
+  .detail-tab-btn {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .detail-tabs-bar {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+

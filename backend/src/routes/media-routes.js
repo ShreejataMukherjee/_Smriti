@@ -9,6 +9,7 @@ import multer from 'multer';
 import { mediaService } from '../services/media-service.js';
 import { requireAuth } from '../middleware/auth-middleware.js';
 import { requireActiveRelationship } from '../middleware/relationship-middleware.js';
+import { enforceClinicalScoping } from '../middleware/rbac.js';
 import { logger } from '../utils/logger.js';
 
 const upload = multer({
@@ -150,9 +151,22 @@ router.get('/file/*', async (req, res) => {
 
 /**
  * 4. GET /api/media/elderly/:elderlyUserId
- * Retrieves memories for an elderly user (Relationship-Protected)
+ * Retrieves memories for an elderly user (Relationship-Protected & Clinical Scoped)
  */
-router.get('/elderly/:elderlyUserId', requireAuth, requireActiveRelationship(), async (req, res) => {
+router.get('/elderly/:elderlyUserId', requireAuth, enforceClinicalScoping, requireActiveRelationship(), async (req, res) => {
+  try {
+    const memories = await mediaService.getMemoriesForElderly(req.params.elderlyUserId, req.user.id);
+    return res.status(200).json({ success: true, memories });
+  } catch (err) {
+    return res.status(403).json({ success: false, error: err.message });
+  }
+});
+
+/**
+ * 4b. GET /api/media/:elderlyUserId
+ * Direct elderly vault route with Clinical Scoping and relationship protection
+ */
+router.get('/:elderlyUserId', requireAuth, enforceClinicalScoping, requireActiveRelationship(), async (req, res) => {
   try {
     const memories = await mediaService.getMemoriesForElderly(req.params.elderlyUserId, req.user.id);
     return res.status(200).json({ success: true, memories });
