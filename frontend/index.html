@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smriti | Interactive 3D Memory Sanctuary for Elderly Care</title>
+  <meta name="description" content="Smriti — An immersive 3D digital memory sanctuary for elderly care. Caretakers weave cherished family memories, photographs, retro melodies, and daily routines into comforting spatial experiences." />
+  <meta name="theme-color" content="#FDFBF7" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Lora -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#FDFBF7',
+            'alabaster-surface': '#FAF7F2',
+            'midnight-ink': '#0F172A',
+            'twilight-base': '#13161F',
+            'twilight-surface': '#1A1D27',
+            'twilight-card': '#222634',
+            'amber-gold': '#D97706',
+            'amber-bright': '#F59E0B',
+            'burnt-orange': '#C2410C',
+            'rose-soft': '#E11D48',
+            'sage-green': '#059669',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['Lora', 'Georgia', 'serif'],
+          },
+          boxShadow: {
+            'soft-card': '0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.03)',
+            'warm-glow': '0 20px 40px -10px rgba(217, 119, 6, 0.18)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons & Lenis Smooth Scroll -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <!-- Three.js 3D Library & GSAP Animation Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="src/styles/styles.css" />
+</head>
+
+<body class="constellation-grid-bg min-h-screen antialiased selection:bg-amber-100 selection:text-amber-900 overflow-x-hidden">
+
+  <!-- ========================================================================= -->
+  <!-- TOP SCROLL PROGRESS BAR                                                   -->
+  <!-- ========================================================================= -->
+  <div id="scroll-progress-bar"></div>
+
+  <!-- ========================================================================= -->
+  <!-- SIDE RAIL SCROLL-PROGRESS DOT NAV (Desktop)                               -->
+  <!-- ========================================================================= -->
+  <nav class="hidden lg:flex scroll-dot-nav" aria-label="Section navigation rail">
+    <div class="scroll-dot-item active" data-target="hero">
+      <span class="scroll-dot-tooltip">Memory Sanctuary</span>
+    </div>
+    <div class="scroll-dot-item" data-target="how-it-works">
+      <span class="scroll-dot-tooltip">How It Works</span>
+    </div>
+    <div class="scroll-dot-item" data-target="personalization">
+      <span class="scroll-dot-tooltip">Personalization</span>
+    </div>
+    <div class="scroll-dot-item" data-target="senior-experience">
+      <span class="scroll-dot-tooltip">Senior Tablet</span>
+    </div>
+    <div class="scroll-dot-item" data-target="cognitive-activities">
+      <span class="scroll-dot-tooltip">Activities & Games</span>
+    </div>
+    <div class="scroll-dot-item" data-target="trust">
+      <span class="scroll-dot-tooltip">Trust & Impact</span>
+    </div>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- NAVIGATION BAR                                                            -->
+  <!-- ========================================================================= -->
+  <header id="main-nav" class="fixed top-0 left-0 right-0 z-40 bg-[var(--nav-bg)] backdrop-blur-lg border-b border-[var(--nav-border)] transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo, Brandmark & SIH 2026 Badge -->
+        <div class="flex items-center gap-3">
+          <a href="#hero" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-amber-500 rounded-xl p-1">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 to-amber-400 text-white flex items-center justify-center font-bold text-lg shadow-md group-hover:scale-105 transition-transform">
+              <span>स्</span>
+            </div>
+            <div class="flex flex-col">
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xl tracking-tight text-[var(--text-primary)]">Smriti</span>
+                <span class="font-serif text-sm font-normal text-amber-700 dark:text-amber-400">(स्मृति)</span>
+              </div>
+              <span class="text-[10px] tracking-wider uppercase font-semibold text-[var(--text-tertiary)]">3D Memory Sanctuary</span>
+            </div>
+          </a>
+
+          <!-- Persistent SIH 2026 Top Nav Badge -->
+          <div class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] font-bold tracking-wide">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+            <span>SIH 2026 Prototype</span>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-[var(--text-secondary)]">
+          <a href="#how-it-works" class="hover:text-amber-600 transition-colors">How It Works</a>
+          <a href="#personalization" class="hover:text-amber-600 transition-colors">Personalize</a>
+          <a href="#senior-experience" class="hover:text-amber-600 transition-colors">Senior Tablet</a>
+          <a href="#cognitive-activities" class="hover:text-amber-600 transition-colors">Activities</a>
+          <a href="#trust" class="hover:text-amber-600 transition-colors">Trust & Impact</a>
+        </nav>
+
+        <!-- Right Controls: Day/Twilight Toggle, Sound Toggle, CTA -->
+        <div class="flex items-center gap-3">
+          
+          <!-- Sound Control Button (In-Nav) -->
+          <button id="nav-sound-btn" class="p-2.5 rounded-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-amber-600 hover:border-amber-400 transition-all shadow-sm" title="Toggle audio soundscape & voice" aria-label="Toggle audio">
+            <i id="nav-sound-icon" data-lucide="volume-2" class="w-4 h-4"></i>
+          </button>
+
+          <!-- Day / Twilight Sun-to-Moon Morphing Toggle -->
+          <button id="theme-toggle-btn" class="theme-morph-toggle" title="Switch between Day & Twilight (Evening Comfort Mode)" aria-label="Toggle theme">
+            <i data-lucide="sun" class="theme-icon-sun"></i>
+            <i data-lucide="moon" class="theme-icon-moon"></i>
+          </button>
+
+          <!-- Primary CTA Button -->
+          <button class="trigger-role-modal hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--text-primary)] text-[var(--bg-base)] text-sm font-bold hover:opacity-90 transition-all shadow-md group" aria-haspopup="dialog">
+            <span>Enter Space</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 text-amber-400 group-hover:translate-x-0.5 transition-transform"></i>
+          </button>
+
+          <!-- Mobile Toggle Button -->
+          <button id="mobile-toggle-btn" class="md:hidden p-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-primary)]" aria-label="Open mobile navigation menu">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[var(--bg-card)] border-b border-[var(--border-subtle)] px-6 py-6 space-y-4 shadow-xl">
+      <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-bold mb-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+        <span>SIH 2026 Prototype</span>
+      </div>
+      <a href="#how-it-works" class="block text-base font-medium text-[var(--text-primary)] py-2 border-b border-[var(--border-subtle)] mobile-nav-link">How It Works</a>
+      <a href="#personalization" class="block text-base font-medium text-[var(--text-primary)] py-2 border-b border-[var(--border-subtle)] mobile-nav-link">Personalize</a>
+      <a href="#senior-experience" class="block text-base font-medium text-[var(--text-primary)] py-2 border-b border-[var(--border-subtle)] mobile-nav-link">Senior Tablet</a>
+      <a href="#cognitive-activities" class="block text-base font-medium text-[var(--text-primary)] py-2 border-b border-[var(--border-subtle)] mobile-nav-link">Activities</a>
+      <a href="#trust" class="block text-base font-medium text-[var(--text-primary)] py-2 border-b border-[var(--border-subtle)] mobile-nav-link">Trust & Impact</a>
+      <div class="pt-2">
+        <button class="trigger-role-modal w-full py-3 rounded-full bg-[var(--text-primary)] text-[var(--bg-base)] text-sm font-semibold text-center flex items-center justify-center gap-2">
+          <span>Enter Your Space</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN CONTENT CONTAINER                                                    -->
+  <!-- ========================================================================= -->
+  <main>
+
+    <!-- ========================================================================= -->
+    <!-- HERO SECTION: 3D CELESTIAL MEMORY SANCTUARY                               -->
+    <!-- ========================================================================= -->
+    <section id="hero" class="relative min-h-screen w-full flex items-center pt-20 overflow-hidden">
+      
+      <!-- Three.js 3D WebGL Canvas Layer -->
+      <div id="three-hero-viewport" class="absolute inset-0 w-full h-full z-0 cursor-grab active:cursor-grabbing"></div>
+
+      <!-- Hero Narrative Overlay (Left Column Focus) -->
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-none py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <div class="lg:col-span-5 pointer-events-auto max-w-xl">
+            
+            <!-- Eyebrow Tag -->
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 backdrop-blur-md border border-amber-500/30 mb-6 shadow-sm">
+              <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">Personalized Memory Care</span>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight text-[var(--text-primary)] leading-[1.12] mb-6">
+              Keep the memories that matter,
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400">closer.</span>
+            </h1>
+
+            <!-- Narrative -->
+            <p class="text-lg text-[var(--text-secondary)] font-normal leading-relaxed mb-8">
+              A gentle digital sanctuary woven around the people, places, songs and daily rituals that bring peace and familiarity to elderly loved ones.
+            </p>
+
+            <!-- Action CTAs -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-8">
+              <button class="trigger-role-modal px-8 py-4 rounded-full bg-[var(--text-primary)] text-[var(--bg-base)] text-base font-bold hover:opacity-90 transition-all shadow-xl hover:scale-[1.02] flex items-center justify-center gap-2 group hover-lift" aria-haspopup="dialog">
+                <span>Enter Your Space</span>
+                <i data-lucide="arrow-right" class="w-5 h-5 text-amber-400 group-hover:translate-x-1 transition-transform"></i>
+              </button>
+              
+              <a href="#how-it-works" class="px-6 py-4 rounded-full bg-[var(--bg-card)]/90 backdrop-blur-md border border-[var(--border-subtle)] text-[var(--text-primary)] text-base font-semibold hover:border-amber-400 hover:text-amber-700 transition-all flex items-center justify-center gap-2 shadow-sm hover-lift">
+                <span>Explore the journey</span>
+                <i data-lucide="arrow-down" class="w-4 h-4 text-[var(--text-tertiary)]"></i>
+              </a>
+            </div>
+
+            <!-- 3D Interactive Interaction Hint Box -->
+            <div class="p-4 rounded-2xl bg-[var(--bg-card)]/80 backdrop-blur-md border border-[var(--border-subtle)] shadow-sm text-xs text-[var(--text-secondary)] flex items-center gap-3">
+              <div class="p-2 rounded-xl bg-amber-500/10 text-amber-600">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <strong class="text-[var(--text-primary)] block font-bold">Interactive 3D Constellation</strong>
+                <span>Move your cursor to orbit. <strong>Click any orbiting memory</strong> to explore voice & details.</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Empty right column to give spatial room to 3D memory constellation -->
+          <div class="hidden lg:block lg:col-span-7 h-[550px] lg:h-[600px] xl:h-[640px] pointer-events-none"></div>
+
+        </div>
+      </div>
+
+      <!-- Contextual 3D Memory Inspection HUD -->
+      <div id="memory-inspect-hud" class="fixed top-28 right-6 z-30 w-80 sm:w-96 p-6 rounded-3xl backdrop-blur-xl transition-all duration-500 opacity-0 pointer-events-none transform translate-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)] mb-4">
+          <span id="hud-badge" class="px-2.5 py-0.5 rounded-md text-[10px] uppercase font-bold tracking-wider bg-rose-500/10 text-rose-700 dark:text-rose-300">Family Memory</span>
+          <button id="hud-close-btn" class="p-1 rounded-full text-[var(--text-tertiary)] hover:text-[var(--text-primary)] text-xs font-bold flex items-center gap-1">
+            <i data-lucide="x" class="w-4 h-4"></i> <span>Close</span>
+          </button>
+        </div>
+        <div class="mb-3">
+          <h3 id="hud-title" class="text-xl font-bold text-[var(--text-primary)]">Aryan</h3>
+          <p id="hud-subtitle" class="text-xs text-[var(--text-secondary)] font-medium">Grandson (Age 19)</p>
+        </div>
+        <p id="hud-quote" class="font-serif italic text-[var(--text-secondary)] text-xs sm:text-sm bg-amber-500/10 p-3 rounded-xl border border-amber-500/20 mb-4 leading-relaxed">
+          "Family is where the familiar moments live."
+        </p>
+        <div class="flex items-center justify-between pt-2 border-t border-[var(--border-subtle)]">
+          <button id="hud-action-btn" class="w-full py-2.5 rounded-xl bg-amber-600 text-white text-xs font-bold hover:bg-amber-500 transition-colors flex items-center justify-center gap-2">
+            <span>Play Spoken Memory</span>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 2 — HOW IT WORKS (Connected Stages with Dynamic Indicator)        -->
+    <!-- ========================================================================= -->
+    <section id="how-it-works" class="py-24 border-y border-[var(--border-subtle)] relative bg-[var(--bg-surface)]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
+          <span class="text-xs uppercase font-bold tracking-widest text-amber-700 dark:text-amber-300 bg-amber-500/10 px-3.5 py-1.5 rounded-full border border-amber-500/20">The Journey of Familiarity</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)] mt-4 mb-4">
+            From memories to meaningful moments.
+          </h2>
+          <p class="text-[var(--text-secondary)] text-base sm:text-lg">
+            A three-stage spatial bridge between family history and daily senior comfort.
+          </p>
+        </div>
+
+        <!-- 3 Connected Stages with Dynamic Active Indicator -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative perspective-container">
+          
+          <!-- Stage 01: UNDERSTAND -->
+          <div class="depth-tilt-card active-stage p-8 rounded-3xl shadow-soft flex flex-col justify-between reveal-on-scroll hover-lift" data-stage="0">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <span class="text-4xl font-black text-slate-400/50 font-mono">01</span>
+                <div class="p-3 rounded-2xl bg-amber-500/10 text-amber-600">
+                  <i data-lucide="heart-handshake" class="w-6 h-6"></i>
+                </div>
+              </div>
+              
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs uppercase font-bold tracking-wider text-amber-700 dark:text-amber-300">STAGE 01</span>
+                <span class="stage-badge-indicator inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Active Stage
+                </span>
+              </div>
+
+              <h3 class="text-xl font-bold text-[var(--text-primary)] mb-3">UNDERSTAND</h3>
+              <p class="text-[var(--text-secondary)] text-sm leading-relaxed mb-6">
+                Learn the person's familiar people, places, routines and interests that anchor their emotional safety.
+              </p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-xs space-y-1.5 text-[var(--text-secondary)] font-medium">
+              <div class="flex items-center gap-2">
+                <i data-lucide="users" class="w-3.5 h-3.5 text-amber-600"></i>
+                <span>Family: <strong class="text-[var(--text-primary)]">Aryan & Sruti</strong></span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-600"></i>
+                <span>Twilight Anchor: <strong class="text-[var(--text-primary)]">5:30 PM Vintage Music</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage 02: PERSONALIZE -->
+          <div class="depth-tilt-card p-8 rounded-3xl shadow-soft flex flex-col justify-between reveal-on-scroll hover-lift" data-stage="1">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <span class="text-4xl font-black text-slate-400/50 font-mono">02</span>
+                <div class="p-3 rounded-2xl bg-rose-500/10 text-rose-600">
+                  <i data-lucide="camera" class="w-6 h-6"></i>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs uppercase font-bold tracking-wider text-rose-700 dark:text-rose-300">STAGE 02</span>
+                <span class="stage-badge-indicator opacity-0 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-800 dark:text-rose-300">
+                  <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Active Stage
+                </span>
+              </div>
+
+              <h3 class="text-xl font-bold text-[var(--text-primary)] mb-3">PERSONALIZE</h3>
+              <p class="text-[var(--text-secondary)] text-sm leading-relaxed mb-6">
+                Add photographs, family videos, names, retro songs, voice greetings and meaningful everyday moments.
+              </p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-xs flex items-center justify-around font-semibold text-[var(--text-secondary)]">
+              <span class="inline-flex items-center gap-1 text-amber-700 dark:text-amber-300"><i data-lucide="image" class="w-3.5 h-3.5"></i> 42 Photos</span>
+              <span class="inline-flex items-center gap-1 text-rose-700 dark:text-rose-300"><i data-lucide="mic" class="w-3.5 h-3.5"></i> 8 Voices</span>
+              <span class="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-300"><i data-lucide="music" class="w-3.5 h-3.5"></i> 15 Songs</span>
+            </div>
+          </div>
+
+          <!-- Stage 03: RECONNECT -->
+          <div class="depth-tilt-card p-8 rounded-3xl shadow-soft flex flex-col justify-between reveal-on-scroll hover-lift" data-stage="2">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <span class="text-4xl font-black text-slate-400/50 font-mono">03</span>
+                <div class="p-3 rounded-2xl bg-emerald-500/10 text-emerald-600">
+                  <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs uppercase font-bold tracking-wider text-emerald-700 dark:text-emerald-300">STAGE 03</span>
+                <span class="stage-badge-indicator opacity-0 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active Stage
+                </span>
+              </div>
+
+              <h3 class="text-xl font-bold text-[var(--text-primary)] mb-3">RECONNECT</h3>
+              <p class="text-[var(--text-secondary)] text-sm leading-relaxed mb-6">
+                Turn those memories into gentle, familiar interactions, tactile tablet activities, and daily reassurance.
+              </p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center justify-between">
+              <span>"Good morning, Maa ❤️"</span>
+              <span class="inline-flex items-center gap-1 text-emerald-600">1-Tap Start <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 3 — PERSONALIZATION ("Life Portrait Engine")                       -->
+    <!-- ========================================================================= -->
+    <section id="personalization" class="py-24 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Narrative & Selectors -->
+          <div class="lg:col-span-5 reveal-on-scroll">
+            <span class="text-xs uppercase font-bold tracking-widest text-amber-700 dark:text-amber-300 bg-amber-500/10 px-3.5 py-1.5 rounded-full border border-amber-500/20">Life Portrait Engine</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)] mt-4 mb-6 leading-tight">
+              Every experience is personal.
+            </h2>
+            <p class="text-[var(--text-secondary)] text-base leading-relaxed mb-6">
+              A digital portrait built from a person's life. Caretakers upload real family memories that form an orbit of comfort around the senior's daily routine.
+            </p>
+
+            <div class="space-y-3" id="personalization-chips">
+              
+              <button class="personalization-chip active w-full p-4 rounded-2xl text-left flex items-center justify-between shadow-sm transition-all" data-target="grandson">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-600 flex items-center justify-center">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-bold text-[var(--text-primary)]">Grandson — Aryan</h4>
+                    <p class="text-xs text-[var(--text-tertiary)]">Voice Note & Delhi College Memory</p>
+                  </div>
+                </div>
+                <span class="chip-status text-xs font-bold text-amber-700 dark:text-amber-400">Active</span>
+              </button>
+
+              <button class="personalization-chip w-full p-4 rounded-2xl text-left flex items-center justify-between shadow-sm transition-all" data-target="song">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+                    <i data-lucide="music" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-bold text-[var(--text-primary)]">Favourite Song — Lag Jaa Gale</h4>
+                    <p class="text-xs text-[var(--text-tertiary)]">1964 Retro Classic Melody</p>
+                  </div>
+                </div>
+                <span class="chip-status text-xs text-[var(--text-tertiary)]">View</span>
+              </button>
+
+              <button class="personalization-chip w-full p-4 rounded-2xl text-left flex items-center justify-between shadow-sm transition-all" data-target="place">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-bold text-[var(--text-primary)]">Childhood Place — Varanasi Ghats</h4>
+                    <p class="text-xs text-[var(--text-tertiary)]">Assi Ghat & Holy River Memory</p>
+                  </div>
+                </div>
+                <span class="chip-status text-xs text-[var(--text-tertiary)]">View</span>
+              </button>
+
+              <button class="personalization-chip w-full p-4 rounded-2xl text-left flex items-center justify-between shadow-sm transition-all" data-target="routine">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-600 flex items-center justify-center">
+                    <i data-lucide="coffee" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-bold text-[var(--text-primary)]">Daily Routine — Morning Chai</h4>
+                    <p class="text-xs text-[var(--text-tertiary)]">7:00 AM Ginger Tea with Tulsi</p>
+                  </div>
+                </div>
+                <span class="chip-status text-xs text-[var(--text-tertiary)]">View</span>
+              </button>
+
+            </div>
+          </div>
+
+          <!-- Interactive Profile & Showcase View -->
+          <div class="lg:col-span-7 reveal-on-scroll">
+            <div class="p-6 sm:p-8 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] shadow-soft min-h-[460px] flex flex-col justify-between">
+              
+              <div class="flex items-center justify-between pb-4 border-b border-[var(--border-subtle)]">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-300 flex items-center justify-center font-bold">
+                    <i data-lucide="heart" class="w-6 h-6"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-base text-[var(--text-primary)]">Senior Family Member</h3>
+                    <p class="text-xs text-[var(--text-tertiary)]">Personal Sanctuary • Age 76 • Curated by Caretaker</p>
+                  </div>
+                </div>
+                <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 text-xs font-semibold border border-emerald-500/30 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Active Sanctuary
+                </span>
+              </div>
+
+              <!-- Content Panels -->
+              <div id="showcase-content-area" class="py-6 flex-grow flex items-center justify-center">
+                
+                <div class="showcase-view-panel active flex flex-col sm:flex-row items-center gap-6 w-full" id="view-grandson">
+                  <div class="w-full sm:w-1/2 aspect-square max-w-[220px] rounded-2xl bg-rose-500/10 border border-rose-500/20 flex flex-col items-center justify-center p-4 text-center">
+                    <div class="w-16 h-16 rounded-full bg-rose-200 text-rose-800 flex items-center justify-center font-bold text-2xl mb-2">A</div>
+                    <strong class="text-sm text-[var(--text-primary)]">Aryan</strong>
+                    <span class="text-xs text-[var(--text-tertiary)]">Grandson (Age 19)</span>
+                  </div>
+                  <div class="w-full sm:w-1/2 space-y-3">
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-rose-700 dark:text-rose-300">Memory Trigger</span>
+                    <h4 class="text-lg font-bold text-[var(--text-primary)]">"Dadi, called you yesterday from college!"</h4>
+                    <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+                      Aryan studies in Delhi. When he visits, they make sweets together. Hearing his voice brings an instant smile.
+                    </p>
+                    <button class="play-voice-note-btn px-4 py-2 rounded-full bg-[var(--text-primary)] text-[var(--bg-base)] text-xs font-bold hover:opacity-90 transition-colors flex items-center gap-2">
+                      <i data-lucide="play" class="w-3.5 h-3.5 text-amber-400"></i>
+                      <span>Play Voice Note (0:14)</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="showcase-view-panel hidden flex flex-col sm:flex-row items-center gap-6 w-full" id="view-song">
+                  <div class="w-full sm:w-1/2 aspect-square max-w-[220px] rounded-2xl bg-amber-500/10 border border-amber-500/20 flex flex-col items-center justify-center p-4 text-center">
+                    <div class="w-20 h-20 rounded-full bg-slate-900 border-4 border-amber-400 flex items-center justify-center text-amber-300 shadow-lg">
+                      <i data-lucide="disc" class="w-8 h-8 animate-spin"></i>
+                    </div>
+                    <strong class="text-sm text-[var(--text-primary)] mt-2">Lag Jaa Gale</strong>
+                    <span class="text-xs text-[var(--text-tertiary)]">Vintage Classic • 1964</span>
+                  </div>
+                  <div class="w-full sm:w-1/2 space-y-3">
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-amber-700 dark:text-amber-300">Auditory Recall</span>
+                    <h4 class="text-lg font-bold text-[var(--text-primary)]">Wedding Melody (1968)</h4>
+                    <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+                      Playing this melody during evening twilight calms anxiety and stimulates deep emotional memory.
+                    </p>
+                    <button class="play-melody-snippet-btn px-4 py-2 rounded-full bg-amber-600 text-white text-xs font-bold hover:bg-amber-500 transition-colors flex items-center gap-2">
+                      <i data-lucide="play" class="w-3.5 h-3.5"></i>
+                      <span>Play Chime Melody Snippet</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="showcase-view-panel hidden flex flex-col sm:flex-row items-center gap-6 w-full" id="view-place">
+                  <div class="w-full sm:w-1/2 aspect-square max-w-[220px] rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col items-center justify-center p-4 text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-emerald-200 text-emerald-800 flex items-center justify-center mb-2">
+                      <i data-lucide="landmark" class="w-8 h-8"></i>
+                    </div>
+                    <strong class="text-sm text-[var(--text-primary)]">Dashashwamedh Ghat</strong>
+                    <span class="text-xs text-[var(--text-tertiary)]">Varanasi, UP</span>
+                  </div>
+                  <div class="w-full sm:w-1/2 space-y-3">
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-700 dark:text-emerald-300">Hometown Anchor</span>
+                    <h4 class="text-lg font-bold text-[var(--text-primary)]">Ganga Aarti & Ghat Steps</h4>
+                    <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+                      Lived in Varanasi until 1982. Recognizes morning bells and boat photographs immediately.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="showcase-view-panel hidden flex flex-col sm:flex-row items-center gap-6 w-full" id="view-routine">
+                  <div class="w-full sm:w-1/2 aspect-square max-w-[220px] rounded-2xl bg-orange-500/10 border border-orange-500/20 flex flex-col items-center justify-center p-4 text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-orange-200 text-orange-800 flex items-center justify-center mb-2">
+                      <i data-lucide="coffee" class="w-8 h-8"></i>
+                    </div>
+                    <strong class="text-sm text-[var(--text-primary)]">Morning Ginger Chai</strong>
+                    <span class="text-xs text-[var(--text-tertiary)]">7:00 AM Daily Ritual</span>
+                  </div>
+                  <div class="w-full sm:w-1/2 space-y-3">
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-orange-700 dark:text-orange-300">Daily Anchoring</span>
+                    <h4 class="text-lg font-bold text-[var(--text-primary)]">Morning Verandah Routine</h4>
+                    <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+                      At 7 AM, Smriti gently plays soothing morning ragas and displays a visual cup of ginger tea.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-tertiary)]">
+                <span class="inline-flex items-center gap-1.5"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Synchronized with Caretaker Studio</span>
+                <span class="font-bold text-[var(--text-primary)]">4 Active Categories</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 4 — 3D FLOATING SENIOR TABLET (Interactive Live Previews)          -->
+    <!-- ========================================================================= -->
+    <section id="senior-experience" class="py-24 bg-[var(--bg-surface)] border-y border-[var(--border-subtle)] relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-14 reveal-on-scroll">
+          <span class="text-xs uppercase font-bold tracking-widest text-emerald-800 dark:text-emerald-300 bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/20">Accessible 3D Device</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)] mt-4 mb-4">
+            Designed for the elderly eye, ear, and touch.
+          </h2>
+          <p class="text-[var(--text-secondary)] text-base sm:text-lg">
+            High contrast, large touch targets, zero cognitive load. <strong>Click any card below</strong> to experience live simulated senior interactions:
+          </p>
+        </div>
+
+        <!-- 3D Floating Tablet Simulator -->
+        <div id="floating-tablet-stage" class="max-w-4xl mx-auto tablet-3d-wrapper reveal-on-scroll">
+          <div id="tablet-3d-device" class="tablet-3d-chassis rounded-3xl border-4 border-slate-900 bg-slate-900 shadow-2xl overflow-hidden">
+            
+            <!-- Tablet Top Bar -->
+            <div class="p-4 bg-slate-900 text-white flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 text-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                <span class="font-mono text-slate-300 ml-2">Smriti Tablet OS • Senior Sanctuary</span>
+              </div>
+              
+              <div class="flex items-center gap-2">
+                <button id="toggle-font-size-btn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition-colors font-medium flex items-center gap-1.5">
+                  <i data-lucide="type" class="w-3.5 h-3.5 text-amber-400"></i>
+                  <span>Text: <strong id="font-size-label" class="text-amber-300">Normal</strong></span>
+                </button>
+                
+                <button id="toggle-contrast-btn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition-colors font-medium flex items-center gap-1.5">
+                  <i data-lucide="eye" class="w-3.5 h-3.5 text-amber-400"></i>
+                  <span>Contrast: <strong id="contrast-label" class="text-amber-300">Warm</strong></span>
+                </button>
+
+                <button id="senior-voice-btn" class="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold transition-colors flex items-center gap-1.5">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                  <span>Voice Greeting</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Tablet Screen Content -->
+            <div id="senior-tablet-body" class="p-6 sm:p-10 bg-[#FAF7F2] transition-colors duration-300 min-h-[460px]">
+              
+              <!-- Tablet Header Bar -->
+              <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 mb-8 border-b-2 border-slate-200" id="senior-header-bar">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-3xl text-amber-600">
+                      <i data-lucide="sun" class="w-8 h-8"></i>
+                    </span>
+                    <h3 id="senior-title" class="text-2xl sm:text-3xl font-extrabold text-[#0F172A]">Good morning, Maa ❤️</h3>
+                  </div>
+                  <p id="senior-date" class="text-sm text-slate-600 font-medium mt-1">Today is Tuesday, 25 August • Warm chai ready</p>
+                </div>
+                <div class="px-4 py-2 rounded-2xl bg-white border border-slate-200 shadow-sm text-xs font-bold text-[#0F172A] flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
+                  <span>Tap any card to interact</span>
+                </div>
+              </div>
+
+              <!-- VIEW 1: 6 Accessible Cards Grid -->
+              <div id="senior-grid-view" class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                
+                <button class="senior-action-card p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 hover:border-rose-400 text-left shadow-sm hover:shadow-md transition-all flex flex-col justify-between min-h-[140px]" data-senior-action="family">
+                  <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-700 flex items-center justify-center">
+                    <i data-lucide="heart" class="w-6 h-6"></i>
+                  </div>
+                  <div class="mt-4">
+                    <h4 class="senior-action-title text-lg font-bold text-[#0F172A]">My Family</h4>
+                    <p class="senior-action-sub text-xs text-slate-500 mt-0.5">Photos of Aryan & Sruti</p>
+                  </div>
+                </button>
+
+                <button class="senior-action-card p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 hover:border-amber-400 text-left shadow-sm hover:shadow-md transition-all flex flex-col justify-between min-h-[140px]" data-senior-action="memories">
+                  <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center">
+                    <i data-lucide="camera" class="w-6 h-6"></i>
+                  </div>
+                  <div class="mt-4">
+                    <h4 class="senior-action-title text-lg font-bold text-[#0F172A]">My Memories</h4>
+                    <p class="senior-action-sub text-xs text-slate-500 mt-0.5">Varanasi 1978 Albums</p>
+                  </div>
+                </button>
+
+                <button class="senior-action-card p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 hover:border-indigo-400 text-left shadow-sm hover:shadow-md transition-all flex flex-col justify-between min-h-[140px]" data-senior-action="music">
+                  <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
+                    <i data-lucide="music" class="w-6 h-6"></i>
+                  </div>
+                  <div class="mt-4">
+                    <h4 class="senior-action-title text-lg font-bold text-[#0F172A]">My Music</h4>
+                    <p class="senior-action-sub text-xs text-slate-500 mt-0.5">Vintage Melodies</p>
+                  </div>
+                </button>
+
+                <button class="senior-action-card p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 hover:border-emerald-400 text-left shadow-sm hover:shadow-md transition-all flex flex-col justify-between min-h-[140px]" data-senior-action="games">
+                  <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                    <i data-lucide="puzzle" class="w-6 h-6"></i>
+                  </div>
+                  <div class="mt-4">
+                    <h4 class="senior-action-title text-lg font-bold text-[#0F172A]">Play & Remember</h4>
+                    <p class="senior-action-sub text-xs text-slate-500 mt-0.5">Familiar Face Quizzes</p>
+                  </div>
+                </button>
+
+                <button class="senior-action-card p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 hover:border-orange-400 text-left shadow-sm hover:shadow-md transition-all flex flex-col justify-between min-h-[140px]" data-senior-action="routine">
+                  <div class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-700 flex items-center justify-center">
+                    <i data-lucide="clock" class="w-6 h-6"></i>
+                  </div>
+                  <div class="mt-4">
+                    <h4 class="senior-action-title text-lg font-bold text-[#0F172A]">Today's Routine</h4>
+                    <p class="senior-action-sub text-xs text-slate-500 mt-0.5">10:00 AM Walk & Chai</p>
+                  </div>
+                </button>
+
+                <button class="senior-action-card p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 hover:border-purple-400 text-left shadow-sm hover:shadow-md transition-all flex flex-col justify-between min-h-[140px]" data-senior-action="talk">
+                  <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center">
+                    <i data-lucide="message-circle" class="w-6 h-6"></i>
+                  </div>
+                  <div class="mt-4">
+                    <h4 class="senior-action-title text-lg font-bold text-[#0F172A]">Talk & Recall</h4>
+                    <p class="senior-action-sub text-xs text-slate-500 mt-0.5">Voice Assisted Story</p>
+                  </div>
+                </button>
+
+              </div>
+
+              <!-- VIEW 2: Interactive Live Screen Preview Container -->
+              <div id="senior-preview-view" class="hidden space-y-4">
+                <div class="flex items-center justify-between">
+                  <button id="senior-preview-back-btn" class="px-5 py-2.5 rounded-2xl bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-all flex items-center gap-2 shadow-md">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Back to Tablet Menu</span>
+                  </button>
+                  <span class="text-xs font-semibold text-slate-500">Live Simulated View</span>
+                </div>
+                
+                <div id="senior-preview-container" class="pt-2"></div>
+              </div>
+
+              <!-- Toast Feedback -->
+              <div id="senior-toast-msg" class="hidden mt-6 p-4 rounded-2xl bg-[#0F172A] text-white text-center font-bold text-sm flex items-center justify-center gap-2 shadow-lg">
+                <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+                <span id="senior-toast-text">Opening your personalized space...</span>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 5 — COGNITIVE ACTIVITIES (Interactive Demos)                       -->
+    <!-- ========================================================================= -->
+    <section id="cognitive-activities" class="py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
+          <span class="text-xs uppercase font-bold tracking-widest text-amber-700 dark:text-amber-300 bg-amber-500/10 px-3.5 py-1.5 rounded-full border border-amber-500/20">Interactive Cognitive Care</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)] mt-4 mb-4">
+            Gentle cognitive stimulation through familiarity.
+          </h2>
+          <p class="text-[var(--text-secondary)] text-base sm:text-lg">
+            Instead of abstract shapes, Smriti uses real family photographs and nostalgia cues. Try the 3 interactive demos below:
+          </p>
+        </div>
+
+        <!-- 3 Interactive Mini Games -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <!-- Mini Game 1: WHO IS THIS? -->
+          <div class="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] shadow-soft flex flex-col justify-between reveal-on-scroll hover-lift">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-rose-700 dark:text-rose-300 bg-rose-500/10 px-2.5 py-1 rounded-md">Face Recognition</span>
+                <span class="text-xs font-semibold text-[var(--text-tertiary)]">Demo 01</span>
+              </div>
+              <h3 class="text-lg font-bold text-[var(--text-primary)] mb-1">WHO IS THIS?</h3>
+              <p class="text-xs text-[var(--text-tertiary)] mb-4">Identify the familiar family member in the photo.</p>
+
+              <div class="p-6 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex flex-col items-center justify-center mb-5">
+                <div class="w-16 h-16 rounded-full bg-rose-200 text-rose-900 font-bold text-2xl flex items-center justify-center mb-2">A</div>
+                <span class="text-xs font-bold text-[var(--text-primary)]">Photo from Delhi Visit</span>
+              </div>
+
+              <div class="space-y-2" id="quiz-options-1">
+                <button class="quiz-btn w-full p-3 rounded-xl text-left text-xs font-bold text-[var(--text-primary)] flex items-center justify-between" data-quiz="1" data-correct="true">
+                  <span>A) Aryan (Grandson)</span>
+                  <span class="quiz-badge"></span>
+                </button>
+                <button class="quiz-btn w-full p-3 rounded-xl text-left text-xs font-bold text-[var(--text-primary)] flex items-center justify-between" data-quiz="1" data-correct="false">
+                  <span>B) Hrisit (Neighbour)</span>
+                  <span class="quiz-badge"></span>
+                </button>
+              </div>
+            </div>
+
+            <div id="quiz-feedback-1" class="hidden mt-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-800 dark:text-emerald-300 font-medium">
+              🎉 <strong>Correct!</strong> That's your grandson Aryan! He called you yesterday from Delhi.
+            </div>
+          </div>
+
+          <!-- Mini Game 2: WHICH SONG? -->
+          <div class="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] shadow-soft flex flex-col justify-between reveal-on-scroll hover-lift">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300 bg-amber-500/10 px-2.5 py-1 rounded-md">Auditory Recall</span>
+                <span class="text-xs font-semibold text-[var(--text-tertiary)]">Demo 02</span>
+              </div>
+              <h3 class="text-lg font-bold text-[var(--text-primary)] mb-1">WHICH SONG?</h3>
+              <p class="text-xs text-[var(--text-tertiary)] mb-4">Listen to the melody snippet and recognize the song.</p>
+
+              <div class="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex flex-col items-center justify-center mb-5">
+                <button id="play-quiz-melody-btn" class="w-14 h-14 rounded-full bg-amber-500 text-white font-bold flex items-center justify-center text-xl shadow-md hover:scale-105 transition-transform" aria-label="Play song snippet">
+                  <i data-lucide="play" class="w-6 h-6 ml-0.5"></i>
+                </button>
+                <span class="text-[11px] font-bold text-amber-800 dark:text-amber-300 mt-2">Click to Play 5s Melody</span>
+              </div>
+
+              <div class="space-y-2" id="quiz-options-2">
+                <button class="quiz-btn w-full p-3 rounded-xl text-left text-xs font-bold text-[var(--text-primary)] flex items-center justify-between" data-quiz="2" data-correct="true">
+                  <span>A) Lag Jaa Gale (1964)</span>
+                  <span class="quiz-badge"></span>
+                </button>
+                <button class="quiz-btn w-full p-3 rounded-xl text-left text-xs font-bold text-[var(--text-primary)] flex items-center justify-between" data-quiz="2" data-correct="false">
+                  <span>B) Jai Jagdish Hare (Bhajan)</span>
+                  <span class="quiz-badge"></span>
+                </button>
+              </div>
+            </div>
+
+            <div id="quiz-feedback-2" class="hidden mt-4 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-800 dark:text-amber-300 font-medium">
+              🎵 <strong>Wonderful memory!</strong> You loved listening to nostalgic melodies on the vintage radio.
+            </div>
+          </div>
+
+          <!-- Mini Game 3: REMEMBER THIS PLACE? -->
+          <div class="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] shadow-soft flex flex-col justify-between reveal-on-scroll hover-lift">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 px-2.5 py-1 rounded-md">Landmark Recall</span>
+                <span class="text-xs font-semibold text-[var(--text-tertiary)]">Demo 03</span>
+              </div>
+              <h3 class="text-lg font-bold text-[var(--text-primary)] mb-1">REMEMBER THIS PLACE?</h3>
+              <p class="text-xs text-[var(--text-tertiary)] mb-4">Identify the hometown ghats from childhood.</p>
+
+              <div class="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col items-center justify-center mb-5">
+                <div class="w-16 h-16 rounded-2xl bg-emerald-200 text-emerald-900 flex items-center justify-center mb-2">
+                  <i data-lucide="landmark" class="w-8 h-8"></i>
+                </div>
+                <span class="text-xs font-bold text-[var(--text-primary)]">Holy River Steps</span>
+              </div>
+
+              <div class="space-y-2" id="quiz-options-3">
+                <button class="quiz-btn w-full p-3 rounded-xl text-left text-xs font-bold text-[var(--text-primary)] flex items-center justify-between" data-quiz="3" data-correct="true">
+                  <span>A) Dashashwamedh Ghat (Varanasi)</span>
+                  <span class="quiz-badge"></span>
+                </button>
+                <button class="quiz-btn w-full p-3 rounded-xl text-left text-xs font-bold text-[var(--text-primary)] flex items-center justify-between" data-quiz="3" data-correct="false">
+                  <span>B) India Gate (New Delhi)</span>
+                  <span class="quiz-badge"></span>
+                </button>
+              </div>
+            </div>
+
+            <div id="quiz-feedback-3" class="hidden mt-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-800 dark:text-emerald-300 font-medium">
+              🛕 <strong>Beautiful recall!</strong> You visited Varanasi with family in 1978.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SECTION 6 — TRUST & SIH 2026 PROTOTYPE METRICS                            -->
+    <!-- ========================================================================= -->
+    <section id="trust" class="py-24 bg-[var(--bg-surface)] border-y border-[var(--border-subtle)]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <div class="lg:col-span-6 reveal-on-scroll">
+            <span class="text-xs uppercase font-bold tracking-widest text-[var(--text-primary)] bg-slate-500/10 px-3.5 py-1.5 rounded-full border border-[var(--border-subtle)]">Human Connection</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)] mt-4 mb-6 leading-tight">
+              Technology that calms, connects, and reassures.
+            </h2>
+            <p class="text-[var(--text-secondary)] text-base leading-relaxed mb-6">
+              Sundowning and memory anxiety are eased when seniors hear familiar voices and look at familiar photographs. Smriti provides a safe, family-managed emotional anchor.
+            </p>
+
+            <blockquote class="p-6 rounded-3xl bg-amber-500/10 border border-amber-500/20">
+              <p class="font-serif italic text-[var(--text-primary)] text-base mb-4 leading-relaxed">
+                "When Maa gets anxious in the evenings, opening Smriti and hearing Aryan’s voice note or playing her favorite nostalgic melodies brings an immediate smile to her face."
+              </p>
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-amber-200 text-amber-900 font-bold flex items-center justify-center text-sm">FC</div>
+                <div>
+                  <strong class="text-sm font-bold text-[var(--text-primary)] block">Family Caretaker</strong>
+                  <span class="text-xs text-[var(--text-tertiary)]">Primary Caregiver • NER</span>
+                </div>
+              </div>
+            </blockquote>
+          </div>
+
+          <div class="lg:col-span-6 reveal-on-scroll">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] shadow-sm hover-lift">
+                <span class="block text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)] mb-1">12+</span>
+                <strong class="text-sm font-bold text-[var(--text-primary)] block">Memories Added</strong>
+                <p class="text-xs text-[var(--text-tertiary)] mt-1">Curated photos & stories per sanctuary.</p>
+              </div>
+
+              <div class="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] shadow-sm hover-lift">
+                <span class="block text-3xl sm:text-4xl font-extrabold text-amber-600 mb-1">8</span>
+                <strong class="text-sm font-bold text-[var(--text-primary)] block">Family Connections</strong>
+                <p class="text-xs text-[var(--text-tertiary)] mt-1">Voice notes from grandchildren & relatives.</p>
+              </div>
+
+              <div class="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] shadow-sm hover-lift">
+                <span class="block text-3xl sm:text-4xl font-extrabold text-rose-600 mb-1">6</span>
+                <strong class="text-sm font-bold text-[var(--text-primary)] block">Personalized Activities</strong>
+                <p class="text-xs text-[var(--text-tertiary)] mt-1">Gentle recognition & nostalgia trivia games.</p>
+              </div>
+
+              <div class="p-6 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] shadow-sm hover-lift">
+                <span class="block text-3xl sm:text-4xl font-extrabold text-emerald-600 mb-1">3</span>
+                <strong class="text-sm font-bold text-[var(--text-primary)] block">Familiar Routines</strong>
+                <p class="text-xs text-[var(--text-tertiary)] mt-1">Chai time, morning walk, and prayer reminders.</p>
+              </div>
+            </div>
+
+            <div class="mt-4 p-3 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] text-center text-xs text-[var(--text-tertiary)] font-medium flex items-center justify-center gap-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-amber-500"></i>
+              <span>Prototype Architecture Metrics • Smart India Hackathon 2026 Prototype</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- FINAL SECTION — EMOTIONAL CLOSING & CTA                                   -->
+    <!-- ========================================================================= -->
+    <section class="py-24 bg-[#0F172A] text-white relative overflow-hidden">
+      <div class="absolute -top-24 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-0 left-0 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 reveal-on-scroll">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-amber-300 text-xs font-semibold border border-white/20 mb-6">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span>Because memories are more than data</span>
+        </span>
+
+        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-6 leading-tight">
+          Smriti brings familiar faces, familiar places and familiar moments into one gentle digital space.
+        </h2>
+
+        <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+          Step inside the personalized memory sanctuary. Whether you are an elderly loved one or a dedicated caretaker, your space is waiting.
+        </p>
+
+        <div class="flex items-center justify-center">
+          <button class="trigger-role-modal px-10 py-4 rounded-full bg-amber-500 text-[#0F172A] text-base font-extrabold hover:bg-amber-400 transition-all shadow-xl hover:scale-105 flex items-center gap-2 group hover-lift" aria-haspopup="dialog">
+            <span>Enter Your Space</span>
+            <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+          </button>
+        </div>
+
+        <p class="text-xs text-slate-400 mt-6 font-medium">
+          Encrypted • Family-Managed • Senior-First Accessibility
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- FOOTER                                                                    -->
+  <!-- ========================================================================= -->
+  <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-xl bg-amber-500 text-[#0F172A] flex items-center justify-center font-bold text-sm">
+          स्
+        </div>
+        <div>
+          <span class="text-white font-bold text-base">Smriti</span>
+          <span class="text-xs text-slate-500 block">Personalized Memory Sanctuary for Elderly Care</span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400">
+        <a href="#how-it-works" class="hover:text-white transition-colors">How It Works</a>
+        <a href="#personalization" class="hover:text-white transition-colors">Personalize</a>
+        <a href="#senior-experience" class="hover:text-white transition-colors">Senior Tablet</a>
+        <a href="#cognitive-activities" class="hover:text-white transition-colors">Activities</a>
+        <a href="#trust" class="hover:text-white transition-colors">Trust & Impact</a>
+      </div>
+
+      <div class="text-xs text-slate-500 text-center md:text-right">
+        <span class="font-bold text-slate-300">Smart India Hackathon 2026 Prototype</span>
+        <span class="block text-[11px] text-slate-500 mt-0.5">Compassionate Healthcare Technology</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- ROLE SELECTION MODAL                                                      -->
+  <!-- ========================================================================= -->
+  <div id="role-modal-overlay" class="fixed inset-0 z-50 bg-[#0F172A]/75 backdrop-blur-md hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="role-modal-title">
+    <div class="relative w-full max-w-2xl bg-[var(--bg-card)] rounded-3xl p-6 sm:p-10 shadow-2xl border border-[var(--border-subtle)]">
+      
+      <button id="close-modal-btn" class="absolute top-5 right-5 p-2 rounded-full text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)] transition-colors" aria-label="Close dialog">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div id="modal-role-select-view" class="space-y-6">
+        <div class="text-center max-w-md mx-auto">
+          <span class="text-xs uppercase font-bold tracking-widest text-amber-700 dark:text-amber-300 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">Welcome to Smriti</span>
+          <h3 id="role-modal-title" class="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] mt-3">
+            Enter your space
+          </h3>
+          <p class="text-xs sm:text-sm text-[var(--text-secondary)] mt-2">
+            Choose how you'd like to continue.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
+          <!-- Elderly User -->
+          <button class="role-select-btn p-6 rounded-3xl bg-amber-500/10 border-2 border-amber-400/40 hover:border-amber-500 text-left flex flex-col justify-between min-h-[220px] transition-all hover:scale-[1.02] group shadow-sm" data-role="elderly">
+            <div>
+              <div class="w-12 h-12 rounded-2xl bg-amber-400 text-[#0F172A] flex items-center justify-center text-xl shadow-sm mb-4">
+                <i data-lucide="heart" class="w-6 h-6"></i>
+              </div>
+              <span class="text-[10px] uppercase font-bold tracking-wider text-amber-800 dark:text-amber-300">For Seniors & Loved Ones</span>
+              <h4 class="text-lg font-bold text-[var(--text-primary)] mt-1">ELDERLY USER</h4>
+              <p class="text-xs text-[var(--text-secondary)] mt-2 leading-relaxed">
+                Visit a familiar world built around your people, places and memories.
+              </p>
+            </div>
+            <div class="pt-4 flex items-center justify-between text-xs font-bold text-amber-800 dark:text-amber-300 border-t border-amber-500/20 mt-4">
+              <span>Open Senior Space</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </div>
+          </button>
+
+          <!-- Caretaker -->
+          <button class="role-select-btn p-6 rounded-3xl bg-[var(--bg-surface)] border-2 border-[var(--border-subtle)] hover:border-amber-500 text-left flex flex-col justify-between min-h-[220px] transition-all hover:scale-[1.02] group shadow-sm" data-role="caretaker">
+            <div>
+              <div class="w-12 h-12 rounded-2xl bg-slate-900 text-amber-300 flex items-center justify-center text-xl shadow-sm mb-4">
+                <i data-lucide="user-check" class="w-6 h-6"></i>
+              </div>
+              <span class="text-[10px] uppercase font-bold tracking-wider text-[var(--text-secondary)]">For Family & Caregivers</span>
+              <h4 class="text-lg font-bold text-[var(--text-primary)] mt-1">CARETAKER</h4>
+              <p class="text-xs text-[var(--text-secondary)] mt-2 leading-relaxed">
+                Add photographs, music, names, routines and meaningful moments.
+              </p>
+            </div>
+            <div class="pt-4 flex items-center justify-between text-xs font-bold text-[var(--text-primary)] border-t border-[var(--border-subtle)] mt-4">
+              <span>Open Caretaker Studio</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </div>
+          </button>
+        </div>
+
+        <div class="text-center">
+          <p class="text-[11px] text-[var(--text-tertiary)] flex items-center justify-center gap-1.5">
+            <i data-lucide="shield" class="w-3.5 h-3.5 text-amber-500"></i>
+            <span>Safe & Private • Powered by Smart India Hackathon 2026 Architecture</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Javascript Modules -->
+  <script src="src/components/audio.js"></script>
+  <script src="src/components/three-world.js"></script>
+  <script src="src/services/api-client.js"></script>
+  <script src="src/services/firebase-client.js"></script>
+  <script src="src/services/relationship-client.js"></script>
+  <script src="src/services/media-client.js"></script>
+  <script src="src/auth/auth-state.js"></script>
+  <script src="src/utils/router.js"></script>
+  <script src="src/components/modal.js"></script>
+  <script src="src/components/showcase.js"></script>
+  <script src="src/components/senior-preview.js"></script>
+  <script src="src/components/activities.js"></script>
+  <script src="src/app/app.js"></script>
+</body>
+</html>

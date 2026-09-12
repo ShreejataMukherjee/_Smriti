@@ -1,0 +1,447 @@
+/* ==========================================================================
+   SMRITI 3D SANCTUARY STYLESHEET (DESIGN.md Aligned & Performance Optimized)
+   Zero layout-thrashing, GPU-accelerated motion, clean Day/Twilight tokens
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DESIGN TOKENS (Day Mode Default & Twilight Mode)
+   -------------------------------------------------------------------------- */
+:root {
+  --bg-base: #FDFBF7;
+  --bg-surface: #FAF7F2;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFFDF9;
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-accent: rgba(217, 119, 6, 0.30);
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-tertiary: #64748B;
+  
+  --accent-gold: #D97706;
+  --accent-gold-light: #FEF3C7;
+  --accent-gold-dark: #92400E;
+  --accent-orange: #C2410C;
+  --accent-orange-light: #FFEDD5;
+  --accent-rose: #E11D48;
+  --accent-rose-light: #FFE4E6;
+  --accent-sage: #059669;
+  --accent-sage-light: #D1FAE5;
+  --accent-indigo: #4338CA;
+  --accent-indigo-light: #EEF2FF;
+
+  --dot-color: rgba(15, 23, 42, 0.06);
+  --nav-bg: rgba(253, 251, 247, 0.90);
+  --nav-border: rgba(15, 23, 42, 0.07);
+  --shadow-soft: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
+  --shadow-elevated: 0 20px 45px -10px rgba(15, 23, 42, 0.10), 0 0 25px rgba(245, 158, 11, 0.08);
+  --shadow-glow: 0 20px 40px -10px rgba(217, 119, 6, 0.15);
+}
+
+/* Twilight Mode (Sundowning Anchor Theme) */
+html.twilight-mode,
+body.twilight-mode {
+  --bg-base: #13161F;
+  --bg-surface: #1A1D27;
+  --bg-card: #222634;
+  --bg-card-hover: #2A2F40;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-accent: rgba(245, 158, 11, 0.40);
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-tertiary: #94A3B8;
+
+  --accent-gold: #FBBF24;
+  --accent-gold-light: rgba(245, 158, 11, 0.15);
+  --accent-gold-dark: #FDE68A;
+  --accent-orange: #FB923C;
+  --accent-orange-light: rgba(251, 146, 60, 0.15);
+  --accent-rose: #FDA4AF;
+  --accent-rose-light: rgba(244, 63, 94, 0.15);
+  --accent-sage: #6EE7B7;
+  --accent-sage-light: rgba(16, 185, 129, 0.15);
+  --accent-indigo: #A5B4FC;
+  --accent-indigo-light: rgba(99, 102, 241, 0.15);
+
+  --dot-color: rgba(251, 191, 36, 0.16);
+  --nav-bg: rgba(19, 22, 31, 0.90);
+  --nav-border: rgba(255, 255, 255, 0.08);
+  --shadow-soft: 0 15px 35px -5px rgba(0, 0, 0, 0.45);
+  --shadow-elevated: 0 25px 50px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(245, 158, 11, 0.12);
+  --shadow-glow: 0 20px 45px -10px rgba(245, 158, 11, 0.22);
+}
+
+/* --------------------------------------------------------------------------
+   2. CORE BASE & CLEAN TRANSITIONS
+   -------------------------------------------------------------------------- */
+html {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  /* Disabled native scroll-smooth so Lenis is the single authoritative driver */
+  scroll-behavior: auto !important;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* Scope color crossfades strictly during theme toggle to prevent scroll thrashing */
+html.theme-transitioning,
+html.theme-transitioning body,
+html.theme-transitioning header,
+html.theme-transitioning section,
+html.theme-transitioning footer,
+html.theme-transitioning .depth-tilt-card,
+html.theme-transitioning .personalization-chip,
+html.theme-transitioning .senior-action-card,
+html.theme-transitioning .quiz-btn,
+html.theme-transitioning .role-select-btn {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+/* Constellation Starlight Dot Matrix */
+.constellation-grid-bg {
+  background-image: radial-gradient(var(--dot-color) 1.2px, transparent 1.2px);
+  background-size: 28px 28px;
+  background-position: 0 0;
+}
+
+/* --------------------------------------------------------------------------
+   3. TOP PROGRESS BAR & SIDE RAIL SCROLL-PROGRESS NAV (GPU ACCELERATED)
+   -------------------------------------------------------------------------- */
+#scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #D97706, #F59E0B, #E11D48);
+  z-index: 100;
+  width: 100%;
+  transform-origin: 0% 50%;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+.scroll-dot-nav {
+  position: fixed;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 9999px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--nav-border);
+  box-shadow: var(--shadow-soft);
+  contain: layout style;
+}
+
+.scroll-dot-item {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background-color: var(--text-tertiary);
+  opacity: 0.45;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.scroll-dot-item:hover {
+  opacity: 0.85;
+  transform: scale(1.3);
+}
+
+.scroll-dot-item.active {
+  opacity: 1;
+  background-color: var(--accent-gold);
+  transform: scale(1.4);
+  box-shadow: 0 0 10px var(--accent-gold);
+}
+
+.scroll-dot-tooltip {
+  position: absolute;
+  right: 1.75rem;
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  background: var(--text-primary);
+  color: var(--bg-base);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.scroll-dot-item:hover .scroll-dot-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* --------------------------------------------------------------------------
+   4. DAY / TWILIGHT SUN-TO-MOON MORPHING TOGGLE
+   -------------------------------------------------------------------------- */
+.theme-morph-toggle {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  box-shadow: var(--shadow-soft);
+}
+
+.theme-morph-toggle:hover {
+  border-color: var(--accent-gold);
+  transform: scale(1.06);
+}
+
+.theme-icon-sun,
+.theme-icon-moon {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+
+.theme-icon-sun {
+  color: #D97706;
+  transform: rotate(0deg) scale(1);
+  opacity: 1;
+}
+
+.theme-icon-moon {
+  color: #FBBF24;
+  transform: rotate(-90deg) scale(0.4);
+  opacity: 0;
+}
+
+html.twilight-mode .theme-icon-sun {
+  transform: rotate(90deg) scale(0.4);
+  opacity: 0;
+}
+
+html.twilight-mode .theme-icon-moon {
+  transform: rotate(0deg) scale(1);
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   5. 3D HERO VIEWPORT & CONTEXTUAL INSPECTION HUD
+   -------------------------------------------------------------------------- */
+#three-hero-viewport {
+  touch-action: none;
+  background: transparent;
+  contain: strict;
+}
+
+#memory-inspect-hud {
+  box-shadow: var(--shadow-elevated);
+  transform-origin: top right;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 2px solid var(--accent-gold);
+}
+
+/* --------------------------------------------------------------------------
+   6. 3D FLOATING TABLET DEVICE SIMULATOR (HARDWARE ACCELERATED)
+   -------------------------------------------------------------------------- */
+.tablet-3d-wrapper {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.tablet-3d-chassis {
+  transform: rotateX(6deg) rotateY(-3deg) rotateZ(0.5deg);
+  box-shadow: 
+    0 30px 70px -15px rgba(15, 23, 42, 0.3),
+    0 10px 25px -5px rgba(217, 119, 6, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.15);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.tablet-3d-wrapper:hover .tablet-3d-chassis {
+  transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1.01);
+  box-shadow: 
+    0 40px 90px -20px rgba(15, 23, 42, 0.35),
+    0 15px 35px -5px rgba(217, 119, 6, 0.25);
+}
+
+/* Senior High Contrast Mode */
+.high-contrast-mode {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+.high-contrast-mode .senior-action-card,
+.high-contrast-mode .senior-preview-card {
+  background-color: #121212 !important;
+  border-color: #F59E0B !important;
+  color: #FFFFFF !important;
+}
+
+.high-contrast-mode #senior-title,
+.high-contrast-mode .senior-action-title,
+.high-contrast-mode .senior-preview-title {
+  color: #FCD34D !important;
+}
+
+.high-contrast-mode #senior-date,
+.high-contrast-mode .senior-action-sub,
+.high-contrast-mode .senior-preview-sub {
+  color: #E2E8F0 !important;
+}
+
+/* Senior Large Font Mode */
+.large-font-mode .senior-action-title {
+  font-size: 1.45rem !important;
+}
+
+.large-font-mode .senior-action-sub {
+  font-size: 0.95rem !important;
+}
+
+.large-font-mode #senior-title {
+  font-size: 2.1rem !important;
+}
+
+.large-font-mode .senior-preview-text {
+  font-size: 1.25rem !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. JOURNEY STAGE CARDS & DYNAMIC ACTIVE INDICATOR
+   -------------------------------------------------------------------------- */
+.perspective-container {
+  perspective: 1000px;
+}
+
+.depth-tilt-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.depth-tilt-card:hover {
+  border-color: var(--accent-gold);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+}
+
+.depth-tilt-card.active-stage {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 2px var(--accent-gold), var(--shadow-glow);
+}
+
+.stage-badge-indicator {
+  transition: opacity 0.25s ease;
+}
+
+/* --------------------------------------------------------------------------
+   8. PERSONALIZATION CHIPS & SHOWCASE PANELS
+   -------------------------------------------------------------------------- */
+.personalization-chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.personalization-chip:hover {
+  border-color: var(--accent-gold);
+  transform: translateX(4px);
+}
+
+.personalization-chip.active {
+  background-color: var(--accent-gold-light);
+  border-color: var(--accent-gold);
+  box-shadow: 0 4px 16px -2px rgba(217, 119, 6, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   9. INTERACTIVE QUIZ BUTTONS
+   -------------------------------------------------------------------------- */
+.quiz-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.quiz-btn:hover {
+  border-color: var(--accent-gold);
+  transform: translateY(-2px);
+}
+
+.quiz-btn.quiz-correct {
+  background-color: var(--accent-sage-light) !important;
+  border-color: var(--accent-sage) !important;
+  color: var(--accent-sage) !important;
+}
+
+.quiz-btn.quiz-wrong {
+  background-color: var(--accent-rose-light) !important;
+  border-color: var(--accent-rose) !important;
+  color: var(--accent-rose) !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. SCROLL REVEAL UTILITIES (ZERO-JANK)
+   -------------------------------------------------------------------------- */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto; /* Release GPU layer once revealed */
+}
+
+/* Micro-interaction hover lifts */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* --------------------------------------------------------------------------
+   11. ACCESSIBILITY & REDUCED MOTION SUPPORT
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

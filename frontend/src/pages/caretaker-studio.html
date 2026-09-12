@@ -1,0 +1,2692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caretaker Studio | Smriti Memory Platform</title>
+  <meta name="description" content="Personalization Studio for Family Caregivers & Healthcare Workers." />
+  <meta name="theme-color" content="#0F172A" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Lora -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#FDFBF7',
+            'midnight-indigo': '#0F172A',
+            'amber-gold': '#D97706',
+            'amber-bright': '#F59E0B',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['Lora', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/src/styles/styles.css" />
+</head>
+
+<body class="bg-[#F8FAFC] text-[#0F172A] font-sans antialiased min-h-screen flex flex-col selection:bg-amber-100 selection:text-amber-900">
+
+  <!-- Top Header Navigation -->
+  <header class="py-3 px-4 sm:px-8 border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-0 z-30 flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-2xl bg-[#0F172A] flex items-center justify-center text-white font-extrabold text-xl shadow-md">
+        🧑‍💻
+      </div>
+      <div>
+        <h1 class="text-base sm:text-lg font-extrabold text-[#0F172A] flex items-center gap-2">
+          <span>Caretaker Studio</span>
+          <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold uppercase tracking-wider">Phase 3</span>
+        </h1>
+        <span class="text-xs text-slate-500 font-medium hidden sm:inline-block">Personalization & Memory Curation for Elderly Dementia Care • NER</span>
+      </div>
+    </div>
+
+    <!-- Right Controls: Senior Switcher, Preview Button & Auth -->
+    <div class="flex items-center gap-2 sm:gap-4">
+      
+      <!-- Active Senior Selector -->
+      <div class="flex items-center gap-2 bg-slate-100/90 hover:bg-slate-200/80 px-3 py-1.5 rounded-2xl border border-slate-200 transition-colors">
+        <span class="text-sm">👵</span>
+        <div class="flex flex-col">
+          <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Active Senior</span>
+          <select id="active-senior-select" class="bg-transparent font-bold text-xs text-[#0F172A] focus:outline-none cursor-pointer">
+            <option value="">Loading patients...</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Preview Senior Experience Button -->
+      <button id="preview-senior-btn" class="px-3.5 sm:px-4 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md hover:scale-105 transition-all flex items-center gap-1.5">
+        <span>👁️</span>
+        <span class="hidden md:inline">Preview Senior Space</span>
+        <span class="md:hidden">Preview</span>
+      </button>
+
+      <!-- Caretaker Profile & Logout -->
+      <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-slate-100 text-xs border border-slate-200">
+        <span id="caretaker-avatar-mini">🧑‍💻</span>
+        <span id="caretaker-name-mini" class="font-bold text-slate-800">Caretaker</span>
+        <span class="px-1.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800 font-bold text-[10px]">caretaker</span>
+      </div>
+
+      <button id="caretaker-logout-btn" class="px-3 sm:px-4 py-2 rounded-2xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition-all">
+        Sign Out
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Body Layout: Left Sidebar + Right Dynamic Workspace -->
+  <div class="flex-grow flex flex-col md:flex-row max-w-7xl mx-auto w-full p-4 sm:p-6 gap-6">
+
+    <!-- ===================================================================== -->
+    <!-- LEFT SIDEBAR NAVIGATION                                                -->
+    <!-- ===================================================================== -->
+    <aside class="w-full md:w-64 flex-shrink-0 space-y-2">
+      <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200 space-y-1">
+        
+        <div class="px-3 py-2 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+          Core Studio
+        </div>
+
+        <button class="nav-tab-btn active w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left bg-indigo-600 text-white shadow-sm" data-tab="tab-overview">
+          <span class="text-base">📊</span>
+          <span>Overview</span>
+        </button>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-patients">
+          <span class="text-base">👵</span>
+          <span>My Elderly Users</span>
+          <span id="badge-patients-count" class="ml-auto px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px]">0</span>
+        </button>
+
+        <div class="pt-3 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+          Personalization
+        </div>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-profile">
+          <span class="text-base">👤</span>
+          <span>Profile & Details</span>
+        </button>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-family">
+          <span class="text-base">👨‍👩‍👧‍👦</span>
+          <span>Family & Contacts</span>
+          <span id="badge-family-count" class="ml-auto px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 text-[10px]">0</span>
+        </button>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-photos">
+          <span class="text-base">📸</span>
+          <span>Photo Vault</span>
+          <span id="badge-photos-count" class="ml-auto px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px]">0</span>
+        </button>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-videos">
+          <span class="text-base">🎥</span>
+          <span>Video Memories</span>
+        </button>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-music">
+          <span class="text-base">🎵</span>
+          <span>Music & Songs</span>
+        </button>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-routine">
+          <span class="text-base">🌅</span>
+          <span>Daily Routine</span>
+        </button>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-health">
+          <span class="text-base">💊</span>
+          <span>Health & Reminders</span>
+        </button>
+
+        <div class="pt-3 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+          NER & Accessibility
+        </div>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-culture">
+          <span class="text-base">🌏</span>
+          <span>Language & Culture</span>
+        </button>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-a11y">
+          <span class="text-base">🔍</span>
+          <span>Accessibility</span>
+        </button>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-cognitive">
+          <span class="text-base">🧩</span>
+          <span>Cognitive Activities</span>
+        </button>
+
+        <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left text-slate-600 hover:bg-slate-100" data-tab="tab-insights">
+          <span class="text-base">📈</span>
+          <span>Configuration Insights</span>
+        </button>
+
+        <div class="pt-3">
+          <button class="nav-tab-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-bold text-xs transition-all text-left bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 text-amber-950 hover:bg-amber-100" data-tab="tab-premium">
+            <span class="text-base">⭐</span>
+            <span class="font-extrabold">Premium Studio</span>
+          </button>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- ===================================================================== -->
+    <!-- RIGHT MAIN WORKSPACE CONTENT                                          -->
+    <!-- ===================================================================== -->
+    <main class="flex-grow space-y-6">
+
+      <!-- ================================================================= -->
+      <!-- TAB 1: OVERVIEW                                                   -->
+      <!-- ================================================================= -->
+      <section id="tab-overview" class="tab-pane space-y-6">
+        
+        <!-- Welcome Hero -->
+        <div class="bg-gradient-to-br from-[#0F172A] to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden">
+          <div class="relative z-10 space-y-2 max-w-2xl">
+            <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[11px] font-extrabold uppercase tracking-wider border border-amber-500/30">
+              Caretaker Personalization Center
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold">
+              Welcome back, <span id="overview-caretaker-name">Caretaker</span>
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Curate a familiar digital sanctuary for your connected elderly loved ones. Every photo, routine anchor, family member, and nostalgic melody reinforces cognitive comfort and memory retention.
+            </p>
+          </div>
+          <div class="absolute right-6 top-1/2 -translate-y-1/2 text-7xl opacity-20 select-none hidden sm:block">
+            🏡
+          </div>
+        </div>
+
+        <!-- Connected Patients Quick Cards Grid -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-extrabold text-[#0F172A] flex items-center gap-2">
+              <span>👵</span> My Connected Elderly Users
+            </h3>
+            <button id="quick-add-connection-btn" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
+              <span>+ Connect New Patient</span>
+            </button>
+          </div>
+
+          <div id="overview-patients-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-8 text-center bg-white rounded-3xl border border-slate-200 text-slate-400 text-xs">
+              Loading connected elderly profiles...
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Activity & Health Snapshots -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+            <div class="flex items-center justify-between text-xs text-slate-500 font-bold">
+              <span>Memory Vault</span>
+              <span>📸</span>
+            </div>
+            <div class="text-2xl font-extrabold text-[#0F172A]" id="overview-memories-stat">0</div>
+            <p class="text-[11px] text-slate-500">Photos, songs & video memories preserved</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+            <div class="flex items-center justify-between text-xs text-slate-500 font-bold">
+              <span>Family Members</span>
+              <span>👨‍👩‍👧‍👦</span>
+            </div>
+            <div class="text-2xl font-extrabold text-[#0F172A]" id="overview-family-stat">0</div>
+            <p class="text-[11px] text-slate-500">People registered in memory dataset</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+            <div class="flex items-center justify-between text-xs text-slate-500 font-bold">
+              <span>Today's Routine</span>
+              <span>🌅</span>
+            </div>
+            <div class="text-2xl font-extrabold text-[#0F172A]" id="overview-routine-stat">0</div>
+            <p class="text-[11px] text-slate-500">Daily routine recall anchors active</p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 2: MY ELDERLY USERS                                           -->
+      <!-- ================================================================= -->
+      <section id="tab-patients" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-xl font-extrabold text-[#0F172A]">My Elderly Patients & Relationships</h2>
+              <p class="text-xs text-slate-500">Manage 1-to-many caretaker connections, pending invites, and active patient workspaces.</p>
+            </div>
+            <button id="open-connect-modal-btn" class="px-4 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#0F172A] font-bold text-xs shadow-md transition-all flex items-center gap-2">
+              <span>+</span>
+              <span>Connect Elderly User</span>
+            </button>
+          </div>
+
+          <!-- Patients List -->
+          <div id="patients-full-list" class="space-y-4">
+            <!-- Dynamic items rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 3: PROFILE & PERSONAL DETAILS                                 -->
+      <!-- ================================================================= -->
+      <section id="tab-profile" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          
+          <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-xl font-extrabold text-[#0F172A]">Elderly Personal Profile</h2>
+              <p class="text-xs text-slate-500">Configure familiar background details, hometown memories, and personal preferences.</p>
+            </div>
+            <span class="text-xs bg-amber-50 text-amber-800 font-bold px-3 py-1 rounded-full border border-amber-200">
+              💡 Stored securely in real Firestore database.
+            </span>
+          </div>
+
+          <form id="elderly-profile-form" class="space-y-6">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Display Name / Elder's Name</label>
+                <input type="text" id="prof-display-name" placeholder="Enter person's name" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/50 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all" />
+              </div>
+
+              <div class="space-y-2">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Primary Region / State</label>
+                <select id="prof-region" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/50 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all">
+                  <option value="NER - Assam">Assam (NER)</option>
+                  <option value="NER - Meghalaya">Meghalaya (NER)</option>
+                  <option value="NER - Manipur">Manipur (NER)</option>
+                  <option value="NER - Nagaland">Nagaland (NER)</option>
+                  <option value="NER - Tripura">Tripura (NER)</option>
+                  <option value="NER - Mizoram">Mizoram (NER)</option>
+                  <option value="NER - Arunachal Pradesh">Arunachal Pradesh (NER)</option>
+                  <option value="NER - Sikkim">Sikkim (NER)</option>
+                </select>
+              </div>
+
+              <div class="space-y-2">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Preferred Language</label>
+                <select id="prof-language" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/50 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all">
+                  <option value="as">Assamese (অসমীয়া)</option>
+                  <option value="bn">Bengali (বাংলা)</option>
+                  <option value="hi">Hindi (हिन्दी)</option>
+                  <option value="en">English</option>
+                </select>
+              </div>
+
+              <div class="space-y-2">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Familiar Places / Hometown Landmarks</label>
+                <input type="text" id="prof-places" placeholder="e.g. Guwahati Brahmaputra Ghat, Majuli Island, Shillong" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/50 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all" />
+              </div>
+
+              <div class="space-y-2">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Hobbies & Familiar Interests</label>
+                <input type="text" id="prof-interests" placeholder="e.g. Gardening, listening to Bihu songs, tea walks" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/50 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all" />
+              </div>
+
+              <div class="space-y-2">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Cultural & Festival Preferences</label>
+                <input type="text" id="prof-culture" placeholder="e.g. Rongali Bihu, Durga Puja, Traditional Folk" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/50 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all" />
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Caregiver Notes & Meaningful Background</label>
+              <textarea id="prof-notes" rows="3" placeholder="Add specific calming topics, pleasant memories, or phrases that comfort the elder..." class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50/50 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all"></textarea>
+            </div>
+
+            <div class="flex justify-end">
+              <button type="submit" id="save-profile-btn" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md hover:scale-105 transition-all">
+                Save Personal Profile Details
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 4: FAMILY & CONTACTS                                          -->
+      <!-- ================================================================= -->
+      <section id="tab-family" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-xl font-extrabold text-[#0F172A]">Family Recognition & Contacts</h2>
+              <p class="text-xs text-slate-500">Build the reusable face & personality memory dataset used in cognitive recognition activities.</p>
+            </div>
+            <button id="add-family-btn" class="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2">
+              <span>+</span>
+              <span>Add Family Member</span>
+            </button>
+          </div>
+
+          <div class="bg-indigo-50/60 p-4 rounded-2xl border border-indigo-100 text-xs text-indigo-900 flex items-center gap-3">
+            <span class="text-xl">🧠</span>
+            <p><strong>Cognitive AI Integration:</strong> Each registered family member becomes an active memory anchor for "Who is this?", face-name association, and recall exercises.</p>
+          </div>
+
+          <!-- Family Cards Grid -->
+          <div id="family-members-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Dynamic family member cards rendered here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 5: PHOTO MEMORY VAULT                                         -->
+      <!-- ================================================================= -->
+      <section id="tab-photos" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-xl font-extrabold text-[#0F172A]">Photo Memory Vault</h2>
+              <p class="text-xs text-slate-500">Upload private nostalgic photos, assign family tags, locations, and life events.</p>
+            </div>
+            <div class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+              Private Cloud Storage
+            </div>
+          </div>
+
+          <!-- Upload Dropzone -->
+          <div id="photo-dropzone" class="border-2 border-dashed border-slate-200 hover:border-amber-400 bg-slate-50/50 hover:bg-amber-50/20 rounded-3xl p-6 sm:p-8 text-center transition-all cursor-pointer">
+            <input type="file" id="photo-file-input" multiple accept="image/*" class="hidden" />
+            <div class="space-y-2">
+              <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 mx-auto flex items-center justify-center text-2xl">
+                📸
+              </div>
+              <div class="font-bold text-sm text-[#0F172A]">Click or drag nostalgic photos here</div>
+              <p class="text-xs text-slate-500">Supports JPG, PNG, WEBP up to 50MB each. Preserves full private relationship authorization.</p>
+            </div>
+          </div>
+
+          <!-- Upload Progress Bar -->
+          <div id="photo-upload-progress-container" class="hidden space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <div class="flex justify-between text-xs font-bold text-slate-700">
+              <span id="photo-upload-status-text">Uploading photos to Cloud Storage...</span>
+              <span id="photo-upload-pct">0%</span>
+            </div>
+            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+              <div id="photo-progress-bar" class="bg-amber-500 h-full w-0 transition-all duration-200"></div>
+            </div>
+          </div>
+
+          <!-- Photos Grid -->
+          <div id="photos-vault-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <!-- Dynamic photo memory items rendered here -->
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 6: VIDEO MEMORY VAULT                                         -->
+      <!-- ================================================================= -->
+      <section id="tab-videos" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-xl font-extrabold text-[#0F172A]">Video Memories</h2>
+              <p class="text-xs text-slate-500">Short nostalgic family video clips and regional festival celebrations.</p>
+            </div>
+            <button id="upload-video-btn" class="px-4 py-2 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-2">
+              <span>+ Upload Video</span>
+            </button>
+            <input type="file" id="video-file-input" accept="video/*" class="hidden" />
+          </div>
+
+          <!-- Video Upload Progress Bar -->
+          <div id="video-upload-progress-container" class="hidden space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <div class="flex justify-between text-xs font-bold text-slate-700">
+              <span>Uploading video memory to Cloud Vault...</span>
+              <span id="video-upload-pct">0%</span>
+            </div>
+            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+              <div id="video-progress-bar" class="bg-indigo-600 h-full w-0 transition-all duration-200"></div>
+            </div>
+          </div>
+
+          <div id="videos-vault-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Dynamic video items rendered here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 7: MUSIC & SONGS                                              -->
+      <!-- ================================================================= -->
+      <section id="tab-music" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-xl font-extrabold text-[#0F172A]">My Music & Regional Melodies</h2>
+              <p class="text-xs text-slate-500">Upload favorite songs, Assamese Bihu folk tunes, and soothing audio tracks.</p>
+            </div>
+            <button id="upload-music-btn" class="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2">
+              <span>+ Upload Audio Track</span>
+            </button>
+            <input type="file" id="music-file-input" accept="audio/*" class="hidden" />
+          </div>
+
+          <!-- Audio Upload Progress Bar -->
+          <div id="music-upload-progress-container" class="hidden space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <div class="flex justify-between text-xs font-bold text-slate-700">
+              <span>Uploading audio track to Cloud Vault...</span>
+              <span id="music-upload-pct">0%</span>
+            </div>
+            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+              <div id="music-progress-bar" class="bg-emerald-600 h-full w-0 transition-all duration-200"></div>
+            </div>
+          </div>
+
+          <div id="music-tracks-list" class="space-y-3">
+            <!-- Dynamic audio track cards rendered here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 8: DAILY ROUTINE BUILDER                                      -->
+      <!-- ================================================================= -->
+      <section id="tab-routine" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-xl font-extrabold text-[#0F172A]">Daily Routine Builder</h2>
+              <p class="text-xs text-slate-500">Visual schedule timeline supporting daily activities and SIH Routine Recall games.</p>
+            </div>
+            <button id="add-routine-btn" class="px-4 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#0F172A] font-bold text-xs shadow-md transition-all flex items-center gap-2">
+              <span>+</span>
+              <span>Add Routine Item</span>
+            </button>
+          </div>
+
+          <div class="bg-amber-50/60 p-4 rounded-2xl border border-amber-200 text-xs text-amber-950 flex items-center gap-3">
+            <span class="text-xl">☀️</span>
+            <p><strong>SIH Cognitive Requirement:</strong> This timeline directly powers <em>Daily Routine Recall</em> cognitive games.</p>
+          </div>
+
+          <!-- Routine Timeline List -->
+          <div id="routine-timeline-list" class="space-y-3">
+            <!-- Dynamic routine cards rendered here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 9: HEALTH & REMINDERS                                         -->
+      <!-- ================================================================= -->
+      <section id="tab-health" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          
+          <!-- Disclaimer Banner -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs text-slate-600 flex items-start gap-3">
+            <span class="text-lg">ℹ️</span>
+            <div>
+              <strong>Care & Support Management Tool:</strong> Smriti provides reminders and routine organization to assist caregivers. It does not provide medical diagnosis or replace consultation with a qualified doctor.
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-xl font-extrabold text-[#0F172A]">Health & Care Reminders</h2>
+              <p class="text-xs text-slate-500">Medication schedules, hydration milestones, activity prompts, and doctor visits.</p>
+            </div>
+            <button id="add-reminder-btn" class="px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2">
+              <span>+</span>
+              <span>Add Reminder</span>
+            </button>
+          </div>
+
+          <!-- Reminders Grid -->
+          <div id="reminders-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Dynamic reminder items rendered here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 10: LANGUAGE & CULTURE (NER)                                  -->
+      <!-- ================================================================= -->
+      <section id="tab-culture" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          <div class="pb-4 border-b border-slate-100">
+            <h2 class="text-xl font-extrabold text-[#0F172A]">NER Regional Language & Cultural Personalization</h2>
+            <p class="text-xs text-slate-500">Culturally familiar themes, regional festivals, native vocabulary, and localized audio greetings.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+              <h3 class="font-extrabold text-sm text-[#0F172A] flex items-center gap-2">
+                <span>🗣️</span> Selected Regional Language
+              </h3>
+              <p class="text-xs text-slate-500 leading-relaxed">
+                Choose the primary language for voice greetings and reminders:
+              </p>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 text-xs font-bold text-slate-800 cursor-pointer">
+                  <input type="radio" name="lang-pref" value="as" checked class="accent-indigo-600" />
+                  <span>অসমীয়া (Assamese)</span>
+                </label>
+                <label class="flex items-center gap-2 text-xs font-bold text-slate-800 cursor-pointer">
+                  <input type="radio" name="lang-pref" value="bn" class="accent-indigo-600" />
+                  <span>বাংলা (Bengali)</span>
+                </label>
+                <label class="flex items-center gap-2 text-xs font-bold text-slate-800 cursor-pointer">
+                  <input type="radio" name="lang-pref" value="hi" class="accent-indigo-600" />
+                  <span>हिन्दी (Hindi)</span>
+                </label>
+                <label class="flex items-center gap-2 text-xs font-bold text-slate-800 cursor-pointer">
+                  <input type="radio" name="lang-pref" value="en" class="accent-indigo-600" />
+                  <span>English</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+              <h3 class="font-extrabold text-sm text-[#0F172A] flex items-center gap-2">
+                <span>🎉</span> Cultural Anchors & Festivals
+              </h3>
+              <p class="text-xs text-slate-500 leading-relaxed">
+                Key cultural moments that trigger special reminiscence themes:
+              </p>
+              <div class="space-y-2 text-xs font-semibold text-slate-800">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" id="cult-bihu" checked class="accent-amber-500" />
+                  <span>🌾 Rongali & Bohag Bihu (Assam)</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" id="cult-puja" checked class="accent-amber-500" />
+                  <span>🪔 Durga Puja Celebration</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" id="cult-tea" checked class="accent-amber-500" />
+                  <span>🌿 Tea Garden Morning Walks</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button id="save-culture-btn" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md hover:scale-105 transition-all">
+              Save Language & Cultural Preferences
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 11: ACCESSIBILITY SETTINGS                                    -->
+      <!-- ================================================================= -->
+      <section id="tab-a11y" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          <div class="pb-4 border-b border-slate-100">
+            <h2 class="text-xl font-extrabold text-[#0F172A]">Senior Accessibility Preferences</h2>
+            <p class="text-xs text-slate-500">Configure visual and cognitive adjustments that automatically apply when the senior logs in.</p>
+          </div>
+
+          <div class="space-y-4">
+            <label class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 cursor-pointer transition-colors">
+              <div>
+                <div class="font-bold text-sm text-[#0F172A]">Large Typography</div>
+                <div class="text-xs text-slate-500">Enlarges headings, buttons, and touch targets for clear legibility.</div>
+              </div>
+              <input type="checkbox" id="a11y-large-text" checked class="w-5 h-5 accent-indigo-600 rounded" />
+            </label>
+
+            <label class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 cursor-pointer transition-colors">
+              <div>
+                <div class="font-bold text-sm text-[#0F172A]">High Contrast Mode</div>
+                <div class="text-xs text-slate-500">Increases contrast ratios and border definitions for visual clarity.</div>
+              </div>
+              <input type="checkbox" id="a11y-high-contrast" class="w-5 h-5 accent-indigo-600 rounded" />
+            </label>
+
+            <label class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 cursor-pointer transition-colors">
+              <div>
+                <div class="font-bold text-sm text-[#0F172A]">Spoken Voice Guidance</div>
+                <div class="text-xs text-slate-500">Enables warm audio greetings and voice prompts in native language.</div>
+              </div>
+              <input type="checkbox" id="a11y-voice-guidance" checked class="w-5 h-5 accent-indigo-600 rounded" />
+            </label>
+
+            <label class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 cursor-pointer transition-colors">
+              <div>
+                <div class="font-bold text-sm text-[#0F172A]">Slower Interaction Timing</div>
+                <div class="text-xs text-slate-500">Extends touch timeouts and eliminates fast animations.</div>
+              </div>
+              <input type="checkbox" id="a11y-slow-timing" checked class="w-5 h-5 accent-indigo-600 rounded" />
+            </label>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button id="save-a11y-btn" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md hover:scale-105 transition-all">
+              Save Accessibility Preferences
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 12: COGNITIVE ACTIVITIES CONFIG                               -->
+      <!-- ================================================================= -->
+      <section id="tab-cognitive" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          <div class="pb-4 border-b border-slate-100">
+            <h2 class="text-xl font-extrabold text-[#0F172A]">Cognitive Activities Configuration</h2>
+            <p class="text-xs text-slate-500">Enable/disable activity modules and set difficulty preferences for the Play & Remember space.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+              <input type="checkbox" id="cog-cat-family" checked class="w-5 h-5 mt-1 accent-indigo-600 rounded" />
+              <div>
+                <div class="font-bold text-sm text-[#0F172A]">Family Recognition & Matching</div>
+                <div class="text-xs text-slate-500">Face-to-name matching using registered family members dataset.</div>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+              <input type="checkbox" id="cog-cat-photos" checked class="w-5 h-5 mt-1 accent-indigo-600 rounded" />
+              <div>
+                <div class="font-bold text-sm text-[#0F172A]">Photo Memory Recall</div>
+                <div class="text-xs text-slate-500">Reminiscence prompts based on uploaded nostalgic photos.</div>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+              <input type="checkbox" id="cog-cat-routine" checked class="w-5 h-5 mt-1 accent-indigo-600 rounded" />
+              <div>
+                <div class="font-bold text-sm text-[#0F172A]">Daily Routine Sequence Recall</div>
+                <div class="text-xs text-slate-500">Time and daily activity sequence recall exercises.</div>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-start gap-3">
+              <input type="checkbox" id="cog-cat-music" checked class="w-5 h-5 mt-1 accent-indigo-600 rounded" />
+              <div>
+                <div class="font-bold text-sm text-[#0F172A]">Nostalgic Melody Association</div>
+                <div class="text-xs text-slate-500">Emotional connection and song identification activities.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Baseline Difficulty Level</label>
+              <select id="cog-difficulty" class="w-full px-4 py-2.5 rounded-2xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                <option value="mild">Mild (Gentle, supportive visual cues)</option>
+                <option value="moderate">Moderate (Standard choices)</option>
+                <option value="guided">Guided (Caregiver-assisted)</option>
+              </select>
+            </div>
+
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Recommended Session Length</label>
+              <select id="cog-session-len" class="w-full px-4 py-2.5 rounded-2xl border border-slate-200 bg-slate-50 text-xs font-semibold">
+                <option value="5">5 Minutes (Short & Calm)</option>
+                <option value="10" selected>10 Minutes (Standard)</option>
+                <option value="15">15 Minutes (Extended)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button id="save-cognitive-btn" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md hover:scale-105 transition-all">
+              Save Cognitive Settings
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 13: CONFIGURATION & COGNITIVE PERFORMANCE INSIGHTS             -->
+      <!-- ================================================================= -->
+      <section id="tab-insights" class="tab-pane hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-xl font-extrabold text-[#0F172A]">Activity Performance & Caregiver Insights</h2>
+              <p class="text-xs text-slate-500">Live operational overview of cognitive activity engagement, task accuracy trends, and support alerts.</p>
+            </div>
+            <button id="refresh-insights-btn" class="px-4 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all flex items-center gap-1.5 self-start">
+              <span>🔄</span> Refresh Trends
+            </button>
+          </div>
+
+          <!-- Top Level Stats (Sessions, Accuracy, Latency, Difficulty) -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="p-5 rounded-2xl bg-purple-50/60 border border-purple-100 space-y-1">
+              <div class="text-xs text-purple-700 font-bold uppercase">Sessions Completed</div>
+              <div class="text-2xl font-extrabold text-purple-950" id="insights-sessions-stat">0 Sessions</div>
+              <p class="text-[11px] text-purple-700">Memory & recall activities</p>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-100 space-y-1">
+              <div class="text-xs text-emerald-700 font-bold uppercase">Average Task Accuracy</div>
+              <div class="text-2xl font-extrabold text-emerald-950" id="insights-accuracy-stat">0%</div>
+              <p class="text-[11px] text-emerald-700">First-attempt precision</p>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-indigo-50/60 border border-indigo-100 space-y-1">
+              <div class="text-xs text-indigo-700 font-bold uppercase">Avg Response Time</div>
+              <div class="text-2xl font-extrabold text-indigo-950" id="insights-time-stat">0.0s</div>
+              <p class="text-[11px] text-indigo-700">Pacing and recall speed</p>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-amber-50/60 border border-amber-100 space-y-1">
+              <div class="text-xs text-amber-700 font-bold uppercase">Adaptive Difficulty</div>
+              <div class="text-2xl font-extrabold text-amber-950" id="insights-diff-stat">Level 1</div>
+              <p class="text-[11px] text-amber-700">Automated task scaling</p>
+            </div>
+          </div>
+
+          <!-- Caregiver Support Alerts -->
+          <div class="p-5 rounded-3xl bg-amber-50/70 border border-amber-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold text-amber-950 flex items-center gap-2">
+                <span>🔔</span> Caregiver Support Alerts
+              </h3>
+              <span id="insights-alerts-count" class="px-2.5 py-0.5 rounded-full bg-amber-200 text-amber-900 text-[11px] font-bold">0 Active</span>
+            </div>
+            <div id="insights-alerts-container" class="space-y-2">
+              <div class="text-xs text-slate-500 p-2">No active alerts. Routine and activity support are running smoothly.</div>
+            </div>
+          </div>
+
+          <!-- Category Performance Breakdown -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-extrabold text-[#0F172A]">Category Engagement Breakdown</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="insights-categories-container">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Dataset Configuration Overview -->
+          <div class="pt-2 border-t border-slate-100">
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Preserved Anchors & Schedule</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
+                <span class="font-bold text-slate-800">Memory Elements:</span> <span id="insights-memories-stat" class="font-bold text-indigo-700">0 Items</span>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
+                <span class="font-bold text-slate-800">Routine Schedule:</span> <span id="insights-routines-stat" class="font-bold text-emerald-700">0 Anchors</span>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
+                <span class="font-bold text-slate-800">Family Dataset:</span> <span id="insights-family-stat" class="font-bold text-amber-700">0 Faces</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-600">
+            <strong>Caregiver Note:</strong> Metrics reflect non-diagnostic activity performance and orientation anchors. Smriti does not provide clinical diagnostic conclusions.
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 14: PREMIUM STUDIO                                            -->
+      <!-- ================================================================= -->
+      <section id="tab-premium" class="tab-pane hidden space-y-6">
+        <div class="bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-200 space-y-6">
+          
+          <div class="flex items-center justify-between pb-4 border-b border-amber-200/60">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xl">⭐</span>
+                <h2 class="text-xl font-extrabold text-amber-950">Smriti Premium Caregiver Studio</h2>
+              </div>
+              <p class="text-xs text-amber-900/80">Advanced productivity, extended memory storytelling, and multi-caregiver collaboration.</p>
+            </div>
+            <span class="px-3.5 py-1 rounded-full bg-amber-500 text-white font-extrabold text-xs shadow-sm">
+              Caregiver Tool
+            </span>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-amber-200 text-xs text-slate-700">
+            <strong>Core SIH Guarantee:</strong> Basic tier includes all SIH-mandated capabilities (cognitive games, memory assistance, multilingual voice support, NER culture, reminders, monitoring, and offline security). Premium offers extended caregiver productivity tools.
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 space-y-2">
+              <div class="text-amber-600 font-bold text-sm">📖 Advanced Storytelling Albums</div>
+              <p class="text-xs text-slate-500">Create multi-chapter audio-photo narrative albums capturing entire life milestones.</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 space-y-2">
+              <div class="text-amber-600 font-bold text-sm">☁️ Expanded Media Vault Capacity</div>
+              <p class="text-xs text-slate-500">Store high-resolution video archives and audio libraries up to 100GB.</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 space-y-2">
+              <div class="text-amber-600 font-bold text-sm">🤝 Multi-Caregiver Sync & Handoff</div>
+              <p class="text-xs text-slate-500">Coordinate shifts, medication logs, and doctor summaries with family members.</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 space-y-2">
+              <div class="text-amber-600 font-bold text-sm">📑 Comprehensive Health PDF Reports</div>
+              <p class="text-xs text-slate-500">Export printable routine and recall summaries for geriatric doctor visits.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: PREVIEW ELDERLY EXPERIENCE (LIVE REAL-TIME PREVIEW)            -->
+  <!-- ===================================================================== -->
+  <div id="preview-modal" class="fixed inset-0 z-50 bg-[#0F172A]/85 backdrop-blur-md hidden flex items-center justify-center p-4" role="dialog">
+    <div class="relative w-full max-w-4xl bg-[#FDFBF7] rounded-3xl shadow-2xl border-4 border-amber-300 max-h-[90vh] flex flex-col overflow-hidden animate-fade-in">
+      
+      <!-- Preview Header -->
+      <div class="px-6 py-4 bg-amber-100 border-b border-amber-200 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">👵</span>
+          <div>
+            <div class="font-extrabold text-sm text-[#0F172A]" id="preview-modal-title">Senior Experience Preview</div>
+            <div class="text-[11px] text-amber-900">Live preview rendered from selected elderly profile data</div>
+          </div>
+        </div>
+        <button id="close-preview-modal-btn" class="w-8 h-8 rounded-full bg-white/80 hover:bg-white text-slate-700 flex items-center justify-center font-bold text-sm shadow-sm transition-all">
+          ✕
+        </button>
+      </div>
+
+      <!-- Preview Live Canvas -->
+      <div class="p-6 sm:p-8 overflow-y-auto space-y-6 flex-grow" id="preview-modal-body">
+        <!-- Live rendered Senior Space template -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: ADD / CONNECT ELDERLY PATIENT                                  -->
+  <!-- ===================================================================== -->
+  <div id="connect-modal" class="fixed inset-0 z-50 bg-[#0F172A]/80 backdrop-blur-sm hidden flex items-center justify-center p-4" role="dialog">
+    <div class="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 animate-fade-in">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <h3 class="font-extrabold text-base text-[#0F172A] flex items-center gap-2">
+          <span>👵</span> Connect Elderly Patient
+        </h3>
+        <button id="close-connect-modal-btn" class="p-1 text-slate-400 hover:text-slate-700 rounded-full">✕</button>
+      </div>
+      <form id="connect-patient-form" class="py-4 space-y-4">
+        <p class="text-xs text-slate-500">Enter the elderly user's registered account email address to send an invitation connection:</p>
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Elderly Account Email</label>
+          <input type="email" id="connect-target-email" required placeholder="e.g. sruti@example.com or senior's email" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" />
+        </div>
+        <button type="submit" class="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#0F172A] font-extrabold text-xs shadow-md transition-all">
+          Send Connection Request
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: ADD / EDIT FAMILY MEMBER                                       -->
+  <!-- ===================================================================== -->
+  <div id="family-modal" class="fixed inset-0 z-50 bg-[#0F172A]/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto" role="dialog">
+    <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 animate-fade-in my-8 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <h3 class="font-extrabold text-base text-[#0F172A] flex items-center gap-2" id="family-modal-heading">
+          <span>👨‍👩‍👧‍👦</span> Add Family Member / Memory Anchor
+        </h3>
+        <button id="close-family-modal-btn" class="p-1 text-slate-400 hover:text-slate-700 rounded-full text-lg">✕</button>
+      </div>
+      <form id="add-family-form" class="py-4 space-y-4">
+        <input type="hidden" id="family-edit-id" value="" />
+        <input type="hidden" id="family-input-avatar-url" value="" />
+        
+        <!-- Full Name -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Full Name *</label>
+          <input type="text" id="family-input-name" required placeholder="e.g. Aryan, Nahida, Hrisit..." class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+        </div>
+
+        <!-- Relationship / Familiar Title -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Relationship / Familiar Title *</label>
+            <span class="text-[10px] text-indigo-600 font-semibold">Caretaker-chosen label</span>
+          </div>
+          <input type="text" id="family-input-relation" required placeholder="e.g. Papa, Maa, Son, Daughter, Grandson, Bhaity..." class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+          <div class="flex flex-wrap gap-1.5 pt-1" id="family-relation-chips">
+            <button type="button" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-indigo-100 text-slate-700 hover:text-indigo-800 text-[11px] font-bold transition-all" data-val="Papa">Papa</button>
+            <button type="button" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-indigo-100 text-slate-700 hover:text-indigo-800 text-[11px] font-bold transition-all" data-val="Maa">Maa</button>
+            <button type="button" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-indigo-100 text-slate-700 hover:text-indigo-800 text-[11px] font-bold transition-all" data-val="Son">Son</button>
+            <button type="button" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-indigo-100 text-slate-700 hover:text-indigo-800 text-[11px] font-bold transition-all" data-val="Daughter">Daughter</button>
+            <button type="button" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-indigo-100 text-slate-700 hover:text-indigo-800 text-[11px] font-bold transition-all" data-val="Grandson">Grandson</button>
+            <button type="button" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-indigo-100 text-slate-700 hover:text-indigo-800 text-[11px] font-bold transition-all" data-val="Granddaughter">Granddaughter</button>
+            <button type="button" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-indigo-100 text-slate-700 hover:text-indigo-800 text-[11px] font-bold transition-all" data-val="Bhaity">Bhaity</button>
+          </div>
+        </div>
+
+        <!-- Gender & Location -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Gender / Identity</label>
+            <select id="family-input-gender" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600">
+              <option value="unspecified">Select / Unspecified</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Location / City</label>
+            <input type="text" id="family-input-location" placeholder="e.g. Guwahati, Tezpur, Delhi" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+          </div>
+        </div>
+
+        <!-- Photo Upload / Avatar -->
+        <div class="space-y-2 p-3.5 rounded-2xl bg-indigo-50/40 border border-indigo-100">
+          <label class="block text-xs font-bold uppercase tracking-wider text-indigo-900 flex items-center gap-1.5">
+            <span>📸</span> Photo Memory Anchor (Optional)
+          </label>
+          <div class="flex items-center gap-3">
+            <div id="family-photo-preview-box" class="w-14 h-14 rounded-2xl bg-white border-2 border-indigo-200 flex items-center justify-center text-2xl font-bold shadow-xs overflow-hidden flex-shrink-0">
+              <span id="family-photo-placeholder">👤</span>
+              <img id="family-photo-img" src="" alt="Preview" class="w-full h-full object-cover hidden" />
+            </div>
+            <div class="flex-grow space-y-1">
+              <input type="file" id="family-input-photo-file" accept="image/*" class="text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer" />
+              <p class="text-[10px] text-slate-500">Upload portrait photo to use in "Who Is This?" & Face Recognition</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Personal Memory Context -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Personal Context & Memories</label>
+          <input type="text" id="family-input-bio" placeholder="e.g. Calls every evening, drinks morning Assam tea together" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+        </div>
+
+        <!-- Voice / Reminiscence Prompt -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Voice / Reminiscence Prompt (For AI Talk & Recall)</label>
+          <input type="text" id="family-input-voice-prompt" placeholder="e.g. Ask about our trip to Majuli or festival celebration" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600" />
+        </div>
+
+        <!-- Key Memory Notes -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Caregiver Notes / Emotional Anchors</label>
+          <textarea id="family-input-notes" rows="2" placeholder="e.g. Comforting presence during evening restlessness..." class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600"></textarea>
+        </div>
+
+        <!-- Favorite / Primary Memory Anchor -->
+        <div class="flex items-center gap-2 p-3 rounded-2xl bg-amber-50/50 border border-amber-200">
+          <input type="checkbox" id="family-input-favorite" class="w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500" />
+          <label for="family-input-favorite" class="text-xs font-bold text-amber-900 cursor-pointer">
+            ⭐ Mark as Primary Memory Anchor (Prioritize in Daily Reminiscence & Games)
+          </label>
+        </div>
+
+        <button type="submit" id="save-family-member-btn" class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-2">
+          <span>💾</span>
+          <span>Save to Personalization Dataset</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: ADD / EDIT ROUTINE ITEM                                        -->
+  <!-- ===================================================================== -->
+  <div id="routine-modal" class="fixed inset-0 z-50 bg-[#0F172A]/80 backdrop-blur-sm hidden flex items-center justify-center p-4" role="dialog">
+    <div class="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 animate-fade-in">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <h3 class="font-extrabold text-base text-[#0F172A] flex items-center gap-2" id="routine-modal-heading">
+          <span>🌅</span> Add Routine Anchor
+        </h3>
+        <button id="close-routine-modal-btn" class="p-1 text-slate-400 hover:text-slate-700 rounded-full">✕</button>
+      </div>
+      <form id="add-routine-form" class="py-4 space-y-4">
+        <input type="hidden" id="routine-edit-id" value="" />
+
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Activity Name</label>
+          <input type="text" id="routine-input-name" required placeholder="e.g. Morning Tea, Garden Walk, Lunch" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Scheduled Time</label>
+            <input type="text" id="routine-input-time" required placeholder="08:00 AM" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" />
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Category</label>
+            <select id="routine-input-category" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+              <option value="morning">Morning 🌅</option>
+              <option value="afternoon">Afternoon ☀️</option>
+              <option value="evening">Evening ☕</option>
+              <option value="night">Night 🌙</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Helpful Notes / Description</label>
+          <input type="text" id="routine-input-notes" placeholder="e.g. In the verandah with radio on" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" />
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#0F172A] font-extrabold text-xs shadow-md transition-all">
+          Save Routine Item
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: ADD / EDIT HEALTH REMINDER                                     -->
+  <!-- ===================================================================== -->
+  <div id="reminder-modal" class="fixed inset-0 z-50 bg-[#0F172A]/80 backdrop-blur-sm hidden flex items-center justify-center p-4" role="dialog">
+    <div class="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 animate-fade-in">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <h3 class="font-extrabold text-base text-[#0F172A] flex items-center gap-2" id="reminder-modal-heading">
+          <span>💊</span> Add Health Reminder
+        </h3>
+        <button id="close-reminder-modal-btn" class="p-1 text-slate-400 hover:text-slate-700 rounded-full">✕</button>
+      </div>
+      <form id="add-reminder-form" class="py-4 space-y-4">
+        <input type="hidden" id="reminder-edit-id" value="" />
+        
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Reminder Type</label>
+          <select id="reminder-input-type" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600">
+            <option value="medicine">💊 Medication</option>
+            <option value="hydration">💧 Hydration Schedule</option>
+            <option value="activity">🚶 Daily Physical Activity</option>
+            <option value="appointment">🩺 Medical Appointment</option>
+          </select>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Title</label>
+          <input type="text" id="reminder-input-title" required placeholder="e.g. Morning BP Tablet, 250ml Water, Dr. Visit" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Scheduled Time</label>
+            <input type="text" id="reminder-input-schedule" required placeholder="09:00 AM" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" />
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Dosage / Target</label>
+            <input type="text" id="reminder-input-dosage" placeholder="1 tablet / 250ml" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" />
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Instructions / Notes</label>
+          <input type="text" id="reminder-input-notes" placeholder="e.g. Take with lukewarm water after breakfast" class="w-full px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" />
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md transition-all">
+          Save Reminder
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: FACE DETECTION & FAMILY LABELING                               -->
+  <!-- ===================================================================== -->
+  <div id="face-labeling-modal" class="fixed inset-0 z-50 bg-[#0F172A]/85 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto" role="dialog">
+    <div class="relative w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 animate-fade-in my-8 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 flex-shrink-0">
+        <div>
+          <h3 class="font-extrabold text-base text-[#0F172A] flex items-center gap-2">
+            <span>🔍</span> Vision Face Detection & Labeling
+          </h3>
+          <p class="text-xs text-slate-500 font-medium">Assign detected faces to family members to power the elderly personalized cognitive quiz.</p>
+        </div>
+        <button id="close-face-modal-btn" class="p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-all font-bold">✕</button>
+      </div>
+
+      <div class="py-4 space-y-5 overflow-y-auto flex-grow pr-1">
+        <!-- Photo Preview with detected face highlights -->
+        <div class="relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 flex items-center justify-center max-h-72">
+          <img id="face-modal-photo-img" src="" alt="Memory Preview" class="max-h-72 w-auto object-contain" />
+          <div id="face-bounding-overlays" class="absolute inset-0 pointer-events-none"></div>
+        </div>
+
+        <!-- Detection Summary -->
+        <div class="flex items-center justify-between p-3.5 bg-purple-50 rounded-2xl border border-purple-100 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="text-base">✨</span>
+            <span id="face-modal-count-text" class="font-bold text-purple-950">2 Faces Detected</span>
+          </div>
+          <button type="button" id="face-modal-add-family-btn" class="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-[11px] shadow-sm transition-all flex items-center gap-1">
+            <span>+</span> <span>Add Family Member</span>
+          </button>
+        </div>
+
+        <!-- Detected Faces Assignment List -->
+        <div id="face-cards-container" class="space-y-3">
+          <!-- Dynamic face rows rendered here -->
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3 flex-shrink-0">
+        <button type="button" id="cancel-face-modal-btn" class="px-5 py-2.5 rounded-2xl border border-slate-200 hover:bg-slate-100 font-bold text-xs text-slate-700 transition-all">
+          Cancel
+        </button>
+        <button type="button" id="save-face-associations-btn" class="px-6 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#0F172A] font-extrabold text-xs shadow-md transition-all flex items-center gap-2">
+          <span>💾</span> <span>Save Associations</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- Scripts -->
+  <script src="/src/services/api-client.js"></script>
+  <script src="/src/services/firebase-client.js"></script>
+  <script src="/src/services/relationship-client.js"></script>
+  <script src="/src/services/media-client.js"></script>
+  <script src="/src/services/profile-client.js"></script>
+  <script src="/src/auth/auth-state.js"></script>
+  <script src="/src/utils/router.js"></script>
+
+  <!-- Studio App Script -->
+  <script type="module">
+    import { cognitiveClient } from '/src/services/cognitive-client.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Enforce Caretaker RBAC Session
+      const user = window.smritiAuth?.getUser();
+      if (!user || user.role !== 'caretaker') {
+        window.location.href = '/auth';
+        return;
+      }
+
+      // 2. Set Caretaker Details in UI
+      const caretakerName = user.name || 'Caretaker';
+      document.getElementById('caretaker-name-mini').textContent = caretakerName;
+      document.getElementById('overview-caretaker-name').textContent = caretakerName;
+
+      let connectedPatients = [];
+      let activePatientId = null;
+
+      // 3. Tab Switching Logic
+      const navButtons = document.querySelectorAll('.nav-tab-btn');
+      const tabPanes = document.querySelectorAll('.tab-pane');
+
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetTabId = btn.dataset.tab;
+          navButtons.forEach(b => {
+            b.classList.remove('active', 'bg-indigo-600', 'text-white', 'shadow-sm');
+            if (b.dataset.tab !== 'tab-premium') {
+              b.classList.add('text-slate-600', 'hover:bg-slate-100');
+            }
+          });
+          tabPanes.forEach(p => p.classList.add('hidden'));
+
+          btn.classList.add('active', 'bg-indigo-600', 'text-white', 'shadow-sm');
+          btn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+          const targetPane = document.getElementById(targetTabId);
+          if (targetPane) {
+            targetPane.classList.remove('hidden');
+          }
+        });
+      });
+
+      // 4. Load Relationships & Patients
+      async function loadConnectedPatients() {
+        try {
+          const rels = await window.RelationshipClient.getCaretakerRelationships();
+          connectedPatients = rels.filter(r => r.status === 'accepted');
+
+          const select = document.getElementById('active-senior-select');
+          select.innerHTML = '';
+
+          if (connectedPatients.length === 0) {
+            select.innerHTML = '<option value="">No patients connected</option>';
+            document.getElementById('overview-patients-grid').innerHTML = `
+              <div class="p-8 text-center bg-white rounded-3xl border border-slate-200 text-slate-500 text-xs space-y-3 md:col-span-2">
+                <p>You have not connected with an elderly patient yet.</p>
+                <button id="empty-state-connect-btn" class="px-4 py-2 bg-amber-500 text-[#0F172A] font-bold rounded-2xl text-xs">
+                  + Connect Elderly Patient Now
+                </button>
+              </div>
+            `;
+            document.getElementById('empty-state-connect-btn')?.addEventListener('click', () => {
+              document.getElementById('connect-modal').classList.remove('hidden');
+            });
+            return;
+          }
+
+          connectedPatients.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p.elderlyUserId;
+            opt.textContent = p.elderlyName || 'Senior User';
+            select.appendChild(opt);
+          });
+
+          document.getElementById('badge-patients-count').textContent = connectedPatients.length;
+
+          if (!activePatientId || !connectedPatients.some(p => p.elderlyUserId === activePatientId)) {
+            activePatientId = connectedPatients[0].elderlyUserId;
+          }
+          select.value = activePatientId;
+
+          // Render Overview Patient Cards
+          renderOverviewPatientsGrid();
+          // Render Patient Full List Tab
+          renderPatientsFullList(rels);
+
+          // Load active patient workspace
+          loadActivePatientData(activePatientId);
+
+        } catch (e) {
+          console.error('Failed to load connected patients:', e);
+        }
+      }
+
+      function renderOverviewPatientsGrid() {
+        const grid = document.getElementById('overview-patients-grid');
+        grid.innerHTML = connectedPatients.map(p => `
+          <div class="bg-white p-5 rounded-3xl border ${p.elderlyUserId === activePatientId ? 'border-amber-400 ring-2 ring-amber-400/20' : 'border-slate-200'} shadow-sm flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center text-xl font-bold">
+                👵
+              </div>
+              <div>
+                <div class="font-extrabold text-sm text-[#0F172A]">${p.elderlyName || 'Senior User'}</div>
+                <div class="text-xs text-slate-500 font-mono">${p.elderlyEmail || 'Protected profile'}</div>
+                <span class="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Connected</span>
+              </div>
+            </div>
+            <button class="switch-patient-btn px-3 py-1.5 rounded-xl ${p.elderlyUserId === activePatientId ? 'bg-amber-500 text-[#0F172A]' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'} text-xs font-bold transition-all" data-id="${p.elderlyUserId}">
+              ${p.elderlyUserId === activePatientId ? 'Active Workspace' : 'Select'}
+            </button>
+          </div>
+        `).join('');
+
+        grid.querySelectorAll('.switch-patient-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            activePatientId = btn.dataset.id;
+            document.getElementById('active-senior-select').value = activePatientId;
+            renderOverviewPatientsGrid();
+            loadActivePatientData(activePatientId);
+            showToast('Active senior profile switched');
+          });
+        });
+      }
+
+      function renderPatientsFullList(allRels) {
+        const list = document.getElementById('patients-full-list');
+        list.innerHTML = allRels.map(r => `
+          <div class="p-4 rounded-2xl border border-slate-200 bg-white flex items-center justify-between gap-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl ${r.status === 'accepted' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'} flex items-center justify-center text-lg">
+                👵
+              </div>
+              <div>
+                <div class="font-bold text-sm text-[#0F172A]">${r.elderlyName || 'Senior User'}</div>
+                <div class="text-xs text-slate-500 font-mono">${r.elderlyEmail || 'Protected'}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full ${r.status === 'accepted' ? 'bg-emerald-100 text-emerald-800' : r.status === 'pending' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}">
+                ${r.status}
+              </span>
+              ${r.status === 'accepted' ? `
+                <button class="revoke-rel-btn px-3 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-bold transition-all" data-id="${r.id}">
+                  Revoke Connection
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `).join('');
+
+        list.querySelectorAll('.revoke-rel-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('Are you sure you want to revoke this connection?')) return;
+            try {
+              await window.RelationshipClient.revokeRelationship(btn.dataset.id);
+              showToast('Connection revoked');
+              loadConnectedPatients();
+            } catch (err) {
+              showToast(err.message, true);
+            }
+          });
+        });
+      }
+
+      document.getElementById('active-senior-select').addEventListener('change', (e) => {
+        activePatientId = e.target.value;
+        renderOverviewPatientsGrid();
+        loadActivePatientData(activePatientId);
+      });
+
+      // 5. Load Active Patient Workspace Datasets
+      async function loadActivePatientData(elderlyUserId) {
+        if (!elderlyUserId) return;
+
+        try {
+          // Load Profile
+          const profile = await window.ProfileClient.getProfile(elderlyUserId);
+          if (profile) {
+            document.getElementById('prof-display-name').value = profile.displayName || '';
+            document.getElementById('prof-language').value = profile.preferredLanguage || 'as';
+            document.getElementById('prof-region').value = profile.region || 'NER - Assam';
+            document.getElementById('prof-places').value = (profile.familiarPlaces || []).join(', ');
+            document.getElementById('prof-interests').value = (profile.interests || []).join(', ');
+            document.getElementById('prof-culture').value = (profile.culturalPreferences || []).join(', ');
+            document.getElementById('prof-notes').value = profile.personalNotes || '';
+
+            // Regional radio sync
+            const langRadio = document.querySelector(`input[name="lang-pref"][value="${profile.preferredLanguage || 'as'}"]`);
+            if (langRadio) langRadio.checked = true;
+
+            // Accessibility sync
+            if (profile.accessibility) {
+              document.getElementById('a11y-large-text').checked = profile.accessibility.largeText !== false;
+              document.getElementById('a11y-high-contrast').checked = Boolean(profile.accessibility.highContrast);
+              document.getElementById('a11y-voice-guidance').checked = profile.accessibility.voiceGuidance !== false;
+              document.getElementById('a11y-slow-timing').checked = profile.accessibility.slowTiming !== false;
+            }
+
+            // Cognitive activity sync
+            if (profile.cognitivePreferences) {
+              const cats = profile.cognitivePreferences.categories || [];
+              document.getElementById('cog-cat-family').checked = cats.includes('family_recognition') || cats.length === 0;
+              document.getElementById('cog-cat-photos').checked = cats.includes('photo_recall') || cats.length === 0;
+              document.getElementById('cog-cat-routine').checked = cats.includes('daily_routine_recall') || cats.length === 0;
+              document.getElementById('cog-cat-music').checked = cats.includes('music_recall') || cats.length === 0;
+              if (profile.cognitivePreferences.difficultyLevel) {
+                document.getElementById('cog-difficulty').value = profile.cognitivePreferences.difficultyLevel;
+              }
+              if (profile.cognitivePreferences.sessionLengthMinutes) {
+                document.getElementById('cog-session-len').value = String(profile.cognitivePreferences.sessionLengthMinutes);
+              }
+            }
+          }
+
+          // Load Family Members
+          const family = await window.ProfileClient.getFamily(elderlyUserId);
+          renderFamilyGrid(family);
+          document.getElementById('badge-family-count').textContent = family.length;
+          document.getElementById('overview-family-stat').textContent = family.length;
+          document.getElementById('insights-family-stat').textContent = `${family.length} Faces`;
+
+          // Load Photos & Memories
+          const memories = await window.MediaClient.getMemories(elderlyUserId);
+          const photos = memories.filter(m => m.type === 'photo');
+          const videos = memories.filter(m => m.type === 'video');
+          const audios = memories.filter(m => m.type === 'audio');
+
+          renderPhotosGrid(photos);
+          renderVideosGrid(videos);
+          renderMusicList(audios);
+          document.getElementById('badge-photos-count').textContent = photos.length;
+          document.getElementById('overview-memories-stat').textContent = memories.length;
+          document.getElementById('insights-memories-stat').textContent = `${memories.length} Items`;
+
+          // Load Daily Routine
+          const routines = await window.ProfileClient.getRoutines(elderlyUserId);
+          renderRoutineTimeline(routines);
+          document.getElementById('overview-routine-stat').textContent = routines.length;
+          document.getElementById('insights-routines-stat').textContent = `${routines.length} Anchors`;
+
+          // Load Reminders
+          const reminders = await window.ProfileClient.getReminders(elderlyUserId);
+          renderRemindersGrid(reminders);
+
+          // Load Cognitive Insights & Support Alerts
+          await loadCognitiveInsights(elderlyUserId);
+
+        } catch (err) {
+          console.error('Failed to load active patient data:', err);
+        }
+      }
+
+      async function loadCognitiveInsights(elderlyUserId) {
+        if (!elderlyUserId) return;
+        try {
+          const res = await cognitiveClient.fetchInsights(elderlyUserId);
+          if (res.success && res.insights) {
+            const ins = res.insights;
+            document.getElementById('insights-sessions-stat').textContent = `${ins.totalSessions || 0} Sessions`;
+            document.getElementById('insights-accuracy-stat').textContent = `${Math.round((ins.averageAccuracy || 0) * 100)}%`;
+            document.getElementById('insights-time-stat').textContent = `${((ins.averageResponseTimeMs || 0) / 1000).toFixed(1)}s`;
+            document.getElementById('insights-diff-stat').textContent = `Level ${ins.currentDifficulty || 1}`;
+
+            // Alerts
+            const alerts = ins.alerts || [];
+            const activeAlerts = alerts.filter(a => a.status === 'active');
+            document.getElementById('insights-alerts-count').textContent = `${activeAlerts.length} Active`;
+            const alertCont = document.getElementById('insights-alerts-container');
+            if (activeAlerts.length > 0) {
+              alertCont.innerHTML = activeAlerts.map(a => `
+                <div class="p-3 bg-white rounded-2xl border border-amber-300 flex items-center justify-between gap-3 shadow-sm">
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-lg">⚠️</span>
+                    <div>
+                      <div class="text-xs font-bold text-slate-900">${a.message}</div>
+                      <div class="text-[10px] text-slate-400 font-mono">${new Date(a.createdAt).toLocaleString()}</div>
+                    </div>
+                  </div>
+                  <button class="ack-alert-btn px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-all" data-id="${a.id}">
+                    ✓ Acknowledge
+                  </button>
+                </div>
+              `).join('');
+
+              alertCont.querySelectorAll('.ack-alert-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                  await cognitiveClient.acknowledgeAlert(btn.dataset.id);
+                  showToast('Support alert acknowledged.');
+                  loadCognitiveInsights(elderlyUserId);
+                });
+              });
+            } else {
+              alertCont.innerHTML = `<div class="text-xs text-slate-500 p-2">No active alerts. Routine and activity support are running smoothly.</div>`;
+            }
+
+            // Categories
+            const catCont = document.getElementById('insights-categories-container');
+            if (ins.categoryBreakdown) {
+              catCont.innerHTML = Object.entries(ins.categoryBreakdown).map(([cat, info]) => `
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                  <div class="text-xs font-bold text-[#0F172A] capitalize">${cat.replace('_', ' ')}</div>
+                  <div class="text-xs text-slate-500">${info.attempts || 0} attempts &bull; ${info.averageAccuracy !== null ? Math.round(info.averageAccuracy * 100) + '%' : 'No data'}</div>
+                  <div class="text-[11px] font-semibold text-indigo-700">Difficulty: Level ${info.currentDifficulty || 1}</div>
+                </div>
+              `).join('');
+            }
+          }
+        } catch (e) {
+          console.warn('Failed to load cognitive insights:', e);
+        }
+      }
+
+      document.getElementById('refresh-insights-btn')?.addEventListener('click', () => {
+        if (activePatientId) loadCognitiveInsights(activePatientId);
+      });
+
+      // Render Family Grid
+      function renderFamilyGrid(family) {
+        const grid = document.getElementById('family-members-grid');
+        if (family.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-full p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 text-slate-400 text-xs">
+              No family members added yet. Click "+ Add Family Member" to build the memory dataset.
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = family.map(f => {
+          const photoSrc = f.avatarUrl || f.photoURL;
+          const displayRelation = f.familiarTitle || f.relationship || 'Family Member';
+
+          return `
+            <div class="p-4 rounded-3xl border border-slate-200 bg-white hover:border-indigo-300 shadow-sm space-y-3 transition-all relative overflow-hidden flex flex-col justify-between">
+              <div>
+                <div class="flex items-start gap-3">
+                  <div class="w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-900 flex items-center justify-center text-2xl font-bold shadow-xs overflow-hidden flex-shrink-0">
+                    ${photoSrc ? `
+                      <img src="${photoSrc}" alt="${f.name}" class="w-full h-full object-cover" />
+                    ` : `
+                      <span>${f.avatar || (f.gender === 'female' ? '👩' : f.gender === 'male' ? '👨' : '🧑‍💼')}</span>
+                    `}
+                  </div>
+                  <div class="flex-grow min-w-0">
+                    <div class="flex items-center gap-1.5">
+                      <div class="font-extrabold text-sm text-[#0F172A] truncate">${f.name}</div>
+                      ${f.isFavorite ? `<span class="text-amber-500 text-xs" title="Primary Memory Anchor">⭐</span>` : ''}
+                    </div>
+                    <div class="flex flex-wrap items-center gap-1 mt-0.5">
+                      <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200">${displayRelation}</span>
+                      ${f.location ? `<span class="text-[10px] text-slate-500 font-semibold flex items-center gap-0.5">📍 ${f.location}</span>` : ''}
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <button class="edit-family-btn text-slate-400 hover:text-indigo-600 p-1.5 rounded-lg hover:bg-slate-100 text-xs" data-id="${f.id}" title="Edit">✏️</button>
+                    <button class="delete-family-btn text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-slate-100 text-xs" data-id="${f.id}" title="Delete">✕</button>
+                  </div>
+                </div>
+
+                ${(f.personalContext || f.shortDescription) ? `
+                  <p class="text-xs text-slate-600 mt-2.5 bg-slate-50 p-2.5 rounded-xl border border-slate-100 leading-relaxed font-medium">
+                    <span class="font-bold text-slate-700">💭 Memory:</span> ${f.personalContext || f.shortDescription}
+                  </p>
+                ` : ''}
+
+                ${f.voicePrompt ? `
+                  <div class="text-[11px] text-indigo-900 bg-indigo-50/70 p-2.5 rounded-xl border border-indigo-100 mt-2 font-medium">
+                    <span class="font-bold">🗣️ Talk Prompt:</span> "${f.voicePrompt}"
+                  </div>
+                ` : ''}
+
+                ${f.importantNotes ? `
+                  <div class="text-[10px] text-amber-900 bg-amber-50/80 p-2 rounded-xl border border-amber-200 mt-1.5">
+                    <strong>Caregiver Note:</strong> ${f.importantNotes}
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+                <span>Used in: "Who Is This?", Recall & Talk</span>
+                ${photoSrc ? `<span class="text-emerald-600 font-bold">📸 Photo Linked</span>` : `<span class="text-slate-400">No photo</span>`}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Edit handlers
+        grid.querySelectorAll('.edit-family-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const member = family.find(f => f.id === btn.dataset.id);
+            if (!member) return;
+            document.getElementById('family-edit-id').value = member.id;
+            document.getElementById('family-input-name').value = member.name || '';
+            document.getElementById('family-input-relation').value = member.familiarTitle || member.relationship || '';
+            document.getElementById('family-input-gender').value = member.gender || 'unspecified';
+            document.getElementById('family-input-location').value = member.location || '';
+            document.getElementById('family-input-bio').value = member.personalContext || member.shortDescription || '';
+            document.getElementById('family-input-voice-prompt').value = member.voicePrompt || '';
+            document.getElementById('family-input-notes').value = member.importantNotes || '';
+            document.getElementById('family-input-favorite').checked = Boolean(member.isFavorite);
+            document.getElementById('family-input-avatar-url').value = member.avatarUrl || member.photoURL || '';
+
+            const photoPreview = document.getElementById('family-photo-img');
+            const placeholder = document.getElementById('family-photo-placeholder');
+            if (member.avatarUrl || member.photoURL) {
+              photoPreview.src = member.avatarUrl || member.photoURL;
+              photoPreview.classList.remove('hidden');
+              placeholder.classList.add('hidden');
+            } else {
+              photoPreview.src = '';
+              photoPreview.classList.add('hidden');
+              placeholder.classList.remove('hidden');
+            }
+
+            document.getElementById('family-modal-heading').innerHTML = '<span>✏️</span> Edit Family Memory Anchor';
+            document.getElementById('family-modal').classList.remove('hidden');
+          });
+        });
+
+        // Delete handlers
+        grid.querySelectorAll('.delete-family-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('Are you sure you want to delete this family member record?')) return;
+            try {
+              await window.ProfileClient.deleteFamilyMember(btn.dataset.id);
+              showToast('Family member removed');
+              loadActivePatientData(activePatientId);
+            } catch (e) {
+              showToast(e.message, true);
+            }
+          });
+        });
+      }
+
+      // Render Photos Grid
+      let currentLabelingPhoto = null;
+      let currentDetectedFaces = [];
+
+      function renderPhotosGrid(photos) {
+        const grid = document.getElementById('photos-vault-grid');
+        if (photos.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-full p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 text-slate-400 text-xs">
+              No photos uploaded to this patient's vault yet.
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = photos.map(p => {
+          const isAnalyzed = p.faceAnalysis?.status === 'completed';
+          const facesCount = p.faceAnalysis?.facesCount ?? (p.faceAnalysis?.faces?.length || 0);
+          const taggedCount = p.associatedPeopleCount || 0;
+
+          return `
+            <div class="group relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-square shadow-sm flex flex-col justify-between">
+              ${p.runtimeUrl ? `
+                <img src="${p.runtimeUrl}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              ` : `
+                <div class="w-full h-full flex flex-col items-center justify-center text-slate-400 p-3 text-center">
+                  <span class="text-3xl mb-1">🖼️</span>
+                  <span class="text-[11px] font-bold text-slate-600">${p.title || 'Photo Memory'}</span>
+                </div>
+              `}
+
+              <!-- Top Status Badge -->
+              <div class="absolute top-2 left-2 flex flex-col gap-1 z-10">
+                ${taggedCount > 0 ? `
+                  <span class="px-2.5 py-1 rounded-full bg-emerald-600/95 text-white font-extrabold text-[10px] shadow-sm backdrop-blur-xs flex items-center gap-1">
+                    <span>👥</span> <span>${taggedCount} ${taggedCount === 1 ? 'person' : 'people'} tagged</span>
+                  </span>
+                ` : isAnalyzed ? `
+                  <span class="px-2.5 py-1 rounded-full bg-purple-600/95 text-white font-extrabold text-[10px] shadow-sm backdrop-blur-xs flex items-center gap-1">
+                    <span>🔍</span> <span>${facesCount} ${facesCount === 1 ? 'face' : 'faces'} detected</span>
+                  </span>
+                ` : ''}
+              </div>
+
+              <!-- Hover Overlay -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-end text-white text-xs z-20">
+                <span class="font-bold truncate text-sm">${p.title || 'Memory'}</span>
+                <span class="text-[10px] text-amber-300 truncate mb-2">${(p.tags || []).join(', ')}</span>
+                
+                <div class="flex items-center gap-1.5 justify-between pt-1 border-t border-white/20">
+                  <button class="analyze-faces-btn px-2.5 py-1.5 rounded-xl ${taggedCount > 0 ? 'bg-purple-600 hover:bg-purple-500' : 'bg-amber-500 hover:bg-amber-400 text-slate-950'} font-extrabold text-[11px] shadow-sm transition-all flex items-center gap-1" data-id="${p.id}">
+                    <span>🔍</span> <span>${taggedCount > 0 ? 'Edit Faces' : isAnalyzed ? 'Label Faces' : 'Analyze Faces'}</span>
+                  </button>
+                  <button class="delete-photo-btn px-2 py-1.5 rounded-xl hover:bg-rose-500/30 text-rose-300 hover:text-rose-100 font-bold text-[11px]" data-id="${p.id}">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Delete photo button handler
+        grid.querySelectorAll('.delete-photo-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!confirm('Are you sure you want to delete this photo memory?')) return;
+            try {
+              await window.MediaClient.deleteMemory(btn.dataset.id);
+              showToast('Photo removed from vault');
+              loadActivePatientData(activePatientId);
+            } catch (err) {
+              showToast(err.message, true);
+            }
+          });
+        });
+
+        // Analyze Faces button handler
+        grid.querySelectorAll('.analyze-faces-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const photoId = btn.dataset.id;
+            const photo = (activePatientData.memories || []).find(m => m.id === photoId);
+            if (!photo) return;
+
+            btn.disabled = true;
+            const prevText = btn.innerHTML;
+            btn.innerHTML = '<span>⏳</span> <span>Analyzing...</span>';
+
+            try {
+              showToast('Analyzing faces with Google Cloud Vision...');
+              const res = await window.MediaClient.analyzeFaces(photoId);
+
+              if (!res.faces || res.faces.length === 0) {
+                showToast('No faces detected in this photo.');
+                btn.innerHTML = prevText;
+                btn.disabled = false;
+                return;
+              }
+
+              // Fetch existing associations for this memory
+              const existingAssociations = await window.MediaClient.getMemoryFaceAssociations(photoId).catch(() => []);
+              
+              openFaceLabelingModal(photo, res.faces, existingAssociations);
+            } catch (err) {
+              showToast(err.message || 'Face analysis failed', true);
+            } finally {
+              btn.disabled = false;
+              const isTagged = (photo.associatedPeopleCount || 0) > 0;
+              btn.innerHTML = `<span>🔍</span> <span>${isTagged ? 'Edit Faces' : 'Label Faces'}</span>`;
+            }
+          });
+        });
+      }
+
+      // Open Face Labeling Modal
+      function openFaceLabelingModal(photo, faces, existingAssociations = []) {
+        currentLabelingPhoto = photo;
+        currentDetectedFaces = faces;
+
+        const modal = document.getElementById('face-labeling-modal');
+        const imgEl = document.getElementById('face-modal-photo-img');
+        const countText = document.getElementById('face-modal-count-text');
+        const container = document.getElementById('face-cards-container');
+        const overlays = document.getElementById('face-bounding-overlays');
+
+        imgEl.src = photo.runtimeUrl || '';
+        countText.textContent = `${faces.length} ${faces.length === 1 ? 'Face' : 'Faces'} Detected`;
+
+        // Render bounding box overlays on photo
+        overlays.innerHTML = faces.map((f, i) => `
+          <div style="position: absolute; left: ${f.boundingBox.left * 100}%; top: ${f.boundingBox.top * 100}%; width: ${f.boundingBox.width * 100}%; height: ${f.boundingBox.height * 100}%;" class="border-2 border-purple-400 bg-purple-500/20 rounded-lg pointer-events-none flex items-start justify-start p-1">
+            <span class="bg-purple-600 text-white font-extrabold text-[9px] px-1.5 py-0.5 rounded shadow-sm">#${i + 1}</span>
+          </div>
+        `).join('');
+
+        // Populate family dropdowns
+        const familyList = activePatientData.familyMembers || [];
+
+        container.innerHTML = faces.map((f, i) => {
+          const existing = existingAssociations.find(a => a.id === f.faceId || a.faceId === f.faceId);
+          const selectedPersonId = existing ? existing.personId : '';
+
+          const familyOptions = familyList.map(m => `
+            <option value="${m.id}" ${m.id === selectedPersonId ? 'selected' : ''}>
+              ${m.name} (${m.relationship || 'Family'})
+            </option>
+          `).join('');
+
+          return `
+            <div class="face-assignment-row p-4 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-purple-300 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs" data-face-id="${f.faceId}">
+              <div class="flex items-center gap-3">
+                <div class="relative w-14 h-14 rounded-2xl overflow-hidden border-2 border-purple-400 bg-slate-900 flex-shrink-0 shadow-sm">
+                  <div style="width: 100%; height: 100%; background-image: url('${photo.runtimeUrl}'); background-size: ${100 / Math.max(0.01, f.boundingBox.width)}% ${100 / Math.max(0.01, f.boundingBox.height)}%; background-position: ${f.boundingBox.left * 100 / (1 - Math.min(0.99, f.boundingBox.width))}% ${f.boundingBox.top * 100 / (1 - Math.min(0.99, f.boundingBox.height))}%;" class="w-full h-full bg-no-repeat"></div>
+                </div>
+                <div>
+                  <div class="font-extrabold text-xs text-slate-900 flex items-center gap-1.5">
+                    <span>Face #${i + 1}</span>
+                    <span class="text-[10px] text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full font-bold">Confidence ${Math.round((f.confidence || 0.95) * 100)}%</span>
+                  </div>
+                  <div class="text-[11px] text-slate-500 font-medium">Who is this in this memory photo?</div>
+                </div>
+              </div>
+
+              <div class="w-full sm:w-64 flex flex-col gap-1">
+                <select class="face-person-select w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-400" data-face-id="${f.faceId}">
+                  <option value="">-- Select Family Member --</option>
+                  ${familyOptions}
+                </select>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        modal.classList.remove('hidden');
+      }
+
+      // Save Associations Button Handler
+      document.getElementById('save-face-associations-btn')?.addEventListener('click', async () => {
+        if (!currentLabelingPhoto || !activePatientId) return;
+
+        const btn = document.getElementById('save-face-associations-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳</span> <span>Saving...</span>';
+
+        const familyList = activePatientData.familyMembers || [];
+        const associations = currentDetectedFaces.map(f => {
+          const selectEl = document.querySelector(`.face-person-select[data-face-id="${f.faceId}"]`);
+          const personId = selectEl?.value;
+          const person = familyList.find(m => m.id === personId);
+
+          return {
+            id: f.faceId,
+            faceId: f.faceId,
+            personId: person ? person.id : null,
+            personName: person ? person.name : 'Unknown',
+            relationship: person ? person.relationship : '',
+            boundingBox: f.boundingBox,
+            confidence: f.confidence,
+            joyLikelihood: f.joyLikelihood
+          };
+        }).filter(a => a.personId);
+
+        try {
+          await window.MediaClient.saveFaceAssociations({
+            memoryId: currentLabelingPhoto.id,
+            elderlyUserId: activePatientId,
+            associations
+          });
+
+          const count = associations.length;
+          showToast(`${count} ${count === 1 ? 'person' : 'people'} associated with this memory!`);
+          document.getElementById('face-labeling-modal').classList.add('hidden');
+          loadActivePatientData(activePatientId);
+        } catch (err) {
+          showToast(err.message || 'Failed to save associations', true);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<span>💾</span> <span>Save Associations</span>';
+        }
+      });
+
+      // Face Modal Close Handlers
+      document.getElementById('close-face-modal-btn')?.addEventListener('click', () => {
+        document.getElementById('face-labeling-modal').classList.add('hidden');
+      });
+      document.getElementById('cancel-face-modal-btn')?.addEventListener('click', () => {
+        document.getElementById('face-labeling-modal').classList.add('hidden');
+      });
+      document.getElementById('face-modal-add-family-btn')?.addEventListener('click', () => {
+        document.getElementById('family-modal-heading').innerHTML = '<span>👨‍👩‍👧‍👦</span> Add Family Member / Contact';
+        document.getElementById('family-form-member-id').value = '';
+        document.getElementById('family-form-name').value = '';
+        document.getElementById('family-form-relationship').value = '';
+        document.getElementById('family-form-phone').value = '';
+        document.getElementById('family-modal').classList.remove('hidden');
+      });
+
+      // Render Videos Grid
+      function renderVideosGrid(videos) {
+        const grid = document.getElementById('videos-vault-grid');
+        if (videos.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-full p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 text-slate-400 text-xs">
+              No video memories uploaded yet.
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = videos.map(v => `
+          <div class="p-4 rounded-2xl border border-slate-200 bg-white space-y-3 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div class="font-extrabold text-sm text-[#0F172A] flex items-center gap-2">
+                <span>🎥</span> ${v.title}
+              </div>
+              <button class="delete-video-btn text-slate-400 hover:text-rose-600" data-id="${v.id}">✕</button>
+            </div>
+            ${v.runtimeUrl ? `
+              <video src="${v.runtimeUrl}" controls class="w-full rounded-xl max-h-48 bg-black"></video>
+            ` : `
+              <div class="p-6 bg-slate-100 rounded-xl text-center text-xs text-slate-500">
+                Video clip metadata stored in private vault
+              </div>
+            `}
+            ${v.description ? `<p class="text-xs text-slate-600">${v.description}</p>` : ''}
+          </div>
+        `).join('');
+
+        grid.querySelectorAll('.delete-video-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('Are you sure you want to delete this video?')) return;
+            try {
+              await window.MediaClient.deleteMemory(btn.dataset.id);
+              showToast('Video removed');
+              loadActivePatientData(activePatientId);
+            } catch (e) {
+              showToast(e.message, true);
+            }
+          });
+        });
+      }
+
+      // Render Music List
+      function renderMusicList(audios) {
+        const list = document.getElementById('music-tracks-list');
+        if (audios.length === 0) {
+          list.innerHTML = `
+            <div class="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 text-slate-400 text-xs">
+              No nostalgic songs uploaded yet. Click "+ Upload Audio Track".
+            </div>
+          `;
+          return;
+        }
+
+        list.innerHTML = audios.map(a => `
+          <div class="p-4 rounded-2xl border border-slate-200 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center text-xl">
+                🎵
+              </div>
+              <div>
+                <div class="font-extrabold text-sm text-[#0F172A]">${a.title}</div>
+                <div class="text-xs text-slate-500">${a.description || 'Assamese / Regional Nostalgic Track'}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              ${a.runtimeUrl ? `
+                <audio src="${a.runtimeUrl}" controls class="h-8 max-w-xs"></audio>
+              ` : ''}
+              <button class="delete-audio-btn text-slate-400 hover:text-rose-600 p-1" data-id="${a.id}">✕</button>
+            </div>
+          </div>
+        `).join('');
+
+        list.querySelectorAll('.delete-audio-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('Are you sure you want to delete this audio track?')) return;
+            try {
+              await window.MediaClient.deleteMemory(btn.dataset.id);
+              showToast('Audio track removed');
+              loadActivePatientData(activePatientId);
+            } catch (e) {
+              showToast(e.message, true);
+            }
+          });
+        });
+      }
+
+      // Render Routine Timeline
+      function renderRoutineTimeline(routines) {
+        const list = document.getElementById('routine-timeline-list');
+        if (routines.length === 0) {
+          list.innerHTML = `
+            <div class="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 text-slate-400 text-xs">
+              No routine items defined. Click "+ Add Routine Item".
+            </div>
+          `;
+          return;
+        }
+
+        list.innerHTML = routines.map((r) => `
+          <div class="p-4 rounded-2xl border border-slate-200 bg-white flex items-center justify-between gap-4 shadow-sm hover:border-amber-400 transition-colors">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center text-xl font-bold">
+                ${r.icon || '🌅'}
+              </div>
+              <div>
+                <div class="font-extrabold text-sm text-[#0F172A]">${r.activityName}</div>
+                <div class="text-xs text-slate-500">${r.notes || 'Daily Routine Step'}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-mono font-bold px-3 py-1 bg-slate-100 text-slate-800 rounded-full">${r.time}</span>
+              <button class="edit-routine-btn text-slate-400 hover:text-amber-600 p-1 text-xs" data-id="${r.id}">✏️</button>
+              <button class="delete-routine-btn text-slate-400 hover:text-rose-600 p-1 text-xs" data-id="${r.id}">✕</button>
+            </div>
+          </div>
+        `).join('');
+
+        list.querySelectorAll('.edit-routine-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const item = routines.find(r => r.id === btn.dataset.id);
+            if (!item) return;
+            document.getElementById('routine-edit-id').value = item.id;
+            document.getElementById('routine-input-name').value = item.activityName || '';
+            document.getElementById('routine-input-time').value = item.time || '';
+            document.getElementById('routine-input-category').value = item.category || 'morning';
+            document.getElementById('routine-input-notes').value = item.notes || '';
+            document.getElementById('routine-modal-heading').innerHTML = '<span>✏️</span> Edit Routine Anchor';
+            document.getElementById('routine-modal').classList.remove('hidden');
+          });
+        });
+
+        list.querySelectorAll('.delete-routine-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('Are you sure you want to delete this routine anchor?')) return;
+            try {
+              await window.ProfileClient.deleteRoutine(btn.dataset.id);
+              showToast('Routine item deleted');
+              loadActivePatientData(activePatientId);
+            } catch (e) {
+              showToast(e.message, true);
+            }
+          });
+        });
+      }
+
+      // Render Reminders Grid
+      function renderRemindersGrid(reminders) {
+        const grid = document.getElementById('reminders-cards-grid');
+        if (reminders.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-full p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 text-slate-400 text-xs">
+              No health reminders created. Click "+ Add Reminder".
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = reminders.map(rem => `
+          <div class="p-4 rounded-2xl border border-slate-200 bg-white space-y-2 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${rem.type === 'medicine' ? 'bg-rose-100 text-rose-800' : rem.type === 'hydration' ? 'bg-blue-100 text-blue-800' : rem.type === 'appointment' ? 'bg-indigo-100 text-indigo-800' : 'bg-emerald-100 text-emerald-800'}">
+                ${rem.type}
+              </span>
+              <div class="flex items-center gap-1">
+                <button class="edit-reminder-btn text-slate-400 hover:text-emerald-600 p-1 text-xs" data-id="${rem.id}">✏️</button>
+                <button class="delete-reminder-btn text-slate-400 hover:text-rose-600 p-1 text-xs" data-id="${rem.id}">✕</button>
+              </div>
+            </div>
+            <div class="font-extrabold text-sm text-[#0F172A]">${rem.title}</div>
+            <div class="text-xs text-slate-500 font-mono flex items-center gap-2">
+              <span>⏰ ${rem.schedule}</span>
+              ${rem.dosageOrTarget ? `<span>• ${rem.dosageOrTarget}</span>` : ''}
+            </div>
+            ${rem.notes ? `<p class="text-xs text-slate-600">${rem.notes}</p>` : ''}
+          </div>
+        `).join('');
+
+        grid.querySelectorAll('.edit-reminder-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const rem = reminders.find(r => r.id === btn.dataset.id);
+            if (!rem) return;
+            document.getElementById('reminder-edit-id').value = rem.id;
+            document.getElementById('reminder-input-type').value = rem.type || 'medicine';
+            document.getElementById('reminder-input-title').value = rem.title || '';
+            document.getElementById('reminder-input-schedule').value = rem.schedule || '';
+            document.getElementById('reminder-input-dosage').value = rem.dosageOrTarget || '';
+            document.getElementById('reminder-input-notes').value = rem.notes || '';
+            document.getElementById('reminder-modal-heading').innerHTML = '<span>✏️</span> Edit Reminder';
+            document.getElementById('reminder-modal').classList.remove('hidden');
+          });
+        });
+
+        grid.querySelectorAll('.delete-reminder-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('Are you sure you want to delete this reminder?')) return;
+            try {
+              await window.ProfileClient.deleteReminder(btn.dataset.id);
+              showToast('Reminder deleted');
+              loadActivePatientData(activePatientId);
+            } catch (e) {
+              showToast(e.message, true);
+            }
+          });
+        });
+      }
+
+      // 6. Form Handlers & Button Actions
+
+      // Save Profile Form
+      document.getElementById('elderly-profile-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!activePatientId) {
+          showToast('Please select a connected elderly user first', true);
+          return;
+        }
+
+        const data = {
+          displayName: document.getElementById('prof-display-name').value,
+          preferredLanguage: document.getElementById('prof-language').value,
+          region: document.getElementById('prof-region').value,
+          familiarPlaces: document.getElementById('prof-places').value.split(',').map(s => s.trim()).filter(Boolean),
+          interests: document.getElementById('prof-interests').value.split(',').map(s => s.trim()).filter(Boolean),
+          culturalPreferences: document.getElementById('prof-culture').value.split(',').map(s => s.trim()).filter(Boolean),
+          personalNotes: document.getElementById('prof-notes').value
+        };
+
+        try {
+          await window.ProfileClient.saveProfile(activePatientId, data);
+          showToast('Personal profile saved successfully!');
+          loadConnectedPatients();
+        } catch (err) {
+          showToast(err.message, true);
+        }
+      });
+
+      // Save Language & Culture Preferences
+      document.getElementById('save-culture-btn')?.addEventListener('click', async () => {
+        if (!activePatientId) return;
+        const selectedLang = document.querySelector('input[name="lang-pref"]:checked')?.value || 'as';
+        const cult = [];
+        if (document.getElementById('cult-bihu')?.checked) cult.push('Rongali Bihu');
+        if (document.getElementById('cult-puja')?.checked) cult.push('Durga Puja');
+        if (document.getElementById('cult-tea')?.checked) cult.push('Traditional Tea Walks');
+
+        try {
+          await window.ProfileClient.saveProfile(activePatientId, {
+            preferredLanguage: selectedLang,
+            culturalPreferences: cult
+          });
+          document.getElementById('prof-language').value = selectedLang;
+          showToast('Language & cultural preferences saved!');
+        } catch (e) {
+          showToast(e.message, true);
+        }
+      });
+
+      // Save Accessibility Preferences
+      document.getElementById('save-a11y-btn').addEventListener('click', async () => {
+        if (!activePatientId) return;
+        const a11y = {
+          largeText: document.getElementById('a11y-large-text').checked,
+          highContrast: document.getElementById('a11y-high-contrast').checked,
+          voiceGuidance: document.getElementById('a11y-voice-guidance').checked,
+          slowTiming: document.getElementById('a11y-slow-timing').checked
+        };
+        try {
+          await window.ProfileClient.saveProfile(activePatientId, { accessibility: a11y });
+          showToast('Accessibility preferences saved!');
+        } catch (e) {
+          showToast(e.message, true);
+        }
+      });
+
+      // Save Cognitive Activities Settings
+      document.getElementById('save-cognitive-btn')?.addEventListener('click', async () => {
+        if (!activePatientId) return;
+        const cats = [];
+        if (document.getElementById('cog-cat-family')?.checked) cats.push('family_recognition');
+        if (document.getElementById('cog-cat-photos')?.checked) cats.push('photo_recall');
+        if (document.getElementById('cog-cat-routine')?.checked) cats.push('daily_routine_recall');
+        if (document.getElementById('cog-cat-music')?.checked) cats.push('music_recall');
+
+        const diff = document.getElementById('cog-difficulty')?.value || 'mild';
+        const sessionLen = parseInt(document.getElementById('cog-session-len')?.value || '10', 10);
+
+        try {
+          await window.ProfileClient.saveProfile(activePatientId, {
+            cognitivePreferences: {
+              categories: cats,
+              difficultyLevel: diff,
+              sessionLengthMinutes: sessionLen
+            }
+          });
+          showToast('Cognitive activities settings saved!');
+        } catch (e) {
+          showToast(e.message, true);
+        }
+      });
+
+      // Add/Edit Family Member Modal & Form
+      document.getElementById('add-family-btn').addEventListener('click', () => {
+        document.getElementById('family-edit-id').value = '';
+        document.getElementById('family-input-avatar-url').value = '';
+        document.getElementById('add-family-form').reset();
+        document.getElementById('family-photo-img').src = '';
+        document.getElementById('family-photo-img').classList.add('hidden');
+        document.getElementById('family-photo-placeholder').classList.remove('hidden');
+        document.getElementById('family-modal-heading').innerHTML = '<span>👨‍👩‍👧‍👦</span> Add Family Member / Memory Anchor';
+        document.getElementById('family-modal').classList.remove('hidden');
+      });
+
+      document.getElementById('close-family-modal-btn').addEventListener('click', () => {
+        document.getElementById('family-modal').classList.add('hidden');
+      });
+
+      // Quick chips for relationship
+      document.querySelectorAll('#family-relation-chips button').forEach(chip => {
+        chip.addEventListener('click', () => {
+          document.getElementById('family-input-relation').value = chip.dataset.val;
+        });
+      });
+
+      // Photo file preview
+      document.getElementById('family-input-photo-file')?.addEventListener('change', (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = document.getElementById('family-photo-img');
+          const placeholder = document.getElementById('family-photo-placeholder');
+          img.src = ev.target.result;
+          img.classList.remove('hidden');
+          placeholder.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      });
+
+      document.getElementById('add-family-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!activePatientId) return;
+
+        const saveBtn = document.getElementById('save-family-member-btn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span>⏳</span> <span>Saving Memory Anchor...</span>';
+
+        const editId = document.getElementById('family-edit-id').value;
+        const photoFile = document.getElementById('family-input-photo-file')?.files?.[0];
+        let avatarUrl = document.getElementById('family-input-avatar-url').value || '';
+
+        try {
+          // If a new photo was uploaded, upload to memory vault/storage
+          if (photoFile) {
+            try {
+              showToast('Uploading family photo memory anchor...');
+              const uploadRes = await window.MediaClient.uploadMedia({
+                file: photoFile,
+                elderlyUserId: activePatientId,
+                type: 'photo',
+                title: `${document.getElementById('family-input-name').value} (${document.getElementById('family-input-relation').value})`,
+                tags: ['Family', document.getElementById('family-input-relation').value]
+              });
+              if (uploadRes?.memory?.runtimeUrl) {
+                avatarUrl = uploadRes.memory.runtimeUrl;
+              }
+            } catch (upErr) {
+              console.warn('Photo upload fallback:', upErr);
+            }
+          }
+
+          const relValue = document.getElementById('family-input-relation').value.trim() || 'Family Member';
+
+          const data = {
+            elderlyUserId: activePatientId,
+            name: document.getElementById('family-input-name').value.trim(),
+            relationship: relValue,
+            familiarTitle: relValue,
+            gender: document.getElementById('family-input-gender').value,
+            location: document.getElementById('family-input-location').value.trim(),
+            personalContext: document.getElementById('family-input-bio').value.trim(),
+            shortDescription: document.getElementById('family-input-bio').value.trim(),
+            voicePrompt: document.getElementById('family-input-voice-prompt').value.trim(),
+            importantNotes: document.getElementById('family-input-notes').value.trim(),
+            isFavorite: document.getElementById('family-input-favorite').checked,
+            avatarUrl: avatarUrl || undefined,
+            photoURL: avatarUrl || undefined
+          };
+
+          if (editId) {
+            await window.ProfileClient.updateFamilyMember(editId, data);
+            showToast('Family memory anchor updated!');
+          } else {
+            await window.ProfileClient.addFamilyMember(data);
+            showToast('Family member added to personalization dataset!');
+          }
+
+          document.getElementById('family-modal').classList.add('hidden');
+          document.getElementById('add-family-form').reset();
+          loadActivePatientData(activePatientId);
+        } catch (err) {
+          showToast(err.message || 'Failed to save family member', true);
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = '<span>💾</span> <span>Save to Personalization Dataset</span>';
+        }
+      });
+
+      // Add/Edit Routine Modal & Form
+      document.getElementById('add-routine-btn').addEventListener('click', () => {
+        document.getElementById('routine-edit-id').value = '';
+        document.getElementById('add-routine-form').reset();
+        document.getElementById('routine-modal-heading').innerHTML = '<span>🌅</span> Add Routine Anchor';
+        document.getElementById('routine-modal').classList.remove('hidden');
+      });
+      document.getElementById('close-routine-modal-btn').addEventListener('click', () => {
+        document.getElementById('routine-modal').classList.add('hidden');
+      });
+      document.getElementById('add-routine-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!activePatientId) return;
+
+        const editId = document.getElementById('routine-edit-id').value;
+        const data = {
+          elderlyUserId: activePatientId,
+          activityName: document.getElementById('routine-input-name').value,
+          time: document.getElementById('routine-input-time').value,
+          category: document.getElementById('routine-input-category').value,
+          notes: document.getElementById('routine-input-notes').value
+        };
+
+        try {
+          if (editId) {
+            await window.ProfileClient.updateRoutine(editId, data);
+            showToast('Routine item updated!');
+          } else {
+            await window.ProfileClient.addRoutine(data);
+            showToast('Routine item added!');
+          }
+          document.getElementById('routine-modal').classList.add('hidden');
+          document.getElementById('add-routine-form').reset();
+          loadActivePatientData(activePatientId);
+        } catch (err) {
+          showToast(err.message, true);
+        }
+      });
+
+      // Add/Edit Reminder Modal & Form
+      document.getElementById('add-reminder-btn').addEventListener('click', () => {
+        document.getElementById('reminder-edit-id').value = '';
+        document.getElementById('add-reminder-form').reset();
+        document.getElementById('reminder-modal-heading').innerHTML = '<span>💊</span> Add Health Reminder';
+        document.getElementById('reminder-modal').classList.remove('hidden');
+      });
+      document.getElementById('close-reminder-modal-btn').addEventListener('click', () => {
+        document.getElementById('reminder-modal').classList.add('hidden');
+      });
+      document.getElementById('add-reminder-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!activePatientId) return;
+
+        const editId = document.getElementById('reminder-edit-id').value;
+        const data = {
+          elderlyUserId: activePatientId,
+          type: document.getElementById('reminder-input-type').value,
+          title: document.getElementById('reminder-input-title').value,
+          schedule: document.getElementById('reminder-input-schedule').value,
+          dosageOrTarget: document.getElementById('reminder-input-dosage').value,
+          notes: document.getElementById('reminder-input-notes').value
+        };
+
+        try {
+          if (editId) {
+            await window.ProfileClient.updateReminder(editId, data);
+            showToast('Reminder updated!');
+          } else {
+            await window.ProfileClient.addReminder(data);
+            showToast('Reminder added!');
+          }
+          document.getElementById('reminder-modal').classList.add('hidden');
+          document.getElementById('add-reminder-form').reset();
+          loadActivePatientData(activePatientId);
+        } catch (err) {
+          showToast(err.message, true);
+        }
+      });
+
+      // Photo Upload Dropzone
+      const dropzone = document.getElementById('photo-dropzone');
+      const photoInput = document.getElementById('photo-file-input');
+
+      dropzone.addEventListener('click', () => photoInput.click());
+      dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('border-amber-500', 'bg-amber-50');
+      });
+      dropzone.addEventListener('dragleave', () => {
+        dropzone.classList.remove('border-amber-500', 'bg-amber-50');
+      });
+      dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('border-amber-500', 'bg-amber-50');
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          handlePhotoUpload(Array.from(e.dataTransfer.files));
+        }
+      });
+
+      photoInput.addEventListener('change', () => {
+        handlePhotoUpload(Array.from(photoInput.files));
+      });
+
+      async function handlePhotoUpload(files) {
+        if (!activePatientId) {
+          showToast('Select an active elderly patient first', true);
+          return;
+        }
+        if (files.length === 0) return;
+
+        const progressContainer = document.getElementById('photo-upload-progress-container');
+        const progressBar = document.getElementById('photo-progress-bar');
+        const progressPct = document.getElementById('photo-upload-pct');
+        progressContainer.classList.remove('hidden');
+
+        try {
+          await window.MediaClient.uploadBatchPhotos({
+            files,
+            elderlyUserId: activePatientId,
+            onOverallProgress: (pct) => {
+              progressBar.style.width = pct + '%';
+              progressPct.textContent = pct + '%';
+            }
+          });
+          showToast(`Successfully uploaded ${files.length} photo(s) to vault!`);
+          setTimeout(() => progressContainer.classList.add('hidden'), 1000);
+          loadActivePatientData(activePatientId);
+        } catch (err) {
+          showToast(err.message, true);
+          progressContainer.classList.add('hidden');
+        }
+      }
+
+      // Video Upload
+      const videoBtn = document.getElementById('upload-video-btn');
+      const videoInput = document.getElementById('video-file-input');
+      const videoProgressContainer = document.getElementById('video-upload-progress-container');
+      const videoProgressBar = document.getElementById('video-progress-bar');
+      const videoProgressPct = document.getElementById('video-upload-pct');
+
+      videoBtn.addEventListener('click', () => videoInput.click());
+      videoInput.addEventListener('change', async () => {
+        if (!activePatientId) {
+          showToast('Select an active elderly patient first', true);
+          return;
+        }
+        const file = videoInput.files[0];
+        if (!file) return;
+
+        videoProgressContainer.classList.remove('hidden');
+        try {
+          await window.MediaClient.uploadMedia({
+            file,
+            elderlyUserId: activePatientId,
+            type: 'video',
+            title: file.name.replace(/\.[^/.]+$/, ''),
+            onProgress: (pct) => {
+              videoProgressBar.style.width = pct + '%';
+              videoProgressPct.textContent = pct + '%';
+            }
+          });
+          showToast('Video memory uploaded successfully to Cloud Vault!');
+          setTimeout(() => videoProgressContainer.classList.add('hidden'), 1000);
+          loadActivePatientData(activePatientId);
+        } catch (e) {
+          showToast('Upload failed: ' + e.message, true);
+          videoProgressContainer.classList.add('hidden');
+        }
+      });
+
+      // Music Upload
+      const musicBtn = document.getElementById('upload-music-btn');
+      const musicInput = document.getElementById('music-file-input');
+      const musicProgressContainer = document.getElementById('music-upload-progress-container');
+      const musicProgressBar = document.getElementById('music-progress-bar');
+      const musicProgressPct = document.getElementById('music-upload-pct');
+
+      musicBtn.addEventListener('click', () => musicInput.click());
+      musicInput.addEventListener('change', async () => {
+        if (!activePatientId) {
+          showToast('Select an active elderly patient first', true);
+          return;
+        }
+        const file = musicInput.files[0];
+        if (!file) return;
+
+        musicProgressContainer.classList.remove('hidden');
+        try {
+          await window.MediaClient.uploadMedia({
+            file,
+            elderlyUserId: activePatientId,
+            type: 'audio',
+            title: file.name.replace(/\.[^/.]+$/, ''),
+            onProgress: (pct) => {
+              musicProgressBar.style.width = pct + '%';
+              musicProgressPct.textContent = pct + '%';
+            }
+          });
+          showToast('Audio melody uploaded successfully to Cloud Vault!');
+          setTimeout(() => musicProgressContainer.classList.add('hidden'), 1000);
+          loadActivePatientData(activePatientId);
+        } catch (e) {
+          showToast('Upload failed: ' + e.message, true);
+          musicProgressContainer.classList.add('hidden');
+        }
+      });
+
+      // Connect Patient Modal
+      document.getElementById('open-connect-modal-btn').addEventListener('click', () => {
+        document.getElementById('connect-modal').classList.remove('hidden');
+      });
+      document.getElementById('quick-add-connection-btn')?.addEventListener('click', () => {
+        document.getElementById('connect-modal').classList.remove('hidden');
+      });
+      document.getElementById('close-connect-modal-btn').addEventListener('click', () => {
+        document.getElementById('connect-modal').classList.add('hidden');
+      });
+      document.getElementById('connect-patient-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const target = document.getElementById('connect-target-email').value;
+        try {
+          await window.RelationshipClient.createConnectionRequest(target);
+          document.getElementById('connect-modal').classList.add('hidden');
+          document.getElementById('connect-patient-form').reset();
+          showToast('Connection request sent!');
+          loadConnectedPatients();
+        } catch (err) {
+          showToast(err.message, true);
+        }
+      });
+
+      // 7. PREVIEW SENIOR EXPERIENCE MODAL
+      document.getElementById('preview-senior-btn').addEventListener('click', async () => {
+        if (!activePatientId) {
+          showToast('Please select a connected senior patient first', true);
+          return;
+        }
+
+        try {
+          const exp = await window.ProfileClient.getPreview(activePatientId);
+          renderPreviewModal(exp);
+          document.getElementById('preview-modal').classList.remove('hidden');
+        } catch (err) {
+          showToast(err.message, true);
+        }
+      });
+
+      document.getElementById('close-preview-modal-btn').addEventListener('click', () => {
+        document.getElementById('preview-modal').classList.add('hidden');
+      });
+
+      function renderPreviewModal(exp) {
+        const body = document.getElementById('preview-modal-body');
+        document.getElementById('preview-modal-title').textContent = `Preview for ${exp.displayName}`;
+
+        body.innerHTML = `
+          <!-- Senior Greeting Hero -->
+          <div class="p-6 rounded-3xl bg-gradient-to-r from-amber-100 via-orange-100 to-amber-50 border-2 border-amber-300 flex items-center justify-between">
+            <div class="space-y-1">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-amber-900 bg-amber-200/80 px-3 py-0.5 rounded-full">
+                Personalized Memory Sanctuary
+              </span>
+              <h2 class="text-3xl font-extrabold text-[#0F172A]">${exp.greeting}</h2>
+              <p class="text-xs text-amber-950 font-semibold">Welcome to your familiar world of memories, family, and melodies.</p>
+            </div>
+            <div class="text-5xl">👵</div>
+          </div>
+
+          <!-- Senior Touch Tiles Grid (Radically Simple) -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            
+            <div class="p-5 rounded-3xl bg-white border-2 border-indigo-200 hover:border-indigo-400 shadow-sm text-center space-y-2">
+              <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-900 mx-auto flex items-center justify-center text-3xl font-bold">
+                👨‍👩‍👧‍👦
+              </div>
+              <div class="font-extrabold text-base text-[#0F172A]">My Family</div>
+              <div class="text-xs text-slate-500">${exp.family.length} Registered Members</div>
+            </div>
+
+            <div class="p-5 rounded-3xl bg-white border-2 border-amber-200 hover:border-amber-400 shadow-sm text-center space-y-2">
+              <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-900 mx-auto flex items-center justify-center text-3xl font-bold">
+                📸
+              </div>
+              <div class="font-extrabold text-base text-[#0F172A]">My Memories</div>
+              <div class="text-xs text-slate-500">${exp.memories.photos.length} Photos & Clips</div>
+            </div>
+
+            <div class="p-5 rounded-3xl bg-white border-2 border-emerald-200 hover:border-emerald-400 shadow-sm text-center space-y-2">
+              <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-900 mx-auto flex items-center justify-center text-3xl font-bold">
+                🎵
+              </div>
+              <div class="font-extrabold text-base text-[#0F172A]">My Music</div>
+              <div class="text-xs text-slate-500">${exp.memories.audios.length} Melodies</div>
+            </div>
+
+            <div class="p-5 rounded-3xl bg-white border-2 border-orange-200 hover:border-orange-400 shadow-sm text-center space-y-2">
+              <div class="w-14 h-14 rounded-2xl bg-orange-100 text-orange-900 mx-auto flex items-center justify-center text-3xl font-bold">
+                🌅
+              </div>
+              <div class="font-extrabold text-base text-[#0F172A]">Today's Routine</div>
+              <div class="text-xs text-slate-500">${exp.routines.length} Anchors</div>
+            </div>
+
+            <div class="p-5 rounded-3xl bg-white border-2 border-purple-200 hover:border-purple-400 shadow-sm text-center space-y-2">
+              <div class="w-14 h-14 rounded-2xl bg-purple-100 text-purple-900 mx-auto flex items-center justify-center text-3xl font-bold">
+                🧩
+              </div>
+              <div class="font-extrabold text-base text-[#0F172A]">Play & Remember</div>
+              <div class="text-xs text-slate-500">Cognitive Games</div>
+            </div>
+
+            <div class="p-5 rounded-3xl bg-white border-2 border-rose-200 hover:border-rose-400 shadow-sm text-center space-y-2">
+              <div class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-900 mx-auto flex items-center justify-center text-3xl font-bold">
+                🗣️
+              </div>
+              <div class="font-extrabold text-base text-[#0F172A]">Talk & Recall</div>
+              <div class="text-xs text-slate-500">Voice Assistant</div>
+            </div>
+
+          </div>
+
+          <!-- Preview Details: Registered Family & Today's Schedule -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            
+            <div class="p-4 bg-white rounded-2xl border border-slate-200 space-y-3">
+              <div class="font-bold text-xs uppercase tracking-wider text-slate-700">Family Members in View</div>
+              <div class="space-y-2">
+                ${exp.family.map(f => `
+                  <div class="flex items-center gap-3 p-2 bg-slate-50 rounded-xl">
+                    <span class="text-xl">${f.avatar || '🧑‍💼'}</span>
+                    <div>
+                      <div class="font-bold text-xs text-[#0F172A]">${f.name}</div>
+                      <div class="text-[10px] text-slate-500">${f.relationship} • ${f.shortDescription || ''}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="p-4 bg-white rounded-2xl border border-slate-200 space-y-3">
+              <div class="font-bold text-xs uppercase tracking-wider text-slate-700">Today's Schedule Anchors</div>
+              <div class="space-y-2">
+                ${exp.routines.slice(0, 4).map(r => `
+                  <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl text-xs">
+                    <span class="font-bold text-slate-800">${r.icon || '🌅'} ${r.activityName}</span>
+                    <span class="font-mono text-slate-500 font-bold">${r.time}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+          </div>
+        `;
+      }
+
+      // Logout handler
+      document.getElementById('caretaker-logout-btn').addEventListener('click', async () => {
+        try {
+          await window.smritiAuth.signOut();
+        } catch (e) {
+          console.warn('Logout error', e);
+        }
+        window.location.replace('/auth');
+      });
+
+      // Toast notification helper
+      function showToast(msg, isError = false) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `px-4 py-2.5 rounded-2xl text-xs font-bold shadow-lg transition-all transform duration-200 translate-y-2 pointer-events-auto flex items-center gap-2 ${isError ? 'bg-rose-600 text-white' : 'bg-[#0F172A] text-white'}`;
+        toast.innerHTML = `<span>${isError ? '⚠️' : '✅'}</span><span>${msg}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => toast.classList.remove('translate-y-2'), 10);
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-2');
+          setTimeout(() => toast.remove(), 200);
+        }, 3500);
+      }
+
+      // Initial Load
+      await loadConnectedPatients();
+    });
+  </script>
+</body>
+</html>

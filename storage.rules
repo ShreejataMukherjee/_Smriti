@@ -1,0 +1,29 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Maximum file size limit: 50MB (supports high-res photos, audio clips, and short video memories)
+    function isValidMediaSize() {
+      return request.resource.size < 50 * 1024 * 1024;
+    }
+
+    function isValidMediaType() {
+      return request.resource.contentType.matches('image/.*') ||
+             request.resource.contentType.matches('audio/.*') ||
+             request.resource.contentType.matches('video/.*');
+    }
+
+    // Elderly Private Media Paths: elderly/{elderlyUserId}/{type}s/{fileName}
+    match /elderly/{elderlyUserId}/{allPaths=**} {
+      // Authenticated read access
+      allow read: if isAuthenticated();
+
+      // Authenticated upload with valid size & media content-type
+      allow write: if isAuthenticated() && isValidMediaSize() && isValidMediaType();
+    }
+  }
+}

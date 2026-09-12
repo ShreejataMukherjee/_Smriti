@@ -1,0 +1,36 @@
+{
+  "name": "smriti-platform",
+  "version": "2.0.0",
+  "description": "Smriti — AI-Based Cognitive Gaming and Memory Assistance Platform for Elderly Dementia Patients in North Eastern Region (NER)",
+  "private": true,
+  "type": "module",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "dev": "node --watch backend/src/server.js",
+    "dev:backend": "cd backend && npm run dev",
+    "test": "node backend/tests/auth-rbac.test.js && node backend/tests/relationships.test.js && node backend/tests/media.test.js && node backend/tests/phase3-personalization.test.js && node backend/tests/e2e-media-verification.test.js && node backend/tests/phase4-cognitive-engine.test.js && node backend/tests/phase4-5-compliance.test.js && node backend/tests/supabase-storage.test.js && node backend/tests/relationship-production.test.js && node backend/tests/production-cloud-isolation.test.js"
+  },
+  "keywords": [
+    "smriti",
+    "sih",
+    "dementia",
+    "ner",
+    "smart-india-hackathon"
+  ],
+  "author": "Smriti Team",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.112.4",
+    "busboy": "^1.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "firebase": "^10.14.1",
+    "firebase-admin": "^12.7.0",
+    "multer": "^2.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

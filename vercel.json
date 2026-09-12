@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/api",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/src/(.*)",
+      "destination": "/frontend/src/$1"
+    },
+    {
+      "source": "/public/(.*)",
+      "destination": "/frontend/public/$1"
+    },
+    {
+      "source": "/components/(.*)",
+      "destination": "/frontend/src/components/$1"
+    },
+    {
+      "source": "/services/(.*)",
+      "destination": "/frontend/src/services/$1"
+    },
+    {
+      "source": "/utils/(.*)",
+      "destination": "/frontend/src/utils/$1"
+    },
+    {
+      "source": "/styles/(.*)",
+      "destination": "/frontend/src/styles/$1"
+    },
+    {
+      "source": "/senior-space",
+      "destination": "/frontend/src/pages/senior-space.html"
+    },
+    {
+      "source": "/games",
+      "destination": "/frontend/src/pages/senior-space.html"
+    },
+    {
+      "source": "/caretaker-studio",
+      "destination": "/frontend/src/pages/caretaker-studio.html"
+    },
+    {
+      "source": "/auth",
+      "destination": "/frontend/src/auth/auth.html"
+    },
+    {
+      "source": "/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/$1"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "smriti-backend",
+  "version": "2.0.0",
+  "description": "Smriti Backend API & Authentication Service for SIH NER Dementia Platform",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.112.4",
+    "busboy": "^1.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "firebase": "^10.14.1",
+    "firebase-admin": "^12.7.0",
+    "multer": "^2.2.0"
+  },
+  "keywords": [
+    "smriti",
+    "sih",
+    "dementia",
+    "ner",
+    "cognitive-health",
+    "auth"
+  ],
+  "author": "Smriti Health Tech",
+  "license": "MIT"
+}

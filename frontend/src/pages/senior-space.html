@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Senior Space | Smriti Memory Sanctuary</title>
+  <meta name="description" content="Your calm, personalized digital memory sanctuary." />
+  <meta name="theme-color" content="#FDFBF7" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Lora -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#FDFBF7',
+            'midnight-indigo': '#0F172A',
+            'amber-gold': '#D97706',
+            'amber-bright': '#F59E0B',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['Lora', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/src/styles/styles.css" />
+  
+  <style>
+    .high-contrast-mode {
+      background-color: #000000 !important;
+      color: #FFFFFF !important;
+    }
+    .high-contrast-mode .bg-white {
+      background-color: #121212 !important;
+      border-color: #FFFFFF !important;
+      color: #FFFFFF !important;
+    }
+    .high-contrast-mode .text-\[\#0F172A\] {
+      color: #FFFFFF !important;
+    }
+    .large-text-mode {
+      font-size: 1.15rem;
+    }
+    .large-text-mode h2 {
+      font-size: 2.25rem !important;
+    }
+    .large-text-mode button {
+      font-size: 1.1rem !important;
+    }
+  </style>
+</head>
+
+<body id="senior-page-body" class="bg-[#FDFBF7] text-[#0F172A] font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-amber-100 selection:text-amber-900 transition-colors duration-200">
+
+  <!-- Top Bar -->
+  <header class="py-4 px-6 sm:px-10 border-b border-amber-200/80 bg-amber-50/80 backdrop-blur-md sticky top-0 z-30 flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-2xl bg-amber-500 flex items-center justify-center text-white font-extrabold text-2xl shadow-sm">
+        👵
+      </div>
+      <div>
+        <h1 class="text-xl font-extrabold text-[#0F172A]">Senior Memory Space</h1>
+        <span class="text-xs text-amber-900 font-semibold">Smriti Cognitive Sanctuary</span>
+      </div>
+    </div>
+
+    <!-- Quick Accessibility Helpers & Logout -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <div id="senior-offline-pill" class="hidden px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+        <span id="senior-offline-text">Offline mode — activities ready</span>
+      </div>
+
+      <button id="senior-voice-greet-btn" class="px-3.5 sm:px-4 py-2 rounded-full bg-white border border-amber-300 text-amber-950 text-xs font-bold hover:bg-amber-100 transition-all shadow-sm flex items-center gap-1.5">
+        <span>🗣️</span>
+        <span class="hidden sm:inline">Voice Greeting</span>
+      </button>
+
+      <button id="senior-contrast-toggle" class="px-3.5 sm:px-4 py-2 rounded-full bg-white border border-slate-300 text-slate-800 text-xs font-bold hover:bg-slate-100 transition-all shadow-sm">
+        🌓 Contrast
+      </button>
+
+      <button id="senior-font-toggle" class="px-3.5 sm:px-4 py-2 rounded-full bg-white border border-slate-300 text-slate-800 text-xs font-bold hover:bg-slate-100 transition-all shadow-sm">
+        🔍 Text Size
+      </button>
+
+      <button id="senior-logout-btn" class="px-4 py-2 rounded-full bg-[#0F172A] hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-md">
+        Sign Out
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Sanctuary Shell -->
+  <main class="flex-grow max-w-5xl mx-auto w-full p-4 sm:p-8 space-y-8">
+    
+    <!-- Warm Greeting Hero -->
+    <div class="bg-gradient-to-r from-amber-100 via-orange-100 to-amber-50 rounded-3xl p-6 sm:p-10 shadow-sm border-2 border-amber-300 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-5">
+        <div id="user-avatar" class="w-16 h-16 rounded-full bg-amber-200 text-[#0F172A] flex items-center justify-center text-3xl font-bold shadow-inner">
+          👵
+        </div>
+        <div class="space-y-1">
+          <span class="text-xs uppercase font-extrabold text-amber-900 bg-amber-200/80 px-3 py-0.5 rounded-full">Personal Memory Sanctuary</span>
+          <h2 id="user-greeting-heading" class="text-2xl sm:text-3xl font-extrabold text-[#0F172A]">Good morning, Elder ❤️</h2>
+          <p class="text-xs text-amber-950/80 font-medium">Welcome back to your calm world of memories, family, and melodies.</p>
+        </div>
+      </div>
+
+      <div class="text-5xl select-none hidden md:block">
+        🏡
+      </div>
+    </div>
+
+    <!-- 6 Radically Simple Large Touch Tiles (Calm, Uncluttered Dashboard) -->
+    <div id="senior-home-tiles-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
+      
+      <!-- 1. My Family -->
+      <button class="senior-tile-btn p-6 rounded-3xl bg-white border-2 border-indigo-200 hover:border-indigo-400 hover:bg-indigo-50/30 shadow-md text-center space-y-3 transition-all hover:scale-102 flex flex-col items-center justify-center" data-view="section-family">
+        <div class="w-16 h-16 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center text-3xl font-bold shadow-sm">
+          👨‍👩‍👧‍👦
+        </div>
+        <div>
+          <div class="font-extrabold text-lg text-[#0F172A]">My Family</div>
+          <div class="text-xs text-slate-500 font-medium" id="senior-family-count">Familiar faces & loved ones</div>
+        </div>
+      </button>
+
+      <!-- 2. My Memories -->
+      <button class="senior-tile-btn p-6 rounded-3xl bg-white border-2 border-amber-200 hover:border-amber-400 hover:bg-amber-50/30 shadow-md text-center space-y-3 transition-all hover:scale-102 flex flex-col items-center justify-center" data-view="section-memories">
+        <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center text-3xl font-bold shadow-sm">
+          📸
+        </div>
+        <div>
+          <div class="font-extrabold text-lg text-[#0F172A]">My Memories</div>
+          <div class="text-xs text-slate-500 font-medium" id="senior-memories-count">Photos & cherished moments</div>
+        </div>
+      </button>
+
+      <!-- 3. My Music -->
+      <button class="senior-tile-btn p-6 rounded-3xl bg-white border-2 border-emerald-200 hover:border-emerald-400 hover:bg-emerald-50/30 shadow-md text-center space-y-3 transition-all hover:scale-102 flex flex-col items-center justify-center" data-view="section-music">
+        <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-900 flex items-center justify-center text-3xl font-bold shadow-sm">
+          🎵
+        </div>
+        <div>
+          <div class="font-extrabold text-lg text-[#0F172A]">My Music</div>
+          <div class="text-xs text-slate-500 font-medium" id="senior-music-count">Nostalgic regional melodies</div>
+        </div>
+      </button>
+
+      <!-- 4. Today's Routine -->
+      <button class="senior-tile-btn p-6 rounded-3xl bg-white border-2 border-orange-200 hover:border-orange-400 hover:bg-orange-50/30 shadow-md text-center space-y-3 transition-all hover:scale-102 flex flex-col items-center justify-center" data-view="section-routine">
+        <div class="w-16 h-16 rounded-2xl bg-orange-100 text-orange-900 flex items-center justify-center text-3xl font-bold shadow-sm">
+          🌅
+        </div>
+        <div>
+          <div class="font-extrabold text-lg text-[#0F172A]">Today's Routine</div>
+          <div class="text-xs text-slate-500 font-medium" id="senior-routine-count">Daily schedule & reminders</div>
+        </div>
+      </button>
+
+      <!-- 5. 🎮 Games (Prominent Destination) -->
+      <button id="senior-nav-games-tile" class="senior-tile-btn p-6 rounded-3xl bg-white border-2 border-purple-300 hover:border-purple-500 hover:bg-purple-50/40 shadow-md text-center space-y-3 transition-all hover:scale-102 flex flex-col items-center justify-center" data-view="section-games">
+        <div class="w-16 h-16 rounded-2xl bg-purple-100 text-purple-900 flex items-center justify-center text-3xl font-bold shadow-sm">
+          🎮
+        </div>
+        <div>
+          <div class="font-extrabold text-lg text-[#0F172A]">Games</div>
+          <div class="text-xs text-slate-500 font-medium">Memory, attention & fun</div>
+        </div>
+      </button>
+
+      <!-- 6. Talk & Recall -->
+      <button class="senior-tile-btn p-6 rounded-3xl bg-white border-2 border-rose-200 hover:border-rose-400 hover:bg-rose-50/30 shadow-md text-center space-y-3 transition-all hover:scale-102 flex flex-col items-center justify-center" data-view="section-talk">
+        <div class="w-16 h-16 rounded-2xl bg-rose-100 text-rose-900 flex items-center justify-center text-3xl font-bold shadow-sm">
+          🗣️
+        </div>
+        <div>
+          <div class="font-extrabold text-lg text-[#0F172A]">Talk & Recall</div>
+          <div class="text-xs text-slate-500 font-medium">Voice reminiscing companion</div>
+        </div>
+      </button>
+
+    </div>
+
+    <!-- Dynamic Section Container (shows selected tile content) -->
+    <div id="senior-dynamic-section" class="space-y-6">
+      
+      <!-- Section 1: Family Cards -->
+      <div id="section-family" class="senior-view-pane bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-4">
+        <h3 class="text-lg font-extrabold text-[#0F172A] flex items-center gap-2">
+          <span>👨‍👩‍👧‍👦</span> My Family & Loved Ones
+        </h3>
+        <div id="senior-family-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- Dynamic family members rendered here -->
+        </div>
+      </div>
+
+      <!-- Section 2: Memory Photos & Clips -->
+      <div id="section-memories" class="senior-view-pane bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-4">
+        <h3 class="text-lg font-extrabold text-[#0F172A] flex items-center gap-2">
+          <span>📸</span> My Cherished Photo Memories
+        </h3>
+        <div id="senior-photos-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <!-- Dynamic photo memories rendered here -->
+        </div>
+      </div>
+
+      <!-- Section 3: Nostalgic Music -->
+      <div id="section-music" class="senior-view-pane bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-4">
+        <h3 class="text-lg font-extrabold text-[#0F172A] flex items-center gap-2">
+          <span>🎵</span> My Nostalgic Folk & Regional Music
+        </h3>
+        <div id="senior-music-container" class="space-y-3">
+          <!-- Dynamic audio tracks rendered here -->
+        </div>
+      </div>
+
+      <!-- Section 4: Today's Routine & Reminders -->
+      <div id="section-routine" class="senior-view-pane bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-4">
+        <h3 class="text-lg font-extrabold text-[#0F172A] flex items-center gap-2">
+          <span>🌅</span> Today's Daily Schedule & Orientation Anchors
+        </h3>
+        <div id="senior-routine-container" class="space-y-3">
+          <!-- Dynamic routine items rendered here -->
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- Section 5: DEDICATED GAMES & COGNITIVE ACTIVITIES HUB -->
+      <!-- ================================================================= -->
+      <div id="section-games" class="senior-view-pane bg-white rounded-3xl p-6 sm:p-8 shadow-sm border-2 border-purple-200 space-y-6">
+        
+        <!-- Header & Back Navigation -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-purple-100">
+          <div class="flex items-center gap-3">
+            <button id="games-back-to-home-btn" class="px-4 py-2 rounded-2xl bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-300 font-extrabold text-xs transition-all flex items-center gap-1.5 shadow-sm">
+              <span>←</span>
+              <span>Back to Memory Space</span>
+            </button>
+            <div>
+              <h3 class="text-xl font-extrabold text-[#0F172A] flex items-center gap-2">
+                <span>🎮</span> Games & Cognitive Activities
+              </h3>
+              <p class="text-xs text-slate-500 font-medium">Gentle, personalized exercises for memory, attention, and daily joy.</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <span id="game-difficulty-badge" class="px-3.5 py-1 bg-purple-100 text-purple-900 border border-purple-200 rounded-full text-xs font-extrabold shadow-sm">
+              Level 1 (Gentle)
+            </span>
+          </div>
+        </div>
+
+        <!-- 1. GAMES CATALOG DIRECTORY VIEW -->
+        <div id="games-catalog-view" class="space-y-6">
+          
+          <!-- Category Filter Tabs -->
+          <div class="flex flex-wrap gap-2" id="game-category-tabs">
+            <button class="cog-cat-btn px-4 py-2 rounded-2xl bg-purple-600 text-white font-bold text-xs shadow-sm transition-all text-center" data-cat="all">
+              ✨ All Games
+            </button>
+            <button class="cog-cat-btn px-4 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all text-center" data-cat="memory">
+              🧠 Memory
+            </button>
+            <button class="cog-cat-btn px-4 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all text-center" data-cat="attention">
+              🎯 Attention
+            </button>
+            <button class="cog-cat-btn px-4 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all text-center" data-cat="routine_recall">
+              🌅 Routine
+            </button>
+            <button class="cog-cat-btn px-4 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all text-center" data-cat="pattern_recognition">
+              🌺 Recognition
+            </button>
+            <button class="cog-cat-btn px-4 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all text-center" data-cat="emotional_engagement">
+              🎵 Music & Reminiscence
+            </button>
+          </div>
+
+          <!-- All 10 Individual Games Cards Grid -->
+          <div id="games-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            
+            <!-- Game 1: Who Is This? -->
+            <div class="game-catalog-card p-5 rounded-3xl bg-purple-50/40 border-2 border-purple-200 hover:border-purple-400 hover:shadow-md transition-all space-y-3 flex flex-col justify-between" data-game-type="who_is_this" data-category="memory">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center text-2xl font-bold shadow-sm">
+                    👨‍👩‍👧‍👦
+                  </div>
+                  <span class="text-[10px] uppercase font-extrabold bg-indigo-100 text-indigo-900 px-2.5 py-0.5 rounded-full">Memory</span>
+                </div>
+                <div class="font-extrabold text-base text-[#0F172A]">Who Is This?</div>
+                <p class="text-xs text-slate-600 font-medium">Identify beloved family members from your personal album.</p>
+              </div>
+              <button class="launch-game-btn w-full py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5" data-game-type="who_is_this">
+                <span>▶</span> <span>Play Game</span>
+              </button>
+            </div>
+
+            <!-- Game 2: Remember This Photo -->
+            <div class="game-catalog-card p-5 rounded-3xl bg-purple-50/40 border-2 border-purple-200 hover:border-purple-400 hover:shadow-md transition-all space-y-3 flex flex-col justify-between" data-game-type="remember_photo" data-category="memory">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center text-2xl font-bold shadow-sm">
+                    📸
+                  </div>
+                  <span class="text-[10px] uppercase font-extrabold bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full">Memory</span>
+                </div>
+                <div class="font-extrabold text-base text-[#0F172A]">Remember This Photo</div>
+                <p class="text-xs text-slate-600 font-medium">Look at a cherished photo and recall what moment was captured.</p>
+              </div>
+              <button class="launch-game-btn w-full py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5" data-game-type="remember_photo">
+                <span>▶</span> <span>Play Game</span>
+              </button>
+            </div>
+
+            <!-- Game 3: Memory Match -->
+            <div class="game-catalog-card p-5 rounded-3xl bg-purple-50/40 border-2 border-purple-200 hover:border-purple-400 hover:shadow-md transition-all space-y-3 flex flex-col justify-between" data-game-type="memory_match" data-category="memory">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-900 flex items-center justify-center text-2xl font-bold shadow-sm">
+                    🃏
+                  </div>
+                  <span class="text-[10px] uppercase font-extrabold bg-teal-100 text-teal-900 px-2.5 py-0.5 rounded-full">Memory</span>
+                </div>
+                <div class="font-extrabold text-base text-[#0F172A]">Memory Match</div>
+                <p class="text-xs text-slate-600 font-medium">Match loved ones with their correct name or relationship.</p>
+              </div>
+              <button class="launch-game-btn w-full py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5" data-game-type="memory_match">
+                <span>▶</span> <span>Play Game</span>
+              </button>
+            </div>
+
+            <!-- Game 4: Find the Odd One -->
+            <div class="game-catalog-card p-5 rounded-3xl bg-purple-50/40 border-2 border-purple-200 hover:border-purple-400 hover:shadow-md transition-all space-y-3 flex flex-col justify-between" data-game-type="odd_one_out" data-category="attention">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-900 flex items-center justify-center text-2xl font-bold shadow-sm">
+                    🔍
+                  </div>
+                  <span class="text-[10px] uppercase font-extrabold bg-sky-100 text-sky-900 px-2.5 py-0.5 rounded-full">Attention</span>
+                </div>
+                <div class="font-extrabold text-base text-[#0F172A]">Find the Odd One</div>
+                <p class="text-xs text-slate-600 font-medium">Spot the single shape, fruit, or symbol that is different.</p>
+              </div>
+              <button class="launch-game-btn w-full py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5" data-game-type="odd_one_out">
+                <span>▶</span> <span>Play Game</span>
+              </button>
+            </div>
+
+            <!-- Game 5: Complete the Pattern -->
+            <div class="game-catalog-card p-5 rounded-3xl bg-purple-50/40 border-2 border-purple-200 hover:border-purple-400 hover:shadow-md transition-all space-y-3 flex flex-col justify-between" data-game-type="pattern_completion" data-category="attention">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-900 flex items-center justify-center text-2xl font-bold shadow-sm">
+                    🧩
+                  </div>
+                  <span class="text-[10px] uppercase font-extrabold bg-blue-100 text-blue-900 px-2.5 py-0.5 rounded-full">Attention</span>
+                </div>
+                <div class="font-extrabold text-base text-[#0F172A]">Complete the Pattern</div>
+                <p class="text-xs text-slate-600 font-medium">Follow the repeating rhythm of flowers, colors, and symbols.</p>
+              </div>
+              <button class="launch-game-btn w-full py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5" data-game-type="pattern_completion">
+                <span>▶</span> <span>Play Game</span>
+              </button>
+            </div>
+
+            <!-- Game 6: What Comes Next? -->
+            <div class="game-catalog-card p-5 rounded-3xl bg-purple-50/40 border-2 border-purple-200 hover:border-purple-400 hover:shadow-md transition-all space-y-3 flex flex-col justify-between" data-game-type="what_comes_next" data-category="routine_recall">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-orange-100 text-orange-900 flex items-center justify-center text-2xl font-bold shadow-sm">
+                    🌅
+                  </div>
+                  <span class="text-[10px] uppercase font-extrabold bg-orange-100 text-orange-900 px-2.5 py-0.5 rounded-full">Routine</span>
+                </div>
+                <div class="font-extrabold text-base text-[#0F172A]">What Comes Next?</div>
+                <p class="text-xs text-slate-600 font-medium">Recall your daily schedule: morning tea, walk, lunch, and rest.</p>
+              </div>
+              <button class="launch-game-btn w-full py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5" data-game-type="what_comes_next">
+                <span>▶</span> <span>Play Game</span>
+              </button>
+            </div>
+
+            <!-- Game 7: Familiar Objects -->
+            <div class="game-catalog-card p-5 rounded-3xl bg-purple-50/40 border-2 border-purple-200 hover:border-purple-400 hover:shadow-md transition-all space-y-3 flex flex-col justify-between" data-game-type="familiar_objects" data-category="pattern_recognition">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center text-2xl font-bold shadow-sm">
+                    👒
+                  </div>
+                  <span class="text-[10px] uppercase font-extrabold bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full">Recognition</span>
+                </div>
+                <div class="font-extrabold text-base text-[#0F172A]">Familiar Objects</div>
+                <p class="text-xs text-slate-600 font-medium">Identify traditional cultural items like Jaapi, Gamosa, and Xorai.</p>
+              </div>
+              <button class="launch-game-btn w-full py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5" data-game-type="familiar_objects">
+                <span>▶</span> <span>Play Game</span>
+              </button>
+            </div>
+
+            <!-- Game 8: Recognize the Place -->
+            <div class="game-catalog-card p-5 rounded-3xl bg-purple-50/40 border-2 border-purple-200 hover:border-purple-400 hover:shadow-md transition-all space-y-3 flex flex-col justify-between" data-game-type="recognize_place" data-category="pattern_recognition">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-900 flex items-center justify-center text-2xl font-bold shadow-sm">
+                    🏞️
+                  </div>
+                  <span class="text-[10px] uppercase font-extrabold bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full">Recognition</span>
+                </div>
+                <div class="font-extrabold text-base text-[#0F172A]">Recognize the Place</div>
+                <p class="text-xs text-slate-600 font-medium">Recognize beloved landmarks: Majuli, Brahmaputra Ghat, and Tea Gardens.</p>
+              </div>
+              <button class="launch-game-btn w-full py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5" data-game-type="recognize_place">
+                <span>▶</span> <span>Play Game</span>
+              </button>
+            </div>
+
+            <!-- Game 9: Which Song Is This? -->
+            <div class="game-catalog-card p-5 rounded-3xl bg-purple-50/40 border-2 border-purple-200 hover:border-purple-400 hover:shadow-md transition-all space-y-3 flex flex-col justify-between" data-game-type="which_song" data-category="emotional_engagement">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-900 flex items-center justify-center text-2xl font-bold shadow-sm">
+                    🎵
+                  </div>
+                  <span class="text-[10px] uppercase font-extrabold bg-rose-100 text-rose-900 px-2.5 py-0.5 rounded-full">Music</span>
+                </div>
+                <div class="font-extrabold text-base text-[#0F172A]">Which Song Is This?</div>
+                <p class="text-xs text-slate-600 font-medium">Listen to a short nostalgic melody and select its title.</p>
+              </div>
+              <button class="launch-game-btn w-full py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5" data-game-type="which_song">
+                <span>▶</span> <span>Play Game</span>
+              </button>
+            </div>
+
+            <!-- Game 10: Recall & Remember -->
+            <div class="game-catalog-card p-5 rounded-3xl bg-purple-50/40 border-2 border-purple-200 hover:border-purple-400 hover:shadow-md transition-all space-y-3 flex flex-col justify-between" data-game-type="recall_remember" data-category="emotional_engagement">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <div class="w-12 h-12 rounded-2xl bg-pink-100 text-pink-900 flex items-center justify-center text-2xl font-bold shadow-sm">
+                    ❤️
+                  </div>
+                  <span class="text-[10px] uppercase font-extrabold bg-pink-100 text-pink-900 px-2.5 py-0.5 rounded-full">Reminiscence</span>
+                </div>
+                <div class="font-extrabold text-base text-[#0F172A]">Recall & Remember</div>
+                <p class="text-xs text-slate-600 font-medium">Gentle reminiscing: share your thoughts and cherished feelings.</p>
+              </div>
+              <button class="launch-game-btn w-full py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5" data-game-type="recall_remember">
+                <span>▶</span> <span>Play Game</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 2. INTERACTIVE ACTIVITY RUNNER (Visible when playing a game) -->
+        <div id="senior-game-runner-view" class="hidden space-y-6">
+          
+          <div class="flex items-center justify-between pb-3 border-b border-purple-100">
+            <button id="runner-back-to-catalog-btn" class="px-4 py-2 rounded-2xl bg-white border border-purple-300 text-purple-950 font-extrabold text-xs hover:bg-purple-50 shadow-sm flex items-center gap-1.5">
+              <span>←</span> <span>All Games</span>
+            </button>
+            <div class="flex items-center gap-3">
+              <span id="game-progress-text" class="text-xs font-bold text-purple-950/80">Activity 1 of 1</span>
+              <button id="game-speak-btn" class="px-3.5 py-1.5 rounded-full bg-white border border-purple-300 text-purple-900 text-xs font-bold hover:bg-purple-100 shadow-sm flex items-center gap-1">
+                <span>🔊</span> <span>Read Aloud</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="senior-game-card-box" class="p-6 sm:p-10 rounded-3xl bg-purple-50/60 border-2 border-purple-200 space-y-6 text-center shadow-inner">
+            <div class="space-y-2">
+              <div class="text-xs uppercase font-extrabold tracking-wider text-purple-800" id="game-instructions">Look closely and select the matching answer below.</div>
+              <div class="text-xl sm:text-3xl font-extrabold text-[#0F172A]" id="game-prompt">Who is this beloved family member?</div>
+            </div>
+
+            <!-- Media Display Area -->
+            <div id="game-media-display" class="min-h-[120px] max-w-sm mx-auto rounded-3xl bg-white border-2 border-purple-200 flex items-center justify-center text-5xl shadow-md overflow-hidden p-3">
+              🧑‍💼
+            </div>
+
+            <!-- Large Touch Target Options -->
+            <div id="game-options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto pt-2">
+              <!-- Dynamic options injected here -->
+            </div>
+
+            <!-- Feedback Notification -->
+            <div id="game-feedback" class="text-base font-extrabold text-purple-950 min-h-[32px] transition-all flex items-center justify-center"></div>
+
+            <!-- Bottom Actions: Hint & Next -->
+            <div class="flex flex-wrap justify-center items-center gap-3 pt-2">
+              <button id="game-hint-btn" class="px-5 py-2.5 rounded-2xl bg-white border border-purple-300 text-purple-900 font-extrabold text-xs hover:bg-purple-100 shadow-sm">
+                💡 Need a gentle hint?
+              </button>
+              <button id="game-next-btn" class="hidden px-7 py-3 rounded-2xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs shadow-md transition-all">
+                Next Activity ➔
+              </button>
+            </div>
+          </div>
+
+          <!-- Session Completed Banner -->
+          <div id="game-complete-banner" class="hidden p-8 sm:p-12 rounded-3xl bg-emerald-50 border-2 border-emerald-300 text-center space-y-4 shadow-sm">
+            <div class="text-6xl">🎉</div>
+            <h4 class="text-2xl sm:text-3xl font-extrabold text-emerald-950">Wonderful Job Today!</h4>
+            <p class="text-sm text-emerald-800 max-w-md mx-auto" id="game-summary-text">
+              You completed this cognitive exercise with great care. Your activity has been safely recorded.
+            </p>
+            <div class="flex flex-wrap justify-center gap-3 pt-3">
+              <button id="game-restart-btn" class="px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md">
+                ✨ Play Another Game
+              </button>
+              <button id="game-return-menu-btn" class="px-6 py-3 rounded-2xl bg-white border border-emerald-300 text-emerald-950 font-extrabold text-xs shadow-sm hover:bg-emerald-100">
+                ← Return to Games Menu
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Section 6: Talk & Recall (Interactive Voice Reminiscence Companion) -->
+      <div id="section-talk" class="senior-view-pane bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-xl font-extrabold text-[#0F172A] flex items-center gap-2">
+              <span>🗣️</span> Talk & Recall: Voice Reminiscence Companion
+            </h3>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">
+              Speak naturally into your microphone. Smriti listens, understands, and reminisces with you about your family and life memories.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="talk-restart-btn" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center gap-1.5">
+              <span>🔄</span> <span>New Topic</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chat Conversation Flow Container -->
+        <div id="talk-chat-container" class="space-y-4 max-h-[380px] overflow-y-auto p-4 rounded-3xl bg-slate-50/70 border border-slate-200">
+          <!-- Messages will be dynamically appended here -->
+          <div id="talk-chat-history" class="space-y-3">
+            <!-- Initial prompt will render here -->
+          </div>
+        </div>
+
+        <!-- Active Voice / Speech Input Control Bar -->
+        <div class="p-5 rounded-3xl bg-gradient-to-r from-rose-50 to-purple-50 border-2 border-rose-200 space-y-4 shadow-sm">
+          
+          <!-- Live Transcript / Status display -->
+          <div id="talk-status-box" class="min-h-[44px] flex items-center justify-center text-center p-3 rounded-2xl bg-white/90 border border-rose-100 shadow-xs">
+            <p id="talk-live-transcript" class="text-sm font-bold text-slate-800 italic">
+              Tap "Start Talking" below to share your thoughts aloud...
+            </p>
+          </div>
+
+          <!-- Interactive Mic Button & Quick Replies -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+            
+            <button id="talk-mic-toggle-btn" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-rose-600 hover:bg-rose-700 active:scale-98 text-white font-extrabold text-base shadow-lg hover:shadow-rose-300/50 transition-all flex items-center justify-center gap-3">
+              <span id="talk-mic-icon" class="text-2xl">🎤</span>
+              <span id="talk-mic-label">Start Talking</span>
+            </button>
+
+            <!-- Quick Response Suggestions -->
+            <div id="talk-suggested-chips" class="flex flex-wrap items-center gap-2 justify-center sm:justify-end">
+              <!-- Dynamic suggestions injected here -->
+            </div>
+          </div>
+
+          <!-- Text Fallback for no-mic setups -->
+          <div class="flex items-center gap-2 pt-2 border-t border-rose-100">
+            <input type="text" id="talk-text-input" placeholder="Or type your reply here..." class="flex-grow px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-400" />
+            <button id="talk-text-send-btn" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-xs transition-all">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Relationship Connection Management: Caretakers & Pending Requests -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <h3 class="text-base font-extrabold text-[#0F172A] flex items-center gap-2">
+            <span>🧑‍💻</span> My Connected Caretakers & Family
+          </h3>
+          <span id="senior-caretakers-badge" class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-900 font-bold text-xs">0 Connected</span>
+        </div>
+
+        <div id="senior-pending-requests-container" class="space-y-3"></div>
+        <div id="senior-caretakers-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Photo Lightbox Modal -->
+  <div id="photo-lightbox-modal" class="fixed inset-0 z-50 bg-black/90 hidden flex items-center justify-center p-4 cursor-pointer">
+    <div class="relative max-w-3xl max-h-[85vh] p-2 bg-white rounded-3xl overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+      <button id="close-lightbox-btn" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/70 text-white font-bold text-sm flex items-center justify-center">✕</button>
+      <img id="lightbox-img" src="" alt="Memory View" class="max-h-[75vh] w-auto mx-auto rounded-2xl object-contain" />
+      <div id="lightbox-caption" class="p-3 text-center text-xs font-bold text-[#0F172A]"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- Scripts -->
+  <script src="/src/services/api-client.js"></script>
+  <script src="/src/services/firebase-client.js"></script>
+  <script src="/src/services/relationship-client.js"></script>
+  <script src="/src/services/media-client.js"></script>
+  <script src="/src/services/profile-client.js"></script>
+  <script src="/src/components/audio.js"></script>
+  <script src="/src/auth/auth-state.js"></script>
+  <script src="/src/utils/router.js"></script>
+
+  <script type="module">
+    import { voiceService } from '/src/services/voice-service.js';
+    import { offlineSyncService } from '/src/services/offline-sync-service.js';
+    import { cognitiveClient } from '/src/services/cognitive-client.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize audio engine
+      window.smritiAudio = new SmritiAudio();
+
+      // 1. Enforce Elderly RBAC Session
+      const user = window.smritiAuth?.getUser();
+      if (!user || user.role !== 'elderly_user') {
+        window.location.href = '/auth?role=elderly_user';
+        return;
+      }
+
+      const elderlyUserId = user.id;
+      let expData = null;
+      let currentPack = null;
+      let activeGameList = [];
+      let currentActivityIndex = 0;
+      let questionStartTime = Date.now();
+      let currentHintsUsed = 0;
+      let currentAttempts = 0;
+      let sessionAnswers = [];
+
+      // 2. Setup Offline Sync Indicator
+      const offlinePill = document.getElementById('senior-offline-pill');
+      const offlineText = document.getElementById('senior-offline-text');
+
+      offlineSyncService.onStatusChange(({ isOnline, status, message }) => {
+        if (!isOnline || status === 'offline' || status === 'queued') {
+          offlinePill.classList.remove('hidden');
+          offlineText.textContent = message || 'Offline mode — activities ready';
+        } else if (status === 'synced' || status === 'online') {
+          offlinePill.classList.remove('hidden');
+          offlineText.textContent = 'Everything is up to date.';
+          setTimeout(() => {
+            if (navigator.onLine) offlinePill.classList.add('hidden');
+          }, 3000);
+        }
+      });
+
+      if (!navigator.onLine) {
+        offlinePill.classList.remove('hidden');
+        offlineText.textContent = 'Offline mode — your activities are still available.';
+      }
+
+      // 3. Load Personalized Experience
+      try {
+        expData = await window.ProfileClient.getPreview(elderlyUserId);
+        
+        // Dynamic greeting & avatar
+        if (expData.greeting) {
+          document.getElementById('user-greeting-heading').textContent = expData.greeting;
+        }
+        const avatarEl = document.getElementById('user-avatar');
+        if (avatarEl) {
+          if (expData.profile?.gender === 'male' || expData.displayName?.endsWith('Baba')) {
+            avatarEl.textContent = '👨‍🦳';
+          } else if (expData.profile?.gender === 'female' || expData.displayName?.endsWith('Maa')) {
+            avatarEl.textContent = '👵';
+          } else {
+            avatarEl.textContent = '🧓';
+          }
+        }
+
+        // Counts
+        document.getElementById('senior-family-count').textContent = `${expData.family.length} family members`;
+        document.getElementById('senior-memories-count').textContent = `${expData.memories.photos.length} photos in vault`;
+        document.getElementById('senior-music-count').textContent = `${expData.memories.audios.length} nostalgic songs`;
+        document.getElementById('senior-routine-count').textContent = `${expData.routines.length} daily steps`;
+
+        // Render Auxiliary Views
+        renderSeniorFamily(expData.family);
+        renderSeniorPhotos(expData.memories.photos);
+        renderSeniorMusic(expData.memories.audios);
+        renderSeniorRoutine(expData.routines);
+        setupTalkAndRecall(expData);
+
+        // Apply Accessibility settings from profile
+        if (expData.accessibility?.highContrast) {
+          document.body.classList.add('high-contrast-mode');
+        }
+        if (expData.accessibility?.largeText) {
+          document.body.classList.add('large-text-mode');
+        }
+
+        // Initialize Cognitive Activities Pack
+        await loadCognitiveActivities();
+
+      } catch (err) {
+        console.error('Failed to load senior experience:', err);
+      }
+
+      // 4. Cognitive Activity Engine
+      async function loadCognitiveActivities() {
+        try {
+          const lang = expData?.profile?.preferredLanguage || 'as';
+          currentPack = await cognitiveClient.fetchActivityPack(elderlyUserId, { language: lang });
+
+          if (currentPack && currentPack.activities && currentPack.activities.length > 0) {
+            document.getElementById('game-difficulty-badge').textContent = `Level ${currentPack.difficulty || 1} (${currentPack.difficulty > 2 ? 'Active' : 'Gentle'})`;
+          }
+        } catch (e) {
+          console.warn('Failed to load cognitive activities:', e);
+        }
+      }
+
+      // 5. Open Dedicated Games Screen
+      function openGamesHub(selectedCategory = 'all') {
+        const targetEl = document.getElementById('section-games');
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          targetEl.classList.add('ring-4', 'ring-purple-400');
+          setTimeout(() => targetEl.classList.remove('ring-4', 'ring-purple-400'), 1500);
+        }
+        // Ensure catalog view is shown
+        document.getElementById('games-catalog-view').classList.remove('hidden');
+        document.getElementById('senior-game-runner-view').classList.add('hidden');
+        filterGameCatalog(selectedCategory);
+      }
+
+      // Back to Home
+      document.getElementById('games-back-to-home-btn')?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // Filter Catalog
+      function filterGameCatalog(category) {
+        document.querySelectorAll('.cog-cat-btn').forEach(btn => {
+          if (btn.dataset.cat === category) {
+            btn.classList.remove('bg-slate-100', 'text-slate-800');
+            btn.classList.add('bg-purple-600', 'text-white', 'shadow-sm');
+          } else {
+            btn.classList.remove('bg-purple-600', 'text-white', 'shadow-sm');
+            btn.classList.add('bg-slate-100', 'text-slate-800');
+          }
+        });
+
+        document.querySelectorAll('.game-catalog-card').forEach(card => {
+          if (category === 'all' || card.dataset.category === category) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      }
+
+      document.querySelectorAll('.cog-cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterGameCatalog(btn.dataset.cat);
+        });
+      });
+
+      // 6. Launch Specific Game
+      async function launchGame(gameType) {
+        if (!currentPack || !currentPack.activities || currentPack.activities.length === 0) {
+          await loadCognitiveActivities();
+        }
+
+        if (!currentPack || !currentPack.activities || currentPack.activities.length === 0) {
+          console.warn('No activities available.');
+          return;
+        }
+
+        // Find activity matching gameType (or subType)
+        let matchedActivities = currentPack.activities.filter(a => a.subType === gameType || a.activityId.includes(gameType));
+        if (matchedActivities.length === 0) {
+          // Fallback by category
+          const card = document.querySelector(`.game-catalog-card[data-game-type="${gameType}"]`);
+          const cat = card?.dataset.category;
+          if (cat) {
+            matchedActivities = currentPack.activities.filter(a => a.category === cat);
+          }
+        }
+        if (matchedActivities.length === 0) {
+          matchedActivities = [currentPack.activities[0]];
+        }
+
+        activeGameList = matchedActivities;
+        currentActivityIndex = 0;
+        sessionAnswers = [];
+
+        // Show Game Runner
+        document.getElementById('games-catalog-view').classList.add('hidden');
+        document.getElementById('senior-game-runner-view').classList.remove('hidden');
+        document.getElementById('senior-game-card-box').classList.remove('hidden');
+        document.getElementById('game-complete-banner').classList.add('hidden');
+
+        renderCurrentActivity();
+      }
+
+      // Catalog card click handlers
+      document.querySelectorAll('.launch-game-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          launchGame(btn.dataset.gameType);
+        });
+      });
+
+      document.querySelectorAll('.game-catalog-card').forEach(card => {
+        card.addEventListener('click', () => {
+          launchGame(card.dataset.gameType);
+        });
+      });
+
+      // Back to Games Catalog
+      document.getElementById('runner-back-to-catalog-btn')?.addEventListener('click', () => {
+        document.getElementById('senior-game-runner-view').classList.add('hidden');
+        document.getElementById('games-catalog-view').classList.remove('hidden');
+      });
+      document.getElementById('game-return-menu-btn')?.addEventListener('click', () => {
+        document.getElementById('senior-game-runner-view').classList.add('hidden');
+        document.getElementById('games-catalog-view').classList.remove('hidden');
+      });
+
+      // 7. Render Current Game in Activity Runner
+      function renderCurrentActivity() {
+        if (activeGameList.length === 0 || currentActivityIndex >= activeGameList.length) {
+          finishCognitiveSession();
+          return;
+        }
+
+        const act = activeGameList[currentActivityIndex];
+        questionStartTime = Date.now();
+        currentHintsUsed = 0;
+        currentAttempts = 0;
+
+        document.getElementById('game-progress-text').textContent = `Activity ${currentActivityIndex + 1} of ${activeGameList.length}`;
+        document.getElementById('game-instructions').textContent = act.instructions || 'Look closely and select the matching answer below.';
+        document.getElementById('game-prompt').textContent = act.prompt || 'Who is this beloved family member?';
+        document.getElementById('game-feedback').textContent = '';
+        document.getElementById('game-next-btn').classList.add('hidden');
+
+        // Media display
+        const mediaBox = document.getElementById('game-media-display');
+        if (act.media?.type === 'photo' && act.media?.url) {
+          if (act.media.boundingBox && typeof act.media.boundingBox.width === 'number' && act.media.boundingBox.width < 1) {
+            const b = act.media.boundingBox;
+            const bgW = (100 / Math.max(0.01, b.width)).toFixed(1);
+            const bgH = (100 / Math.max(0.01, b.height)).toFixed(1);
+            const posX = ((b.left * 100) / Math.max(0.01, (1 - b.width))).toFixed(1);
+            const posY = ((b.top * 100) / Math.max(0.01, (1 - b.height))).toFixed(1);
+
+            mediaBox.innerHTML = `
+              <div class="flex flex-col items-center gap-2">
+                <div class="relative w-36 h-36 sm:w-44 sm:h-44 rounded-3xl overflow-hidden border-4 border-purple-400 bg-slate-900 shadow-md">
+                  <div style="width: 100%; height: 100%; background-image: url('${act.media.url}'); background-size: ${bgW}% ${bgH}%; background-position: ${posX}% ${posY}%;" class="w-full h-full bg-no-repeat"></div>
+                </div>
+                <span class="text-[11px] font-extrabold text-purple-900 bg-purple-100 px-3 py-1 rounded-full shadow-xs">📸 Photo Album Memory</span>
+              </div>
+            `;
+          } else {
+            mediaBox.innerHTML = `<img src="${act.media.url}" alt="Memory" class="max-h-48 w-auto rounded-2xl object-cover shadow-sm" />`;
+          }
+        } else if (act.media?.type === 'audio' && act.media?.url) {
+          mediaBox.innerHTML = `
+            <div class="flex flex-col items-center justify-center p-3 space-y-2">
+              <span class="text-4xl">🎵</span>
+              <audio src="${act.media.url}" controls autoplay class="h-8 max-w-xs"></audio>
+              <span class="text-xs font-bold text-purple-900">${act.media.caption || 'Playing snippet...'}</span>
+            </div>
+          `;
+        } else {
+          mediaBox.innerHTML = `<span class="text-6xl">${act.media?.symbol || '👵'}</span>`;
+        }
+
+        // Render Answer Options
+        const optContainer = document.getElementById('game-options-container');
+        optContainer.innerHTML = act.options.map(opt => `
+          <button class="game-choice-btn py-4 px-6 rounded-2xl bg-white border-2 border-purple-200 hover:border-purple-500 font-extrabold text-base sm:text-lg text-[#0F172A] shadow-sm hover:scale-102 transition-all text-center flex items-center justify-center gap-2" data-id="${opt.id}" data-correct="${opt.isCorrect}">
+            <span>${opt.text}</span>
+          </button>
+        `).join('');
+
+        optContainer.querySelectorAll('.game-choice-btn').forEach(btn => {
+          btn.addEventListener('click', () => handleOptionClick(btn, act));
+        });
+      }
+
+      function handleOptionClick(btn, act) {
+        const isCorrect = btn.dataset.correct === 'true';
+        const feedback = document.getElementById('game-feedback');
+        const nextBtn = document.getElementById('game-next-btn');
+        currentAttempts++;
+
+        if (isCorrect) {
+          const responseTimeMs = Date.now() - questionStartTime;
+          sessionAnswers.push({
+            activityId: act.activityId,
+            category: act.category,
+            isCorrect: true,
+            attempts: currentAttempts,
+            hintsUsed: currentHintsUsed,
+            responseTimeMs
+          });
+
+          btn.classList.remove('bg-white', 'border-purple-200');
+          btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-950');
+
+          feedback.innerHTML = `<span class="text-emerald-700">🌟 Wonderful! Spot on! You did fantastic! ❤️</span>`;
+          
+          if (window.smritiAudio) {
+            window.smritiAudio.playSuccessChord();
+          }
+
+          voiceService.speak('Wonderful! Spot on! You did fantastic!', act.language || 'en');
+
+          // Disable sibling buttons
+          document.querySelectorAll('.game-choice-btn').forEach(b => b.disabled = true);
+          
+          if (currentActivityIndex < activeGameList.length - 1) {
+            nextBtn.textContent = 'Next Activity ➔';
+          } else {
+            nextBtn.textContent = 'Complete Activity 🎉';
+          }
+          nextBtn.classList.remove('hidden');
+
+        } else {
+          btn.classList.add('bg-amber-50', 'border-amber-400');
+          feedback.innerHTML = `<span class="text-amber-800">Almost! Take another gentle look. 🌸</span>`;
+          
+          if (window.smritiAudio) {
+            window.smritiAudio.playChime(330, 0.4, 'triangle');
+          }
+
+          voiceService.speak('Almost! Take another gentle look.', act.language || 'en');
+        }
+      }
+
+      // Next Question
+      document.getElementById('game-next-btn').addEventListener('click', () => {
+        currentActivityIndex++;
+        renderCurrentActivity();
+      });
+
+      // Speak Question Button
+      document.getElementById('game-speak-btn').addEventListener('click', () => {
+        const act = activeGameList[currentActivityIndex];
+        if (act) {
+          voiceService.speak(`${act.instructions}. ${act.prompt}`, act.language || 'as');
+        }
+      });
+
+      // Hint Button
+      document.getElementById('game-hint-btn').addEventListener('click', () => {
+        const act = activeGameList[currentActivityIndex];
+        if (act && act.hints && act.hints.length > 0) {
+          currentHintsUsed++;
+          const hint = act.hints[0];
+          const fb = document.getElementById('game-feedback');
+          fb.innerHTML = `<span class="text-purple-800 font-bold">💡 Hint: ${hint}</span>`;
+          voiceService.speak(hint, act.language || 'as');
+        }
+      });
+
+      // Finish Session & Record Performance
+      async function finishCognitiveSession() {
+        document.getElementById('senior-game-card-box').classList.add('hidden');
+        document.getElementById('game-complete-banner').classList.remove('hidden');
+
+        const totalQ = sessionAnswers.length || 1;
+        const correctQ = sessionAnswers.filter(a => a.isCorrect).length;
+        const accuracy = Number((correctQ / totalQ).toFixed(2));
+        const totalTime = sessionAnswers.reduce((sum, a) => sum + (a.responseTimeMs || 3000), 0);
+        const avgTime = Math.round(totalTime / totalQ);
+        const totalHints = sessionAnswers.reduce((sum, a) => sum + (a.hintsUsed || 0), 0);
+        const primaryCategory = sessionAnswers[0]?.category || 'memory';
+
+        const sessionPayload = {
+          elderlyUserId,
+          activityId: `sess_${Date.now()}`,
+          category: primaryCategory,
+          difficulty: currentPack?.difficulty || 1,
+          language: currentPack?.language || 'as',
+          startedAt: new Date(Date.now() - totalTime).toISOString(),
+          completedAt: new Date().toISOString(),
+          accuracy,
+          score: Math.round(accuracy * 100),
+          responseTimeMs: avgTime,
+          totalQuestions: totalQ,
+          correctAnswers: correctQ,
+          hintsUsed: totalHints,
+          attempts: sessionAnswers.reduce((sum, a) => sum + (a.attempts || 1), 0),
+          completed: true,
+          questionsAnswered: sessionAnswers
+        };
+
+        try {
+          const res = await cognitiveClient.recordSession(sessionPayload);
+          console.log('[Cognitive] Session recorded successfully:', res);
+        } catch (e) {
+          console.warn('[Cognitive] Failed to record online, queued locally:', e);
+        }
+      }
+
+      document.getElementById('game-restart-btn')?.addEventListener('click', () => {
+        document.getElementById('senior-game-runner-view').classList.add('hidden');
+        document.getElementById('games-catalog-view').classList.remove('hidden');
+      });
+
+      // 8. Tile Navigation
+      document.querySelectorAll('.senior-tile-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetSectionId = btn.dataset.view;
+          if (targetSectionId === 'section-games') {
+            openGamesHub('all');
+            return;
+          }
+          const targetEl = document.getElementById(targetSectionId);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetEl.classList.add('ring-4', 'ring-amber-300');
+            setTimeout(() => targetEl.classList.remove('ring-4', 'ring-amber-300'), 1800);
+          }
+        });
+      });
+
+      // Direct URL route checking (e.g. /games or ?view=games)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (window.location.pathname.includes('/games') || urlParams.get('view') === 'games') {
+        openGamesHub('all');
+      }
+
+      // 9. Render Auxiliary Views
+      function renderSeniorFamily(family) {
+        const c = document.getElementById('senior-family-container');
+        if (family.length === 0) {
+          c.innerHTML = '<p class="text-xs text-slate-400 p-4 col-span-full">No family members registered yet.</p>';
+          return;
+        }
+        c.innerHTML = family.map(f => {
+          const photoSrc = f.avatarUrl || f.photoURL;
+          const displayRelation = f.familiarTitle || f.relationship || 'Family Member';
+          const cueText = `${f.name}, your beloved ${displayRelation}. ${f.location ? `Living in ${f.location}.` : ''} ${f.personalContext || f.shortDescription || ''}`;
+
+          return `
+            <div class="p-4 rounded-3xl bg-indigo-50/40 border-2 border-indigo-100 flex items-center justify-between gap-3 shadow-sm hover:border-indigo-300 transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-14 h-14 rounded-2xl bg-white border border-indigo-200 text-indigo-900 flex items-center justify-center text-2xl font-bold shadow-xs overflow-hidden flex-shrink-0">
+                  ${photoSrc ? `
+                    <img src="${photoSrc}" alt="${f.name}" class="w-full h-full object-cover" />
+                  ` : `
+                    <span>${f.avatar || (f.gender === 'female' ? '👩' : f.gender === 'male' ? '👨' : '🧑‍💼')}</span>
+                  `}
+                </div>
+                <div>
+                  <div class="font-extrabold text-base text-[#0F172A] flex items-center gap-1.5">
+                    <span>${f.name}</span>
+                    ${f.isFavorite ? `<span class="text-amber-500 text-xs">⭐</span>` : ''}
+                  </div>
+                  <div class="text-xs font-extrabold text-indigo-800 flex items-center gap-1.5">
+                    <span>${displayRelation}</span>
+                    ${f.location ? `<span class="text-[10px] text-slate-500 font-semibold">📍 ${f.location}</span>` : ''}
+                  </div>
+                  ${(f.personalContext || f.shortDescription) ? `<div class="text-xs text-slate-600 font-medium mt-0.5">${f.personalContext || f.shortDescription}</div>` : ''}
+                </div>
+              </div>
+              <button class="voice-cue-btn p-3 rounded-2xl bg-white border-2 border-indigo-200 text-indigo-700 hover:bg-indigo-50 active:scale-95 text-base font-bold shadow-xs transition-all flex-shrink-0" data-text="${cueText}" title="Listen to Introduction">
+                🔊
+              </button>
+            </div>
+          `;
+        }).join('');
+
+        c.querySelectorAll('.voice-cue-btn').forEach(b => {
+          b.addEventListener('click', () => {
+            const lang = expData?.profile?.preferredLanguage || 'as';
+            window.VoiceService.speak(b.dataset.text, lang);
+          });
+        });
+      }
+
+      function renderSeniorPhotos(photos) {
+        const c = document.getElementById('senior-photos-container');
+        if (photos.length === 0) {
+          c.innerHTML = '<p class="text-xs text-slate-400 p-4 col-span-full">No photo memories uploaded yet.</p>';
+          return;
+        }
+        c.innerHTML = photos.map(p => `
+          <div class="photo-card-item rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 aspect-square shadow-sm relative group cursor-pointer" data-url="${p.runtimeUrl || ''}" data-title="${p.title || 'Memory'}">
+            ${p.runtimeUrl ? `
+              <img src="${p.runtimeUrl}" alt="${p.title}" class="w-full h-full object-cover" />
+            ` : `
+              <div class="w-full h-full flex flex-col items-center justify-center text-slate-400 p-3 text-center">
+                <span class="text-3xl mb-1">🖼️</span>
+                <span class="text-[11px] font-bold text-slate-700">${p.title || 'Memory'}</span>
+              </div>
+            `}
+            <div class="absolute bottom-0 inset-x-0 bg-black/60 p-2 text-white text-[11px] font-bold truncate">
+              ${p.title || 'Photo'}
+            </div>
+          </div>
+        `).join('');
+
+        c.querySelectorAll('.photo-card-item').forEach(card => {
+          card.addEventListener('click', () => {
+            const url = card.dataset.url;
+            const title = card.dataset.title;
+            if (url) {
+              document.getElementById('lightbox-img').src = url;
+              document.getElementById('lightbox-caption').textContent = title;
+              document.getElementById('photo-lightbox-modal').classList.remove('hidden');
+            }
+          });
+        });
+      }
+
+      document.getElementById('close-lightbox-btn')?.addEventListener('click', () => {
+        document.getElementById('photo-lightbox-modal').classList.add('hidden');
+      });
+      document.getElementById('photo-lightbox-modal')?.addEventListener('click', () => {
+        document.getElementById('photo-lightbox-modal').classList.add('hidden');
+      });
+
+      function renderSeniorMusic(audios) {
+        const c = document.getElementById('senior-music-container');
+        if (audios.length === 0) {
+          c.innerHTML = '<p class="text-xs text-slate-400 p-4">No nostalgic melodies uploaded yet.</p>';
+          return;
+        }
+        c.innerHTML = audios.map(a => `
+          <div class="p-4 rounded-2xl bg-emerald-50/40 border border-emerald-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🎵</span>
+              <div>
+                <div class="font-extrabold text-sm text-[#0F172A]">${a.title}</div>
+                <div class="text-xs text-slate-500">${a.description || 'Assamese / Regional Nostalgic Track'}</div>
+              </div>
+            </div>
+            ${a.runtimeUrl ? `
+              <audio src="${a.runtimeUrl}" controls class="h-8 max-w-xs"></audio>
+            ` : `
+              <span class="text-xs text-slate-400">Audio ready</span>
+            `}
+          </div>
+        `).join('');
+      }
+
+      function renderSeniorRoutine(routines) {
+        const c = document.getElementById('senior-routine-container');
+        if (routines.length === 0) {
+          c.innerHTML = '<p class="text-xs text-slate-400 p-4">No daily routine items found.</p>';
+          return;
+        }
+        c.innerHTML = routines.map(r => `
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">${r.icon || '🌅'}</span>
+              <div>
+                <div class="font-extrabold text-sm text-[#0F172A]">${r.activityName}</div>
+                <div class="text-xs text-slate-500">${r.notes || 'Daily orientation activity'}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="font-mono text-xs font-bold px-3 py-1 bg-white border border-slate-200 rounded-full text-slate-800">${r.time}</span>
+              <button class="routine-check-btn p-2 rounded-xl bg-white border border-slate-200 hover:bg-emerald-50 text-slate-400 hover:text-emerald-700 text-xs font-bold" title="Mark Done">
+                ✓
+              </button>
+            </div>
+          </div>
+        `).join('');
+
+        c.querySelectorAll('.routine-check-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            btn.classList.toggle('bg-emerald-500');
+            btn.classList.toggle('text-white');
+            btn.textContent = btn.classList.contains('bg-emerald-500') ? '✓ Done' : '✓';
+          });
+        });
+      }
+
+      // 10. Talk & Recall: Interactive Conversational Reminiscence Companion
+      let talkConversationHistory = [];
+      let currentTalkLang = 'as';
+
+      function appendChatMessage(sender, text, lang = currentTalkLang) {
+        const historyCont = document.getElementById('talk-chat-history');
+        if (!historyCont) return;
+
+        const isUser = sender === 'user';
+        const msgDiv = document.createElement('div');
+        msgDiv.className = isUser 
+          ? 'flex items-start justify-end gap-3'
+          : 'flex items-start gap-3';
+
+        msgDiv.innerHTML = isUser ? `
+          <div class="max-w-md bg-purple-600 text-white p-4 rounded-3xl rounded-tr-xs shadow-sm space-y-1">
+            <div class="font-extrabold text-[10px] text-purple-200 uppercase tracking-wider">You</div>
+            <p class="text-sm font-semibold leading-relaxed">${text}</p>
+          </div>
+          <span class="text-2xl flex-shrink-0">🧓</span>
+        ` : `
+          <span class="text-2xl flex-shrink-0">🌸</span>
+          <div class="max-w-xl bg-white border-2 border-rose-200 p-4 rounded-3xl rounded-tl-xs shadow-xs space-y-2">
+            <div class="flex items-center justify-between gap-3">
+              <div class="font-extrabold text-[11px] text-rose-900 flex items-center gap-1.5">
+                <span>Smriti Voice Companion</span>
+                <span class="text-[9px] px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold">Personalized</span>
+              </div>
+              <button class="replay-msg-btn px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition-all flex items-center gap-1" title="Listen Again">
+                <span>🔊</span> <span>Listen</span>
+              </button>
+            </div>
+            <p class="text-sm font-bold text-slate-800 leading-relaxed">${text}</p>
+          </div>
+        `;
+
+        // Replay speech button handler
+        const replayBtn = msgDiv.querySelector('.replay-msg-btn');
+        if (replayBtn) {
+          replayBtn.addEventListener('click', () => {
+            window.VoiceService.speak(text, lang);
+          });
+        }
+
+        historyCont.appendChild(msgDiv);
+        const container = document.getElementById('talk-chat-container');
+        if (container) container.scrollTop = container.scrollHeight;
+      }
+
+      function renderSuggestedChips(chips) {
+        const chipsCont = document.getElementById('talk-suggested-chips');
+        if (!chipsCont) return;
+
+        if (!chips || chips.length === 0) {
+          chipsCont.innerHTML = '';
+          return;
+        }
+
+        chipsCont.innerHTML = chips.map(c => `
+          <button class="talk-chip-btn px-3 py-1.5 rounded-xl bg-white border border-rose-200 hover:border-rose-400 hover:bg-rose-50 text-slate-800 text-xs font-bold shadow-xs transition-all flex items-center gap-1">
+            <span>💬</span> <span>${c}</span>
+          </button>
+        `).join('');
+
+        chipsCont.querySelectorAll('.talk-chip-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const text = btn.textContent.replace('💬', '').trim();
+            handleUserTalkMessage(text);
+          });
+        });
+      }
+
+      async function handleUserTalkMessage(text) {
+        if (!text || !text.trim() || !elderlyUserId) return;
+        const cleanText = text.trim();
+
+        // Append user speech to chat
+        appendChatMessage('user', cleanText, currentTalkLang);
+        talkConversationHistory.push({ role: 'user', content: cleanText });
+
+        const statusEl = document.getElementById('talk-live-transcript');
+        if (statusEl) statusEl.textContent = 'Smriti is listening and reflecting...';
+
+        try {
+          const res = await window.CognitiveClient.sendConversationMessage({
+            elderlyUserId,
+            userMessage: cleanText,
+            conversationHistory: talkConversationHistory,
+            language: currentTalkLang
+          });
+
+          if (res?.replyText) {
+            talkConversationHistory.push({ role: 'assistant', content: res.replyText });
+            appendChatMessage('assistant', res.replyText, currentTalkLang);
+            
+            // Speak response with natural elderly cadence
+            window.VoiceService.speak(res.replyText, currentTalkLang);
+
+            if (res.suggestedReplies) {
+              renderSuggestedChips(res.suggestedReplies);
+            }
+          }
+
+          if (statusEl) {
+            statusEl.textContent = 'Tap "Start Talking" or choose a reply below...';
+          }
+        } catch (err) {
+          console.warn('Conversation message error:', err);
+          const errNotice = 'Conversation service is temporarily unavailable.';
+          appendChatMessage('assistant', errNotice, currentTalkLang);
+          if (statusEl) statusEl.textContent = errNotice;
+        }
+      }
+
+      async function initTalkAndRecallSession(exp) {
+        talkConversationHistory = [];
+        currentTalkLang = exp?.profile?.preferredLanguage || 'as';
+
+        const historyCont = document.getElementById('talk-chat-history');
+        if (historyCont) historyCont.innerHTML = '';
+
+        const statusEl = document.getElementById('talk-live-transcript');
+        if (statusEl) statusEl.textContent = 'Preparing personalized reminiscence prompt...';
+
+        try {
+          const data = await window.CognitiveClient.fetchConversationPrompt(elderlyUserId, currentTalkLang);
+          if (data?.promptText) {
+            talkConversationHistory.push({ role: 'assistant', content: data.promptText });
+            appendChatMessage('assistant', data.promptText, currentTalkLang);
+            
+            // Speak opening prompt
+            window.VoiceService.speak(data.promptText, currentTalkLang);
+
+            if (data.suggestedReplies) {
+              renderSuggestedChips(data.suggestedReplies);
+            }
+          }
+
+          if (statusEl) {
+            statusEl.textContent = 'Tap "Start Talking" to share your memories...';
+          }
+        } catch (e) {
+          console.warn('Failed to load opening prompt:', e);
+          const fallback = 'Conversation service is temporarily unavailable.';
+          appendChatMessage('assistant', fallback, currentTalkLang);
+          if (statusEl) statusEl.textContent = fallback;
+        }
+      }
+
+      function setupTalkAndRecall(exp) {
+        currentTalkLang = exp?.profile?.preferredLanguage || 'as';
+
+        // Immediately initialize opening prompt
+        initTalkAndRecallSession(exp);
+
+        // Restart conversation button
+        document.getElementById('talk-restart-btn')?.addEventListener('click', () => {
+          initTalkAndRecallSession(exp);
+        });
+
+        // Microphone toggle
+        const micBtn = document.getElementById('talk-mic-toggle-btn');
+        const micIcon = document.getElementById('talk-mic-icon');
+        const micLabel = document.getElementById('talk-mic-label');
+        const statusEl = document.getElementById('talk-live-transcript');
+        const textInput = document.getElementById('talk-text-input');
+
+        // Check if Web Speech API is supported
+        if (!window.VoiceService.isSpeechRecognitionSupported && statusEl) {
+          statusEl.textContent = 'Voice recognition is not supported in this browser. You can type below.';
+        }
+
+        micBtn?.addEventListener('click', () => {
+          if (window.VoiceService.isListening) {
+            window.VoiceService.stopListening();
+            micBtn.classList.remove('bg-red-600', 'animate-pulse');
+            micBtn.classList.add('bg-rose-600');
+            micIcon.textContent = '🎤';
+            micLabel.textContent = 'Start Talking';
+            if (statusEl) statusEl.textContent = 'Listening stopped.';
+          } else {
+            micBtn.classList.remove('bg-rose-600');
+            micBtn.classList.add('bg-red-600', 'animate-pulse');
+            micIcon.textContent = '⏹️';
+            micLabel.textContent = 'Listening... Tap to Stop';
+            if (statusEl) statusEl.textContent = 'Listening... Speak clearly into your device...';
+
+            window.VoiceService.startListening({
+              langCode: currentTalkLang,
+              onInterim: (interim) => {
+                if (statusEl) statusEl.textContent = `"${interim}..."`;
+              },
+              onTranscript: (finalText) => {
+                micBtn.classList.remove('bg-red-600', 'animate-pulse');
+                micBtn.classList.add('bg-rose-600');
+                micIcon.textContent = '🎤';
+                micLabel.textContent = 'Start Talking';
+                handleUserTalkMessage(finalText);
+              },
+              onError: (err) => {
+                console.warn('Speech recognition error:', err);
+                micBtn.classList.remove('bg-red-600', 'animate-pulse');
+                micBtn.classList.add('bg-rose-600');
+                micIcon.textContent = '🎤';
+                micLabel.textContent = 'Start Talking';
+                
+                if (err === 'not-allowed' || err === 'service-not-allowed' || err?.includes?.('not-allowed')) {
+                  if (statusEl) statusEl.textContent = 'Microphone access is needed for voice conversation. You can continue by typing.';
+                  if (textInput) textInput.focus();
+                } else {
+                  if (statusEl) statusEl.textContent = 'Could not hear clearly. Please tap to try again or type below.';
+                }
+              },
+              onEnd: () => {
+                micBtn.classList.remove('bg-red-600', 'animate-pulse');
+                micBtn.classList.add('bg-rose-600');
+                micIcon.textContent = '🎤';
+                micLabel.textContent = 'Start Talking';
+              }
+            });
+          }
+        });
+
+        // Text input send button
+        document.getElementById('talk-text-send-btn')?.addEventListener('click', () => {
+          const input = document.getElementById('talk-text-input');
+          if (input && input.value.trim()) {
+            handleUserTalkMessage(input.value);
+            input.value = '';
+          }
+        });
+
+        document.getElementById('talk-text-input')?.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const input = document.getElementById('talk-text-input');
+            if (input && input.value.trim()) {
+              handleUserTalkMessage(input.value);
+              input.value = '';
+            }
+          }
+        });
+
+        // Re-initialize or scroll when user navigates into Talk & Recall section
+        document.querySelectorAll('.senior-tile-btn[data-view="section-talk"]').forEach(tile => {
+          tile.addEventListener('click', () => {
+            if (talkConversationHistory.length === 0) {
+              initTalkAndRecallSession(exp);
+            }
+          });
+        });
+      }
+
+      // 11. Caretaker Connection Requests
+      async function loadCaretakerConnections() {
+        try {
+          const rels = await window.RelationshipClient.getElderlyRelationships();
+          const pending = rels.filter(r => r.status === 'pending');
+          const accepted = rels.filter(r => r.status === 'accepted');
+
+          document.getElementById('senior-caretakers-badge').textContent = `${accepted.length} Connected`;
+
+          const pCont = document.getElementById('senior-pending-requests-container');
+          if (pending.length > 0) {
+            pCont.innerHTML = `
+              <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 space-y-3">
+                <div class="text-xs font-bold text-amber-900">Pending Connection Invitations</div>
+                ${pending.map(p => `
+                  <div class="flex items-center justify-between gap-3 p-3 bg-white rounded-xl border border-amber-200">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-800">
+                      <span>🧑‍💻</span> ${p.caretakerName || 'Caretaker'} (${p.caretakerEmail || 'Protected'})
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <button class="accept-rel-btn px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold" data-id="${p.id}">Accept</button>
+                      <button class="reject-rel-btn px-3 py-1 bg-rose-600 text-white rounded-lg text-xs font-bold" data-id="${p.id}">Reject</button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+
+            pCont.querySelectorAll('.accept-rel-btn').forEach(b => {
+              b.addEventListener('click', async () => {
+                await window.RelationshipClient.respondToRequest(b.dataset.id, 'accept');
+                loadCaretakerConnections();
+              });
+            });
+            pCont.querySelectorAll('.reject-rel-btn').forEach(b => {
+              b.addEventListener('click', async () => {
+                await window.RelationshipClient.respondToRequest(b.dataset.id, 'reject');
+                loadCaretakerConnections();
+              });
+            });
+          } else {
+            pCont.innerHTML = '';
+          }
+
+          const aCont = document.getElementById('senior-caretakers-container');
+          if (accepted.length > 0) {
+            aCont.innerHTML = accepted.map(a => `
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-3">
+                <span class="text-xl">🧑‍💻</span>
+                <div>
+                  <div class="font-bold text-xs text-[#0F172A]">${a.caretakerName || 'Caretaker'}</div>
+                  <div class="text-[10px] text-slate-500 font-mono">${a.caretakerEmail || 'Connected'}</div>
+                </div>
+              </div>
+            `).join('');
+          } else {
+            aCont.innerHTML = '<p class="text-xs text-slate-400 p-2 col-span-full">No caretakers connected yet.</p>';
+          }
+
+        } catch (e) {
+          console.error('Failed to load caretaker connections:', e);
+        }
+      }
+
+      // 12. Accessibility Toggles
+      document.getElementById('senior-contrast-toggle').addEventListener('click', () => {
+        document.body.classList.toggle('high-contrast-mode');
+      });
+      document.getElementById('senior-font-toggle').addEventListener('click', () => {
+        document.body.classList.toggle('large-text-mode');
+      });
+
+      // 13. Voice Greeting
+      document.getElementById('senior-voice-greet-btn').addEventListener('click', () => {
+        voiceService.speak(expData?.greeting || 'Good morning! Welcome to your memory sanctuary.', expData?.profile?.preferredLanguage || 'as');
+      });
+
+      // 14. Logout
+      document.getElementById('senior-logout-btn').addEventListener('click', async () => {
+        try {
+          await window.smritiAuth.signOut();
+        } catch (e) {
+          console.warn('Logout error', e);
+        }
+        window.location.replace('/auth');
+      });
+
+      await loadCaretakerConnections();
+    });
+  </script>
+</body>
+</html>
